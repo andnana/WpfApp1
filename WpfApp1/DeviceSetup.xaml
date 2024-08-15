@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="激光甲烷探头设置" Height="280" Width="600"
-        WindowStartupLocation="CenterScreen"  Background="#5a5c57">
+        WindowStartupLocation="CenterScreen"  Background="#eeeeee">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -18,35 +18,35 @@
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center" Width="100" HorizontalAlignment="Right" Content="设备名称：" HorizontalContentAlignment="Right" Foreground="White" Margin="10" Background="#5a5c57" BorderThickness="0"></Label>
-                <Label  VerticalAlignment="Center" Width="100" HorizontalAlignment="Left" Content="12.52.12.121" HorizontalContentAlignment="Left" Foreground="White" Margin="10" Background="#5a5c57" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center" Width="100" Content="设备名称：" HorizontalContentAlignment="Right" Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center" Width="100" HorizontalAlignment="Left" Content="12.52.12.121" HorizontalContentAlignment="Left" Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center"  Width="100" HorizontalAlignment="Right" Content="IP："  HorizontalContentAlignment="Right"  Foreground="White" Margin="10" Background="#5a5c57" BorderThickness="0"></Label>
-                <Label  VerticalAlignment="Center"  Width="100" HorizontalAlignment="Left" Content="12.52.12.121" HorizontalContentAlignment="Left" Foreground="White" Margin="10" Background="#5a5c57" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center"  Width="100" Content="IP："  HorizontalContentAlignment="Right"  Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center"  Width="100" HorizontalAlignment="Left" Content="12.52.12.121" HorizontalContentAlignment="Left" Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center"  Width="100" HorizontalAlignment="Right" Content="设备编号："  HorizontalContentAlignment="Right"    Foreground="White" Margin="10" Background="#5a5c57" BorderThickness="0"></Label>
-                <Label  VerticalAlignment="Center"  Width="100" HorizontalAlignment="Left" Content="60121" HorizontalContentAlignment="Left"  Foreground="White" Margin="10" Background="#5a5c57" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center"  Width="100" Content="设备编号："  HorizontalContentAlignment="Right"    Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center"  Width="100" HorizontalAlignment="Left" Content="60121" HorizontalContentAlignment="Left"  Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center"  Width="100" HorizontalAlignment="Right" Content="校准探头密码："  HorizontalContentAlignment="Right"   Foreground="White" Margin="10" Background="#5a5c57" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center" Content="校准探头密码："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
                 <TextBox  Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center"/>
             </StackPanel>
 
-            <Button HorizontalAlignment="Right"   Background="Gray" BorderThickness="0"  Style="{StaticResource ButtonPrimary}" Content="校准探头" Margin="12 12 16 12"/>
+            <Button HorizontalAlignment="Right"  Background="#326cf3" Foreground="White"  BorderThickness="0"   Content="校准探头" Margin="12 12 16 12"/>
         </StackPanel>
         <StackPanel Orientation="Vertical"  HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
-                <Button  Margin="10"  Background="Gray" BorderThickness="0"   Style="{StaticResource ButtonPrimary}" Content="开启探头"/>
-                <Button  Margin="10"  Background="Gray" BorderThickness="0"   Style="{StaticResource ButtonPrimary}" Content="重启探头"/>
+                <Button  Margin="10"  Background="#326cf3" Foreground="White"  BorderThickness="0"    Content="开启探头"/>
+                <Button  Margin="10"  Background="#326cf3" Foreground="White"  BorderThickness="0"    Content="重启探头"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
-                <Button  Margin="10"  Background="Gray" BorderThickness="0"   Style="{StaticResource ButtonPrimary}" Content="关闭探头"/>
-                <Button  Margin="10"  Background="Gray" BorderThickness="0"   Style="{StaticResource ButtonPrimary}" Content="开启指示激光"/>
+                <Button  Margin="10" Background="#326cf3" Foreground="White"  BorderThickness="0"    Content="关闭探头"/>
+                <Button  Margin="10" Background="#326cf3" Foreground="White"  BorderThickness="0"    Content="开启指示激光"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
-                <Button  Margin="10"  Background="Gray" BorderThickness="0"   Style="{StaticResource ButtonPrimary}" Content="关闭指示激光"/>
+                <Button  Margin="10" Background="#326cf3" Foreground="White"  BorderThickness="0"    Content="关闭指示激光"/>
             </StackPanel>
         </StackPanel>
      

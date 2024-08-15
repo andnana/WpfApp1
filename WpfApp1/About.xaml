@@ -7,9 +7,9 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="关于软件" Height="200" Width="300"
-        WindowStartupLocation="CenterScreen"  Background="#5a5c57">
+        WindowStartupLocation="CenterScreen"  Background="#eeeeee">
     <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Image HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Height="80" Source="/WpfApp1;component/Resources/ch4test.png" Margin="10,10"></Image>
-        <hc:SimpleText  Grid.Column="0" Grid.Row="0"  Text="激光甲烷气体遥测云台 V.1.0"/>
+        <hc:SimpleText  Grid.Column="0" Grid.Row="0"  Text="激光甲烷气体遥测云台 V1.0"/>
     </StackPanel>
 </Window>

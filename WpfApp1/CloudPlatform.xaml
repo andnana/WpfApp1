@@ -6,7 +6,7 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         mc:Ignorable="d"
         Title="云台控制" Height="400" Width="942"
-        WindowStartupLocation="CenterScreen" Background="#5a5c57">
+        WindowStartupLocation="CenterScreen" Background="#eeeeee">
 
     <Grid  Grid.Column="0" Grid.Row="0">
         <Grid.RowDefinitions>
@@ -22,12 +22,12 @@
         <StackPanel  Grid.Column="0" Grid.Row="0" Orientation="Vertical">
             <StackPanel Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical" Grid.Row="1" Grid.Column="0">
                 <StackPanel Orientation="Horizontal">
-                    <Button Background="Gray" BorderThickness="0" Margin="10"  Style="{StaticResource ButtonPrimary}" Content="初始化"/>
-                    <Button Background="Gray" BorderThickness="0" Margin="10"  Style="{StaticResource ButtonPrimary}" Content="云台归零"/>
+                    <Button Background="#326cf3" Foreground="White"  BorderThickness="0" Margin="10"   Content="初始化"/>
+                    <Button Background="#326cf3" Foreground="White"  BorderThickness="0" Margin="10"   Content="云台归零"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button  Margin="10" Background="Gray" BorderThickness="0" Style="{StaticResource ButtonPrimary}" Content="裁剪"/>
-                    <Button  Margin="10" Background="Gray" BorderThickness="0" Style="{StaticResource ButtonPrimary}" Content="录像"/>
+                    <Button  Margin="10" Background="#326cf3" Foreground="White"  BorderThickness="0"  Content="裁剪"/>
+                    <Button  Margin="10" Background="#326cf3" Foreground="White"  BorderThickness="0"  Content="录像"/>
                 </StackPanel>
 
 
@@ -35,24 +35,24 @@
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="20 0 0 0">
                 <StackPanel Orientation="Horizontal">
-                    <ToggleButton Width="40" Height="20" Style="{StaticResource ToggleButtonSwitch}"/>
-                    <hc:SimpleText  Margin="10"  FontSize="12" Foreground="White" FontWeight="Medium" Text="智能报警算法A"/>
+                    <ToggleButton Width="40" Height="20" Background="#b9b6b6" Style="{StaticResource ToggleButtonSwitch}"/>
+                    <hc:SimpleText  Margin="10"  FontSize="12" Foreground="Black" FontWeight="Medium" Text="智能报警算法A"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <ToggleButton Width="40" Height="20" Style="{StaticResource ToggleButtonSwitch}"/>
-                    <hc:SimpleText  Margin="10"  FontSize="12" Foreground="White" FontWeight="Medium" Text="报警时停止巡航"/>
+                    <ToggleButton Width="40" Height="20" Background="#b9b6b6" Style="{StaticResource ToggleButtonSwitch}"/>
+                    <hc:SimpleText  Margin="10"  FontSize="12" Foreground="Black" FontWeight="Medium" Text="报警时停止巡航"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <ToggleButton Width="40" Height="20" Style="{StaticResource ToggleButtonSwitch}"/>
-                    <hc:SimpleText  Margin="10"  FontSize="12" Foreground="White" FontWeight="Medium" Text="录像结束后弹窗"/>
+                    <ToggleButton Width="40" Height="20" Background="#b9b6b6" Style="{StaticResource ToggleButtonSwitch}"/>
+                    <hc:SimpleText  Margin="10"  FontSize="12" Foreground="Black" FontWeight="Medium" Text="录像结束后弹窗"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <ToggleButton Width="40" Height="20" Style="{StaticResource ToggleButtonSwitch}"/>
-                    <hc:SimpleText   Margin="10"  FontSize="12" Foreground="White" FontWeight="Medium" Text="显示主屏中心点"/>
+                    <ToggleButton Width="40" Height="20" Background="#b9b6b6" Style="{StaticResource ToggleButtonSwitch}"/>
+                    <hc:SimpleText   Margin="10"  FontSize="12" Foreground="Black" FontWeight="Medium" Text="显示主屏中心点"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <ToggleButton Width="40" Height="20" Style="{StaticResource ToggleButtonSwitch}"/>
-                    <hc:SimpleText   Margin="10"  FontSize="12" Foreground="White" FontWeight="Medium" Text="雨刷"/>
+                    <ToggleButton Width="40" Height="20" Background="#b9b6b6" Style="{StaticResource ToggleButtonSwitch}"/>
+                    <hc:SimpleText   Margin="10"  FontSize="12" Foreground="Black" FontWeight="Medium" Text="雨刷"/>
                 </StackPanel>
             </StackPanel>
 
@@ -62,8 +62,8 @@
             <!--   <TextBox Text="{Binding Name1}" /> -->
 
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="选择设备："  HorizontalContentAlignment="Right"   Foreground="White" Margin="10" Background="#5a5c57" BorderThickness="0"></Label>
-                <hc:ComboBox Margin="4" Height="26" Width="116" Foreground="White" SelectedIndex="0">
+                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="选择设备："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                <hc:ComboBox Margin="4" Height="26" Width="116" Foreground="Black" SelectedIndex="0">
                     <ComboBoxItem  Foreground="Black" Content="abc" IsSelected="True"></ComboBoxItem>
                     <ComboBoxItem  Foreground="Black" Content="def"></ComboBoxItem>
                     <ComboBoxItem  Foreground="Black" Content="ghi"></ComboBoxItem>
@@ -71,41 +71,41 @@
 
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="高报阈值："  HorizontalContentAlignment="Right"   Foreground="White" Margin="10" Background="#5a5c57" BorderThickness="0"></Label>
-                <TextBox Margin="4" Style="{StaticResource TextBoxExtend}" Foreground="White" Width="116" VerticalAlignment="Center"/>
+                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="高报阈值："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                <TextBox Margin="4" Style="{StaticResource TextBoxExtend}" Foreground="Black" Width="116" VerticalAlignment="Center"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="低报阈值："  HorizontalContentAlignment="Right"   Foreground="White" Margin="10" Background="#5a5c57" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="低报阈值："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
                 <TextBox  Margin="4"  Style="{StaticResource TextBoxExtend}" Foreground="White" Width="116" VerticalAlignment="Center"/>
             </StackPanel>
 
 
-            <Button HorizontalAlignment="Right" Background="Gray" BorderThickness="0" Style="{StaticResource ButtonPrimary}" Content="设置" Margin="12 12 16 12"/>
+            <Button HorizontalAlignment="Right" Background="#326cf3" Foreground="White"  BorderThickness="0"  Content="设置" Margin="12 12 16 12"/>
 
         </StackPanel>
         <StackPanel   Grid.Column="2" Grid.Row="0"  Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="预置点："  HorizontalContentAlignment="Right"   Foreground="White" Margin="10" Background="#5a5c57" BorderThickness="0"></Label>
-                <hc:ComboBox Margin="4" Foreground="White" Height="26" Width="116" SelectedIndex="0">
+                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="预置点："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                <hc:ComboBox Margin="4" Foreground="Black" Height="26" Width="116" SelectedIndex="0">
                     <ComboBoxItem  Foreground="Black" Content="abc" IsSelected="True"></ComboBoxItem>
                     <ComboBoxItem  Foreground="Black" Content="def"></ComboBoxItem>
                     <ComboBoxItem  Foreground="Black" Content="ghi"></ComboBoxItem>
                 </hc:ComboBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="备注："  HorizontalContentAlignment="Right"   Foreground="White" Margin="10" Background="#5a5c57" BorderThickness="0"></Label>
-                <TextBox  Margin="4" Foreground="White" Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center"/>
+                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="备注："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                <TextBox  Margin="4" Foreground="Black" Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center"/>
             </StackPanel>
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
-                <Button  Margin="12" Background="Gray" BorderThickness="0"  Style="{StaticResource ButtonPrimary}" Content="调用"/>
-                <Button  Margin="12" Background="Gray" BorderThickness="0" Style="{StaticResource ButtonPrimary}" Content="添加"/>
-                <Button  Margin="12" Background="Gray" BorderThickness="0" Style="{StaticResource ButtonPrimary}" Content="删除"/>
+                <Button  Margin="12" Background="#326cf3" Foreground="White" BorderThickness="0"   Content="调用"/>
+                <Button  Margin="12" Background="#326cf3" Foreground="White"  BorderThickness="0"  Content="添加"/>
+                <Button  Margin="12" Background="#326cf3" Foreground="White"  BorderThickness="0"  Content="删除"/>
 
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="巡航路径："  HorizontalContentAlignment="Right"   Foreground="White" Margin="10" Background="#5a5c57" BorderThickness="0"></Label>
-                <hc:ComboBox Margin="4" Foreground="White" Height="30" Width="116" SelectedIndex="0">
+                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="巡航路径："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                <hc:ComboBox Margin="4" Foreground="Black" Height="30" Width="116" SelectedIndex="0">
                     <ComboBoxItem  Foreground="Black" Content="abc" IsSelected="True"></ComboBoxItem>
                     <ComboBoxItem  Foreground="Black" Content="def"></ComboBoxItem>
                     <ComboBoxItem  Foreground="Black" Content="ghi"></ComboBoxItem>
@@ -114,9 +114,9 @@
 
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
-                <Button  Margin="12" Background="Gray" BorderThickness="0" Style="{StaticResource ButtonPrimary}" Content="开始"/>
-                <Button  Margin="12" Background="Gray" BorderThickness="0" Style="{StaticResource ButtonPrimary}" Content="停止"/>
-                <Button  Margin="12" Background="Gray" BorderThickness="0" Style="{StaticResource ButtonPrimary}" Content="设置"/>
+                <Button  Margin="12" Background="#326cf3" Foreground="White"  BorderThickness="0"  Content="开始"/>
+                <Button  Margin="12" Background="#326cf3" Foreground="White"  BorderThickness="0"  Content="停止"/>
+                <Button  Margin="12" Background="#326cf3" Foreground="White"  BorderThickness="0"  Content="设置"/>
 
             </StackPanel>
 
@@ -191,8 +191,8 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <hc:SimpleText Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Text="缩放"/>
-                    <Slider Grid.Column="1" HorizontalAlignment="Center" Orientation="Vertical" VerticalAlignment="Center"  Height="100" Value="8" Maximum="15"/>
+                    <hc:SimpleText Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Text="缩放"/>
+                    <Slider Grid.Column="1"  Background="Silver"  HorizontalAlignment="Center" Orientation="Vertical" VerticalAlignment="Center"  Height="100" Value="8" Maximum="15"/>
                 </Grid>
                 <Grid Margin="10" Grid.Column="1">
                     <Grid.RowDefinitions>
@@ -202,8 +202,8 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <hc:SimpleText Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Text="移动速度"/>
-                    <Slider Grid.Column="1" HorizontalAlignment="Center" Orientation="Vertical" VerticalAlignment="Center"  Height="100" Value="8" Maximum="15"/>
+                    <hc:SimpleText Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Text="移动速度"/>
+                    <Slider Grid.Column="1" Background="Silver"  HorizontalAlignment="Center" Orientation="Vertical" VerticalAlignment="Center"  Height="100" Value="8" Maximum="15"/>
                 </Grid>
 
             </Grid>

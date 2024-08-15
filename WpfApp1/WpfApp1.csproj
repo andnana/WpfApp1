@@ -235,9 +235,6 @@
     <Resource Include="Resources\logout.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\buttonPanel.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="ch4test.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -251,6 +248,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\copy_video.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\buttonPanel.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SkiaSharp.NativeAssets.macOS.2.88.8\build\net462\SkiaSharp.NativeAssets.macOS.targets" Condition="Exists('..\packages\SkiaSharp.NativeAssets.macOS.2.88.8\build\net462\SkiaSharp.NativeAssets.macOS.targets')" />

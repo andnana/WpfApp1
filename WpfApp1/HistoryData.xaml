@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="历史数据" Height="450" Width="800"
-        WindowStartupLocation="CenterScreen"  Background="#5a5c57">
+        WindowStartupLocation="CenterScreen"  Background="#eeeeee">
     <!-- <Grid>
         <Button Content="查看图表" 
            Command="{Binding  Path=ShowCommand}"/>
@@ -29,7 +29,7 @@
             </Grid.ColumnDefinitions>
             <hc:DatePicker Margin="10" Grid.Column="0"/>
             <hc:DatePicker Margin="10"  Grid.Column="1"/>
-            <Button Margin="10"  BorderThickness="0" Background="Gray" Foreground="White" Grid.Column="2" Content="刷新" />
+            <Button Margin="10"  BorderThickness="0"  Background="#326cf3" Foreground="White"  Grid.Column="2" Content="刷新" />
         </Grid>
 
 
@@ -42,7 +42,7 @@
                 <DataGridTemplateColumn Header="操作">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="查看图表" 
+                            <Button Content="查看图表"  Background="#326cf3" Foreground="White" BorderThickness="0" 
                             Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" CommandParameter="{Binding DeviceIP}"/>
 
                         </DataTemplate>

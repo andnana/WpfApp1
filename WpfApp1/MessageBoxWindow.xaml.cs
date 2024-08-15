@@ -3,6 +3,7 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -107,6 +108,23 @@ namespace WpfApp1
         private void About(object sender, RoutedEventArgs e)
         {
             new About().Show();
+        }
+        private void Login(Object sender, RoutedEventArgs e)
+        {
+            new Login().Show();
+        }
+        private void Logout(object sender, RoutedEventArgs e)
+        {
+            if(MessageBox.Show("退出系统后将无法实施接收云台数据，确认退出？", "退出系统", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                Debug.WriteLine("退出成功");
+            }
+            else
+            {
+                Debug.WriteLine("退出失败");
+            }
+            
+
         }
     }
 }

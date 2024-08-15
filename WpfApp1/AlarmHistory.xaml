@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="报警历史" Height="750" Width="1120"
-        WindowStartupLocation="CenterScreen"  Background="#5a5c57">
+        WindowStartupLocation="CenterScreen"  Background="#eeeeee">
     <StackPanel Orientation="Vertical">
         <Grid>
             <Grid.RowDefinitions>
@@ -18,10 +18,10 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <ToolBar Foreground="White"  Padding="10,6" Header="菜单" VerticalAlignment="Center" HorizontalAlignment="Left" Background="#5a5c57">
+            <ToolBar Foreground="Black"  Padding="10,6" Header="菜单" VerticalAlignment="Center" HorizontalAlignment="Left" Background="#eeeeee">
 
 
-                <Button Width="100" Height="60" Foreground="White" Content="复制视频保存目录"  Background="#5a5c57" BorderThickness="0" >
+                <Button Width="100" Height="60" Foreground="Black" Content="复制视频保存目录"  Background="#eeeeee" BorderThickness="0" >
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
@@ -31,7 +31,7 @@
                         </DataTemplate>
                     </Button.ContentTemplate>
                 </Button>
-                <Button Width="100" Height="60" Foreground="White" Content="复制表格保存目录"  Background="#5a5c57" BorderThickness="0" >
+                <Button Width="100" Height="60" Foreground="Black" Content="复制表格保存目录"  Background="#eeeeee" BorderThickness="0" >
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
@@ -41,7 +41,7 @@
                         </DataTemplate>
                     </Button.ContentTemplate>
                 </Button>
-                <Button Width="60" Height="60" Foreground="White" Content="保存表格"   Background="#5a5c57" BorderThickness="0" >
+                <Button Width="60" Height="60" Foreground="Black" Content="保存表格"   Background="#eeeeee" BorderThickness="0" >
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
@@ -64,7 +64,7 @@
                 </Grid.ColumnDefinitions>
                 <hc:DatePicker Margin="10"  Grid.Column="0"/>
                 <hc:DatePicker Margin="10" Grid.Column="1"/>
-                <Button Margin="10"  BorderThickness="0" Background="Gray" Foreground="White" Grid.Column="2"  Content="刷新" />
+                <Button Margin="10"  BorderThickness="0"  Background="#326cf3" Foreground="White"  Grid.Column="2"  Content="刷新" />
             </Grid>
         </Grid>
         <DataGrid HeadersVisibility="All" RowHeaderWidth="60" AutoGenerateColumns="False" ItemsSource="{Binding AlarmHistoryInfo}" CanUserAddRows="False">
@@ -81,10 +81,10 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Button Margin="2" Content="前往" Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" CommandParameter="{Binding DeviceIP}"/>
-                                <Button Margin="2" Content="播放视频" Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" CommandParameter="{Binding DeviceIP}"/>
-                                <Button Margin="2" Content="查看图表" Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" CommandParameter="{Binding DeviceIP}"/>
-                                <Button Margin="2" Content="删除" Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" CommandParameter="{Binding DeviceIP}" />
+                                <Button Margin="2" Content="前往" Background="#326cf3" Foreground="White" BorderThickness="0" Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" CommandParameter="{Binding DeviceIP}"/>
+                                <Button Margin="2" Content="播放视频" Background="#326cf3" Foreground="White" BorderThickness="0"  Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" CommandParameter="{Binding DeviceIP}"/>
+                                <Button Margin="2" Content="查看图表" Background="#326cf3" Foreground="White" BorderThickness="0" Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" CommandParameter="{Binding DeviceIP}"/>
+                                <Button Margin="2" Content="删除" Background="Red" Foreground="White" BorderThickness="0" Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" CommandParameter="{Binding DeviceIP}" />
                             </StackPanel>
 
                         </DataTemplate>
