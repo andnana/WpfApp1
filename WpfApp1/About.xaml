@@ -1,0 +1,15 @@
+﻿<Window x:Class="WpfApp1.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="关于软件" Height="200" Width="300"
+        WindowStartupLocation="CenterScreen"  Background="#5a5c57">
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Image HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Height="80" Source="/WpfApp1;component/Resources/ch4test.png" Margin="10,10"></Image>
+        <hc:SimpleText  Grid.Column="0" Grid.Row="0"  Text="激光甲烷气体遥测云台 V.1.0"/>
+    </StackPanel>
+</Window>
