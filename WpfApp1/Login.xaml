@@ -7,11 +7,11 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="登录" Height="450" Width="800"
-         WindowStartupLocation="CenterScreen" Background="#eeeeee">
+         WindowStartupLocation="CenterScreen" Background="#55554b">
 
     <StackPanel>
-        <ToolBar Foreground="Black"  Padding="10,6" Header="菜单" VerticalAlignment="Center" HorizontalAlignment="Left" Background="#eeeeee">
-            <Button Width="100" Height="60" Foreground="Black" Content="删除当前预设数据"  Background="#eeeeee" BorderThickness="0" >
+        <ToolBar Foreground="Black"  Padding="10,6" Header="菜单" VerticalAlignment="Center" HorizontalAlignment="Left" Background="#55554b">
+            <Button Width="100" Height="60" Foreground="Black" Content="删除当前预设数据"  Background="#55554b" BorderThickness="0" >
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
@@ -32,47 +32,47 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical"  Margin="20 0 0 0">
                 <StackPanel Orientation="Horizontal">
-                    <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="预设："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                    <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="预设："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
                     <hc:ComboBox Margin="4" Height="26" Width="116" Foreground="Black" SelectedIndex="0">
-                        <ComboBoxItem  Foreground="Black" Content="12.52.12.114" IsSelected="True"></ComboBoxItem>
+                        <ComboBoxItem  Foreground="Black" Content="12.52.12.135" IsSelected="True"></ComboBoxItem>
                         <ComboBoxItem  Foreground="Black" Content="def"></ComboBoxItem>
                         <ComboBoxItem  Foreground="Black" Content="ghi"></ComboBoxItem>
                     </hc:ComboBox>
 
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Label  VerticalAlignment="Center"  Width="80"  Content="IP："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
-                    <TextBox  Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center"  Text="12.52.12.114"/>
+                    <Label  VerticalAlignment="Center"  Width="80"  Content="IP："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                    <TextBox  Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center"  Text="12.52.12.135"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Label  VerticalAlignment="Center"  Width="80"  Content="设备名称："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                    <Label  VerticalAlignment="Center"  Width="80"  Content="设备名称："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
                     <TextBox  Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center"  Text=""/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Label  VerticalAlignment="Center"  Width="80"  Content="端口："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                    <Label  VerticalAlignment="Center"  Width="80"  Content="端口："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
                     <TextBox  Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center" Text="8000"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Label  VerticalAlignment="Center"  Width="80"  Content="高清："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                    <Label  VerticalAlignment="Center"  Width="80"  Content="高清："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
                     <ToggleButton  Margin="4" VerticalAlignment="Center" Background="#b9b6b6"  HorizontalContentAlignment="Right" Height="20" Style="{StaticResource ToggleButtonSwitch}"/>
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Vertical"   Margin="20 0 0 0" Grid.Row="1" Grid.Column="1">
                 <StackPanel Orientation="Horizontal">
-                    <Label  VerticalAlignment="Center"  Width="80"  Content="设备编号："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                    <Label  VerticalAlignment="Center"  Width="80"  Content="设备编号："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
                     <TextBox  Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center"  Text=""/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Label  VerticalAlignment="Center"  Width="80"  Content="帐号："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                    <Label  VerticalAlignment="Center"  Width="80"  Content="帐号："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
                     <TextBox  Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center" Text="admin"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Label  VerticalAlignment="Center"  Width="80"  Content="密码："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                    <Label  VerticalAlignment="Center"  Width="80"  Content="密码："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
                     <PasswordBox PasswordChar="*" VerticalAlignment="Center" Width="120"></PasswordBox>
                 </StackPanel>
 
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
-                    <Button  Margin="12"  Background="#326cf3" Foreground="White"  BorderThickness="0" Content="登录"/>
+                    <Button  Margin="12"  Background="#326cf3" Foreground="White" Click="LoginAction"  BorderThickness="0" Content="登录"/>
                     <Button  Margin="12" Background="#326cf3" Foreground="White"  BorderThickness="0" Content="取消"/>
 
                 </StackPanel>

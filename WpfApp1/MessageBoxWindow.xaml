@@ -4,12 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" 
+        xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="激光甲烷气体遥测云台" Height="750" Width="1200"
+        Title="激光甲烷气体遥测云台" Height="750" Width="1192"
         WindowStartupLocation="CenterScreen"
-        Icon="ch4test.ico">
+        Icon="ch4test.ico"
+        WindowStyle = "None"
+        ResizeMode="CanMinimize">
+    <Window.Resources>
+        <Style x:Key="DataGridTextCenterColumnStyle" TargetType="DataGridRow">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#55554b" />
+        </Style>
+    </Window.Resources> 
     <!-- <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -67,7 +77,8 @@
 
     <Grid  Height="740" Width="1200">
         <Grid.RowDefinitions>
-             <RowDefinition Height="60"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="430"/>
             <RowDefinition Height="180"/>
@@ -77,7 +88,7 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="400"/>
             <ColumnDefinition Width="300" />
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="290"/>
         </Grid.ColumnDefinitions>
         <!-- <Slider Grid.Column="0" Grid.Row="0"  VerticalAlignment="Center" Width="400" Value="40" Maximum="100"/>-->
        <!-- <TabControl Margin="10" Style="{StaticResource TabControlCapsule}">
@@ -248,7 +259,64 @@
                 <Image Source="/WpfApp1;component/Resources/leftDown.png" Width="60" Height="60"/>
             </Button.Content>
         </Button> -->
-        <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"  Background="#eeeeee">
+        <Grid    Name="TitleBar" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"  Background="#55554b">
+            <!--  窗体边框  -->
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                <Image Height="30" Width="30"  VerticalAlignment="Center" HorizontalAlignment="Left" Source="/WpfApp1;component/Resources/ch4test.png" Margin="4, 0, 0, 0"></Image>
+                <TextBlock Name="username" Margin="20 0 0 0" FontSize="20" Text="admin" Foreground="White" VerticalAlignment="Center" />
+                <TextBlock Name="Time" Margin="20 0 0 0"   FontSize="20" FontWeight="Bold" Text="" Foreground="White" VerticalAlignment="Center" />
+            </StackPanel>
+            <Grid Grid.Column="1">
+                <Image Height="15" Width="160"  VerticalAlignment="Center" HorizontalAlignment="Center" Source="/WpfApp1;component/Resources/software_name.png" Margin="0,0"></Image>
+            </Grid>
+            <Border
+                Grid.Column="2"
+            Background="#55554b"
+            BorderBrush="#55554b"
+            BorderThickness="0">
+
+                <!--  内容区域  -->
+                <Grid Margin="0 0 10 0">
+                    <!--  标题栏  -->
+                    <Border
+                    Background="#55554b"
+                    CornerRadius="0,0,0,0"
+                    Height="40"
+                    Padding="0">
+                        <DockPanel>
+                            <DockPanel LastChildFill="False">
+                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                    <Button Margin="6" Name="BtMin" Width="16" Height="16"  Padding="0" BorderThickness="0" Background="Transparent">
+                                        <Button.Content>
+                                            <Image Source="/WpfApp1;component/Resources/Minimize.png" Width="16" Height="16"/>
+                                        </Button.Content>
+                                    </Button>
+                             <!--       <Button  Margin="6"  Name="BtMax" Width="16" Height="16"  Padding="0" BorderThickness="0" Background="Transparent">
+                                        <Button.Content>
+                                            <Image Source="/WpfApp1;component/Resources/Maximize.png" Width="16" Height="16"/>
+                                        </Button.Content>
+                                    </Button>-->
+                                    <Button  Margin="6"  Name="BtClose" Width="16" Height="16"  Padding="0" BorderThickness="0" Background="Transparent">
+                                        <Button.Content>
+                                            <Image Source="/WpfApp1;component/Resources/Close.png" Width="16" Height="16"/>
+                                        </Button.Content>
+                                    </Button>
+                                </StackPanel>
+                            </DockPanel>
+                        </DockPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+        <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"  Background="#55554b">
             <Grid.RowDefinitions>
                 <RowDefinition />
             </Grid.RowDefinitions>
@@ -257,8 +325,8 @@
                  <ColumnDefinition />
                </Grid.ColumnDefinitions>
 
-            <ToolBar Foreground="Black"  Padding="10,6" Header="菜单" VerticalAlignment="Center" HorizontalAlignment="Left" Background="#eeeeee">
-                <Button Width="60" Height="60" Foreground="Black" Content="云台控制"    Click="CloudPlatform" Background="#eeeeee" BorderThickness="0" >
+            <ToolBar Foreground="Black"  Padding="10,6" Header="菜单" VerticalAlignment="Center" HorizontalAlignment="Left" Background="#55554b">
+                <Button Width="60" Height="60" Foreground="Black" Content="云台控制"    Click="CloudPlatform" Background="#55554b" BorderThickness="0" >
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
@@ -269,7 +337,7 @@
                     </Button.ContentTemplate>
                 </Button>
 
-                <Button Width="60" Height="60" Foreground="Black" Content="设备设置" Click="DeviceSetup" Background="#eeeeee" BorderThickness="0" >
+                <Button Width="60" Height="60" Foreground="Black" Content="设备设置" Click="DeviceSetup" Background="#55554b" BorderThickness="0" >
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
@@ -279,7 +347,7 @@
                         </DataTemplate>
                     </Button.ContentTemplate>
                 </Button>
-                <Button Width="60" Height="60" Foreground="Black" Content="历史数据" Click="HistoryData" Background="#eeeeee" BorderThickness="0" >
+                <Button Width="60" Height="60" Foreground="Black" Content="历史数据" Click="HistoryData" Background="#55554b" BorderThickness="0" >
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
@@ -289,7 +357,7 @@
                         </DataTemplate>
                     </Button.ContentTemplate>
                 </Button>
-                <Button Width="60" Height="60" Foreground="Black" Content="报警历史" Click="AlarmHistory" Background="#eeeeee" BorderThickness="0" >
+                <Button Width="60" Height="60" Foreground="Black" Content="报警历史" Click="AlarmHistory" Background="#55554b" BorderThickness="0" >
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
@@ -299,7 +367,7 @@
                         </DataTemplate>
                     </Button.ContentTemplate>
                 </Button>
-                <Button Width="60" Height="60" Foreground="Black" Content="设备登录" Click="Login" Background="#eeeeee" BorderThickness="0" >
+                <Button Width="60" Height="60" Foreground="Black" Content="设备登录" Click="Login" Background="#55554b" BorderThickness="0" >
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
@@ -309,7 +377,7 @@
                         </DataTemplate>
                     </Button.ContentTemplate>
                 </Button>
-                <Button Width="60" Height="60" Foreground="Black" Content="退出系统" Click="Logout" Background="#eeeeee" BorderThickness="0" >
+                <Button Width="60" Height="60" Foreground="Black" Content="退出系统" Click="Logout" Background="#55554b" BorderThickness="0" >
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
@@ -319,7 +387,7 @@
                         </DataTemplate>
                     </Button.ContentTemplate>
                 </Button>
-                <Button Width="60" Height="60" Foreground="Black" Content="关于软件"  Click="About" Background="#eeeeee" BorderThickness="0" >
+                <Button Width="60" Height="60" Foreground="Black" Content="关于软件"  Click="About" Background="#55554b" BorderThickness="0" >
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
@@ -330,29 +398,40 @@
                     </Button.ContentTemplate>
                 </Button>
             </ToolBar>
-            <Grid Grid.Row="0" Grid.Column="1" Background="#eeeeee"></Grid>
+            <Grid Grid.Row="0" Grid.Column="1" Background="#55554b"></Grid>
         </Grid>
-        <Grid  Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2"  Background="#eeeeee">
-            <Label Width="400" Height="50"  VerticalAlignment="Center" BorderThickness="0" HorizontalAlignment="Center" Foreground="Black" FontSize="20" Content="激光甲烷气体遥测云台"  Background="#eeeeee"></Label>
+        <Grid  Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2"  Background="#55554b">
+             
+            <!-- <Label Width="400" Height="50"  VerticalAlignment="Center" BorderThickness="0" HorizontalAlignment="Center" Foreground="Black" FontSize="20" Content="激光甲烷气体遥测云台"  Background="#55554b"></Label>-->
         </Grid>
-            
-            
+
+        <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
+            <wfi:WindowsFormsHost x:Name="pictureBoxHost" ToolTip=""></wfi:WindowsFormsHost>
+        </Grid>
            
     
-        <Grid   Background="#eeeeee" Grid.Column="0" Grid.Row="1" >
+        <Grid   Background="#55554b" Grid.Column="0" Grid.Row="2" >
             <Label  VerticalAlignment="Center" HorizontalAlignment="Right" Content="PPM.M" Margin="10" Background="White"></Label>
             <Label  VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="Black" Content="在线" Margin="10 10 100 10" Background="#afe484"></Label>
 
         </Grid>
-        <StackPanel  Background="#eeeeee"  Grid.Column="0" Grid.Row="2" Grid.RowSpan="2" Orientation="Vertical">
+        <StackPanel  Background="#55554b"  Grid.Column="0" Grid.Row="3" Grid.RowSpan="2" Orientation="Vertical">
           
             <hc:SimpleText Width="100" HorizontalAlignment="Right"  Margin="10"  FontSize="40" Foreground="Pink" FontWeight="Bold" Text="6000"/>
             <lvc:CartesianChart   Width="180" Height="180" Series="{Binding SeriesCollection}" Margin="10" DisableAnimations="True">
                 <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Title=""></lvc:Axis>
+                    <lvc:Axis Title=""  MinValue="0">
+                        <lvc:Axis.Separator>
+                            <lvc:Separator StrokeThickness="1" Stroke="Silver"  />
+                        </lvc:Axis.Separator>
+                    </lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Title="浓度"></lvc:Axis>
+                    <lvc:Axis Title="浓度"  MinValue="0">
+                        <lvc:Axis.Separator>
+                            <lvc:Separator StrokeThickness="1" Stroke="Silver"  />
+                        </lvc:Axis.Separator>
+                    </lvc:Axis>
                 </lvc:CartesianChart.AxisY>
             </lvc:CartesianChart>
             <hc:Shield Subject="速度" Status="15 °/s" Margin="20 5 5 5" Color="#1182c3"/>
@@ -363,19 +442,33 @@
             <hc:SimpleText Width="76" HorizontalAlignment="Right"  Margin="10"  FontSize="30" Foreground="Pink" FontWeight="Bold" Text="6000"/>
             <Button Content="复位" Background="#326cf3" Foreground="White" BorderThickness="0" HorizontalAlignment="Right"  Margin="10,0,16,0"/>
             <Grid>
-                <lvc:CartesianChart Height="100"  Hoverable="False" Series="{Binding SeriesCollection2}" LegendLocation="Right" DisableAnimations="True" />
+                <lvc:CartesianChart Height="100" Foreground="White"  Hoverable="False" Series="{Binding SeriesCollection2}" LegendLocation="Right" DisableAnimations="True">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="" MinValue="0">
+                            <lvc:Axis.Separator>
+                                <lvc:Separator StrokeThickness="1" Stroke="Silver"  />
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="光强" MinValue="0">
+                            <lvc:Axis.Separator>
+                                <lvc:Separator StrokeThickness="1" Stroke="Silver"  />
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
             </Grid>
         </StackPanel>
-        <Grid Background="#eeeeee"  Grid.Column="3" Grid.Row="1" Grid.RowSpan="3"></Grid>
+        <Grid Background="#55554b"  Grid.Column="3" Grid.Row="1" Grid.RowSpan="4"></Grid>
 
-        <Grid   Background="#eeeeee" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="3" >
-
-
+        <Grid   Background="#55554b" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" >
 
             <Grid.RowDefinitions>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
               
@@ -387,88 +480,107 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-
                 <Grid Margin="4" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0">
-                    <Image Height="140" Width="140"  VerticalAlignment="Center" HorizontalAlignment="Center" Source="/WpfApp1;component/Resources/buttonPanel.png" Margin="10,10"></Image>
-                    <Button Width="26" Height="26" Padding="0" Margin="0 0 100 0" BorderThickness="0" Background="Transparent">
-                        <Button.Content>
-                            <Image Source="/WpfApp1;component/Resources/left.png" Width="26" Height="26"/>
-                        </Button.Content>
-                    </Button>
-                    <Button Width="26" Height="26" Padding="0" Margin="0 0 72 72" BorderThickness="0" Background="Transparent">
-                        <Button.Content>
-                            <Image Source="/WpfApp1;component/Resources/leftUp.png" Width="26" Height="26"/>
-                        </Button.Content>
-                    </Button>
-                    <Button Width="26" Height="26"  Padding="0" Margin="0 0 0 100" BorderThickness="0" Background="Transparent">
-                        <Button.Content>
-                            <Image Source="/WpfApp1;component/Resources/up.png" Width="26" Height="26"/>
-                        </Button.Content>
-                    </Button>
-                    <Button Width="26" Height="26"  Padding="0" Margin="72 0 0 72" BorderThickness="0" Background="Transparent">
-                        <Button.Content>
-                            <Image Source="/WpfApp1;component/Resources/rightUp.png" Width="26" Height="26"/>
-                        </Button.Content>
-                    </Button>
-                    <Button Width="26" Height="26"  Padding="0" Margin="100 0 0 0" BorderThickness="0" Background="Transparent">
-                        <Button.Content>
-                            <Image Source="/WpfApp1;component/Resources/right.png" Width="26" Height="26"/>
-                        </Button.Content>
-                    </Button>
-                    <Button Width="26" Height="26"  Padding="0" Margin="72 72 0 0" BorderThickness="0" Background="Transparent">
-                        <Button.Content>
-                            <Image Source="/WpfApp1;component/Resources/rightDown.png" Width="26" Height="26"/>
-                        </Button.Content>
-                    </Button>
-                    <Button Width="26" Height="26" Padding="0" Margin="0 100 0 0" BorderThickness="0" Background="Transparent">
-                        <Button.Content>
-                            <Image Source="/WpfApp1;component/Resources/down.png" Width="26" Height="26"/>
-                        </Button.Content>
-                    </Button>
-                    <Button Width="26" Height="26" Padding="0" Margin="0 72 72 00" BorderThickness="0" Background="Transparent">
-                        <Button.Content>
-                            <Image Source="/WpfApp1;component/Resources/leftDown.png" Width="26" Height="26"/>
-                        </Button.Content>
-                    </Button>
+                   
+                    <Grid Margin="4" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0">
+                        <Image Height="140" Width="140"  VerticalAlignment="Center" HorizontalAlignment="Center" Source="/WpfApp1;component/Resources/buttonPanel.png" Margin="10,10"></Image>
+                        <Button Width="26" Height="26" Padding="0" Margin="0 0 100 0" BorderThickness="0" Background="Transparent">
+                            <Button.Content>
+                                <Image Source="/WpfApp1;component/Resources/left.png" Width="26" Height="26"/>
+                            </Button.Content>
+                        </Button>
+                        <Button Width="26" Height="26" Padding="0" Margin="0 0 72 72" BorderThickness="0" Background="Transparent">
+                            <Button.Content>
+                                <Image Source="/WpfApp1;component/Resources/leftUp.png" Width="26" Height="26"/>
+                            </Button.Content>
+                        </Button>
+                        <Button Width="26" Height="26"  Padding="0" Margin="0 0 0 100" BorderThickness="0" Background="Transparent">
+                            <Button.Content>
+                                <Image Source="/WpfApp1;component/Resources/up.png" Width="26" Height="26"/>
+                            </Button.Content>
+                        </Button>
+                        <Button Width="26" Height="26"  Padding="0" Margin="72 0 0 72" BorderThickness="0" Background="Transparent">
+                            <Button.Content>
+                                <Image Source="/WpfApp1;component/Resources/rightUp.png" Width="26" Height="26"/>
+                            </Button.Content>
+                        </Button>
+                        <Button Width="26" Height="26"  Padding="0" Margin="100 0 0 0" BorderThickness="0" Background="Transparent">
+                            <Button.Content>
+                                <Image Source="/WpfApp1;component/Resources/right.png" Width="26" Height="26"/>
+                            </Button.Content>
+                        </Button>
+                        <Button Width="26" Height="26"  Padding="0" Margin="72 72 0 0" BorderThickness="0" Background="Transparent">
+                            <Button.Content>
+                                <Image Source="/WpfApp1;component/Resources/rightDown.png" Width="26" Height="26"/>
+                            </Button.Content>
+                        </Button>
+                        <Button Width="26" Height="26" Padding="0" Margin="0 100 0 0" BorderThickness="0" Background="Transparent">
+                            <Button.Content>
+                                <Image Source="/WpfApp1;component/Resources/down.png" Width="26" Height="26"/>
+                            </Button.Content>
+                        </Button>
+                        <Button Width="26" Height="26" Padding="0" Margin="0 72 72 00" BorderThickness="0" Background="Transparent">
+                            <Button.Content>
+                                <Image Source="/WpfApp1;component/Resources/leftDown.png" Width="26" Height="26"/>
+                            </Button.Content>
+                        </Button>
 
+                    </Grid>
+                   
                 </Grid>
-       
 
                 <Grid Width="200" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Margin="10">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="4*"/>
-                        <ColumnDefinition Width="6*"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid Margin="10">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
-                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <hc:SimpleText Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Text="缩放"/>
-                        <Slider Grid.Column="1" HorizontalAlignment="Center" Background="Gray" Orientation="Vertical" VerticalAlignment="Center"  Height="100" Value="8" Maximum="15"/>
+
+                        <Slider Grid.Row="0" HorizontalAlignment="Center" Background="Gray" Orientation="Vertical" VerticalAlignment="Center"  Height="100" Value="8" Maximum="15"/>
+                        <hc:SimpleText  Grid.Row="1"  HorizontalAlignment="Center"   Text="20dps"/>
                     </Grid>
                     <Grid Margin="10" Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
-                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <hc:SimpleText Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Text="移动速度"/>
-                        <Slider Grid.Column="1" HorizontalAlignment="Center" Background="Gray" Orientation="Vertical" VerticalAlignment="Center"  Height="100" Value="8" Maximum="15"/>
+
+                        <Slider Grid.Row="0" HorizontalAlignment="Center" Background="Gray" Orientation="Vertical" VerticalAlignment="Center"  Height="100" Value="8" Maximum="15"/>
+                        <hc:SimpleText  HorizontalAlignment="Center"  Grid.Row="1"  Text="1x"/>
                     </Grid>
 
                 </Grid>
 
-            </Grid>
 
+
+            </Grid>
+        
+            <Grid Grid.Column="1" Grid.Row="0">
+                <DataGrid Name="Presets" BorderThickness="0" RowStyle="{StaticResource DataGridTextCenterColumnStyle}" HeadersVisibility="None" Background="#55554b" RowHeight="30" AutoGenerateColumns="False" ItemsSource="{Binding cruisePOJOs}">
+
+                    <DataGrid.Columns>
+                        
+                        <DataGridTextColumn Width="120" Foreground="Green" Binding="{Binding name}"/>
+                        <DataGridTextColumn Width="100" Foreground="White"  Binding="{Binding time}"/>
+                        <DataGridTextColumn Width="100" Foreground="White"  Binding="{Binding preset_num}"/>
+
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </Grid>
 
 
         </Grid>

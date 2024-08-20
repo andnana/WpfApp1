@@ -6,7 +6,7 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         mc:Ignorable="d"
         Title="云台控制" Height="400" Width="942"
-        WindowStartupLocation="CenterScreen" Background="#eeeeee">
+        WindowStartupLocation="CenterScreen" Background="#55554b">
 
     <Grid  Grid.Column="0" Grid.Row="0">
         <Grid.RowDefinitions>
@@ -62,7 +62,7 @@
             <!--   <TextBox Text="{Binding Name1}" /> -->
 
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="选择设备："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="选择设备："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
                 <hc:ComboBox Margin="4" Height="26" Width="116" Foreground="Black" SelectedIndex="0">
                     <ComboBoxItem  Foreground="Black" Content="abc" IsSelected="True"></ComboBoxItem>
                     <ComboBoxItem  Foreground="Black" Content="def"></ComboBoxItem>
@@ -71,11 +71,11 @@
 
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="高报阈值："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="高报阈值："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
                 <TextBox Margin="4" Style="{StaticResource TextBoxExtend}" Foreground="Black" Width="116" VerticalAlignment="Center"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="低报阈值："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="低报阈值："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
                 <TextBox  Margin="4"  Style="{StaticResource TextBoxExtend}" Foreground="White" Width="116" VerticalAlignment="Center"/>
             </StackPanel>
 
@@ -85,7 +85,7 @@
         </StackPanel>
         <StackPanel   Grid.Column="2" Grid.Row="0"  Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="预置点："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="预置点："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
                 <hc:ComboBox Margin="4" Foreground="Black" Height="26" Width="116" SelectedIndex="0">
                     <ComboBoxItem  Foreground="Black" Content="abc" IsSelected="True"></ComboBoxItem>
                     <ComboBoxItem  Foreground="Black" Content="def"></ComboBoxItem>
@@ -93,7 +93,7 @@
                 </hc:ComboBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="备注："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="备注："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
                 <TextBox  Margin="4" Foreground="Black" Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center"/>
             </StackPanel>
 
@@ -104,8 +104,8 @@
 
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="巡航路径："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
-                <hc:ComboBox Margin="4" Foreground="Black" Height="30" Width="116" SelectedIndex="0">
+                <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="巡航路径："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                <hc:ComboBox Margin="4" Name="Cruise_comBox"  Foreground="Black" Height="30" Width="116" SelectedIndex="0">
                     <ComboBoxItem  Foreground="Black" Content="abc" IsSelected="True"></ComboBoxItem>
                     <ComboBoxItem  Foreground="Black" Content="def"></ComboBoxItem>
                     <ComboBoxItem  Foreground="Black" Content="ghi"></ComboBoxItem>
@@ -114,7 +114,7 @@
 
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
-                <Button  Margin="12" Background="#326cf3" Foreground="White"  BorderThickness="0"  Content="开始"/>
+                <Button  Margin="12" Background="#326cf3" Foreground="White"  BorderThickness="0"  Content="开始" Click="Start_Button_Click"/>
                 <Button  Margin="12" Background="#326cf3" Foreground="White"  BorderThickness="0"  Content="停止"/>
                 <Button  Margin="12" Background="#326cf3" Foreground="White"  BorderThickness="0"  Content="设置"/>
 

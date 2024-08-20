@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="激光甲烷探头设置" Height="280" Width="600"
-        WindowStartupLocation="CenterScreen"  Background="#eeeeee">
+        WindowStartupLocation="CenterScreen"  Background="#55554b">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -18,19 +18,19 @@
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center" Width="100" Content="设备名称：" HorizontalContentAlignment="Right" Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
-                <Label  VerticalAlignment="Center" Width="100" HorizontalAlignment="Left" Content="12.52.12.121" HorizontalContentAlignment="Left" Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center" Width="100" Content="设备名称：" HorizontalContentAlignment="Right" Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center" Width="100" HorizontalAlignment="Left" Content="12.52.12.121" HorizontalContentAlignment="Left" Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center"  Width="100" Content="IP："  HorizontalContentAlignment="Right"  Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
-                <Label  VerticalAlignment="Center"  Width="100" HorizontalAlignment="Left" Content="12.52.12.121" HorizontalContentAlignment="Left" Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center"  Width="100" Content="IP："  HorizontalContentAlignment="Right"  Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center"  Width="100" HorizontalAlignment="Left" Content="12.52.12.121" HorizontalContentAlignment="Left" Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center"  Width="100" Content="设备编号："  HorizontalContentAlignment="Right"    Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
-                <Label  VerticalAlignment="Center"  Width="100" HorizontalAlignment="Left" Content="60121" HorizontalContentAlignment="Left"  Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center"  Width="100" Content="设备编号："  HorizontalContentAlignment="Right"    Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center"  Width="100" HorizontalAlignment="Left" Content="60121" HorizontalContentAlignment="Left"  Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center" Content="校准探头密码："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#eeeeee" BorderThickness="0"></Label>
+                <Label  VerticalAlignment="Center" Content="校准探头密码："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
                 <TextBox  Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center"/>
             </StackPanel>
 

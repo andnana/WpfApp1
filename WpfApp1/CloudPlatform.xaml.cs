@@ -23,5 +23,24 @@ namespace WpfApp1
         {
             InitializeComponent();
         }
+
+        private void Start_Button_Click(object sender, RoutedEventArgs e)
+        {
+            int iSeq = Cruise_comBox.SelectedIndex;    //+1
+
+            MessageBoxWindow.real_PlayPOJOs[MessageBoxWindow.Chosen_device_num].I_cruise_path_num = iSeq;
+            MessageBoxWindow.iSeq = iSeq;   
+            MessageBoxWindow.real_PlayPOJOs[MessageBoxWindow.Chosen_device_num].cruise_num_list = new List<int>();
+            for (int i = 0; i < MessageBoxWindow.presetPOJOList[MessageBoxWindow.Chosen_device_num].Cruises[iSeq].Count; i++)
+            {
+                if (MessageBoxWindow.presetPOJOList[MessageBoxWindow.Chosen_device_num].Cruises[iSeq][i].preset_num > 0)
+                {
+                    MessageBoxWindow.real_PlayPOJOs[MessageBoxWindow.Chosen_device_num].cruise_num_list.Add(MessageBoxWindow.presetPOJOList[MessageBoxWindow.Chosen_device_num].Cruises[iSeq][i].preset_num);
+                }
+            }
+
+            MessageBoxWindow.real_PlayPOJOs[MessageBoxWindow.Chosen_device_num].B_isAuto = true;
+            MessageBoxWindow.In_Main_Form.reloadCruiseData();
+        }
     }
 }

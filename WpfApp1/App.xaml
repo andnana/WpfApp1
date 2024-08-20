@@ -10,6 +10,10 @@
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="WindowTitleBrush" Color="#55554b"/>
+            <!-- 标题栏前景色 -->
+            <SolidColorBrush x:Key="WindowTitleBackgroundBrush" Color="#55554b"/>
+            <!-- 标题栏背景色 -->
         </ResourceDictionary>
     </Application.Resources>
 </Application>
