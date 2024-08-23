@@ -106,9 +106,39 @@
             <StackPanel Orientation="Horizontal">
                 <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="巡航路径："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
                 <hc:ComboBox Margin="4" Name="Cruise_comBox"  Foreground="Black" Height="30" Width="116" SelectedIndex="0">
-                    <ComboBoxItem  Foreground="Black" Content="abc" IsSelected="True"></ComboBoxItem>
-                    <ComboBoxItem  Foreground="Black" Content="def"></ComboBoxItem>
-                    <ComboBoxItem  Foreground="Black" Content="ghi"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径1" IsSelected="True"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径2"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径3"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径4"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径5"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径6"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径7"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径8"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径9"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径10"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径11"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径12"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径13"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径14"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径15"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径16"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径17"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径18"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径19"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径20"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径21"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径22"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径23"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径24"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径25"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径26"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径27"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径28"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径29"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径30"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径31"></ComboBoxItem>
+                    <ComboBoxItem  Foreground="Black" Content="路径32"></ComboBoxItem>
+
                 </hc:ComboBox>
             </StackPanel>
 

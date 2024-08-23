@@ -24,5 +24,9 @@ namespace WpfApp1
         public string name { get; set; }
 
         public int speed { get; set; }
+
+        public string timeStr { get; set; }
+
+        public string speedStr { get; set; }
     }
 }

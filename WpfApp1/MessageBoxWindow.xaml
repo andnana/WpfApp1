@@ -377,6 +377,7 @@
                         </DataTemplate>
                     </Button.ContentTemplate>
                 </Button>
+           
                 <Button Width="60" Height="60" Foreground="Black" Content="退出系统" Click="Logout" Background="#55554b" BorderThickness="0" >
                     <Button.ContentTemplate>
                         <DataTemplate>
@@ -400,9 +401,8 @@
             </ToolBar>
             <Grid Grid.Row="0" Grid.Column="1" Background="#55554b"></Grid>
         </Grid>
-        <Grid  Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2"  Background="#55554b">
-             
-            <!-- <Label Width="400" Height="50"  VerticalAlignment="Center" BorderThickness="0" HorizontalAlignment="Center" Foreground="Black" FontSize="20" Content="激光甲烷气体遥测云台"  Background="#55554b"></Label>-->
+        <Grid  Grid.Row="1" Grid.Column="2"  Background="#55554b">
+       
         </Grid>
 
         <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
@@ -416,8 +416,8 @@
 
         </Grid>
         <StackPanel  Background="#55554b"  Grid.Column="0" Grid.Row="3" Grid.RowSpan="2" Orientation="Vertical">
-          
-            <hc:SimpleText Width="100" HorizontalAlignment="Right"  Margin="10"  FontSize="40" Foreground="Pink" FontWeight="Bold" Text="6000"/>
+
+            <TextBlock Name="NDText"  Width="100" HorizontalAlignment="Right"  Margin="10"  FontSize="40" Foreground="Pink" FontWeight="Bold" Text=""/>
             <lvc:CartesianChart   Width="180" Height="180" Series="{Binding SeriesCollection}" Margin="10" DisableAnimations="True">
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis Title=""  MinValue="0">
@@ -435,14 +435,14 @@
                 </lvc:CartesianChart.AxisY>
             </lvc:CartesianChart>
             <hc:Shield Subject="速度" Status="15 °/s" Margin="20 5 5 5" Color="#1182c3"/>
-            <hc:Shield Subject="温度" Status="36 ℃"  Margin="20 5 5 5" Color="#1182c3"/>
-            <hc:Shield Subject="水平角度" Status="207 °"  Margin="20 5 5 5" Color="#1182c3"/>
-            <hc:Shield Subject="垂直角度" Status="50 °"  Margin="20 5 5 5" Color="#1182c3"/>
-            <hc:Shield Subject="光强" Status="700" Foreground="White"  Margin="20 5 5 5" Color="#1182c3"/>
-            <hc:SimpleText Width="76" HorizontalAlignment="Right"  Margin="10"  FontSize="30" Foreground="Pink" FontWeight="Bold" Text="6000"/>
+            <hc:Shield Name="temprature" Subject="温度" Status="0℃"  Margin="20 5 5 5" Color="#1182c3"/>
+            <hc:Shield Name="horizontalAngle"  Subject="水平角度" Status="0°"  Margin="20 5 5 5" Color="#1182c3"/>
+            <hc:Shield Name="verticalAngle" Subject="垂直角度" Status="0°"  Margin="20 5 5 5" Color="#1182c3"/>
+            <hc:Shield Name="lightIntensity" Subject="光强" Status="0" Foreground="White"  Margin="20 5 5 5" Color="#1182c3"/>
+            <TextBlock Name="MaxNDText" Width="76" HorizontalAlignment="Right"  Margin="10"  FontSize="30" Foreground="Pink" FontWeight="Bold" Text=""/>
             <Button Content="复位" Background="#326cf3" Foreground="White" BorderThickness="0" HorizontalAlignment="Right"  Margin="10,0,16,0"/>
             <Grid>
-                <lvc:CartesianChart Height="100" Foreground="White"  Hoverable="False" Series="{Binding SeriesCollection2}" LegendLocation="Right" DisableAnimations="True">
+                <lvc:CartesianChart Height="100" Width="180" Foreground="White"  Hoverable="False" Series="{Binding SeriesCollection2}" LegendLocation="Right" DisableAnimations="True">
                     <lvc:CartesianChart.AxisX>
                         <lvc:Axis Title="" MinValue="0">
                             <lvc:Axis.Separator>
@@ -460,7 +460,11 @@
                 </lvc:CartesianChart>
             </Grid>
         </StackPanel>
-        <Grid Background="#55554b"  Grid.Column="3" Grid.Row="1" Grid.RowSpan="4"></Grid>
+        <Grid Background="#55554b"  Grid.Column="3" Grid.Row="1" Grid.RowSpan="4">
+            <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalAlignment="Right">
+                <StackPanel hc:Growl.GrowlParent="True" VerticalAlignment="Top" Margin="0 0 0 0"/>
+            </ScrollViewer>
+        </Grid>
 
         <Grid   Background="#55554b" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" >
 
@@ -484,42 +488,50 @@
                    
                     <Grid Margin="4" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0">
                         <Image Height="140" Width="140"  VerticalAlignment="Center" HorizontalAlignment="Center" Source="/WpfApp1;component/Resources/buttonPanel.png" Margin="10,10"></Image>
-                        <Button Width="26" Height="26" Padding="0" Margin="0 0 100 0" BorderThickness="0" Background="Transparent">
+                        <Button Width="26" Height="26" Padding="0" Margin="0 0 100 0" BorderThickness="0" Background="Transparent" PreviewMouseDown="Button_MouseDown_PAN_LEFT"  
+            PreviewMouseUp="Button_MouseUp">
                             <Button.Content>
                                 <Image Source="/WpfApp1;component/Resources/left.png" Width="26" Height="26"/>
                             </Button.Content>
                         </Button>
-                        <Button Width="26" Height="26" Padding="0" Margin="0 0 72 72" BorderThickness="0" Background="Transparent">
+                        <Button Width="26" Height="26" Padding="0" Margin="0 0 72 72" BorderThickness="0" Background="Transparent" PreviewMouseDown="Button_MouseDown_UP_LEFT"  
+            PreviewMouseUp="Button_MouseUp">
                             <Button.Content>
                                 <Image Source="/WpfApp1;component/Resources/leftUp.png" Width="26" Height="26"/>
                             </Button.Content>
                         </Button>
-                        <Button Width="26" Height="26"  Padding="0" Margin="0 0 0 100" BorderThickness="0" Background="Transparent">
+                        <Button Width="26" Height="26"  Padding="0" Margin="0 0 0 100" BorderThickness="0" Background="Transparent"  PreviewMouseDown="Button_MouseDown_TILT_UP"  
+            PreviewMouseUp="Button_MouseUp">
                             <Button.Content>
                                 <Image Source="/WpfApp1;component/Resources/up.png" Width="26" Height="26"/>
                             </Button.Content>
                         </Button>
-                        <Button Width="26" Height="26"  Padding="0" Margin="72 0 0 72" BorderThickness="0" Background="Transparent">
+                        <Button Width="26" Height="26"  Padding="0" Margin="72 0 0 72" BorderThickness="0" Background="Transparent" PreviewMouseDown="Button_MouseDown_UP_RIGHT"  
+            PreviewMouseUp="Button_MouseUp">
                             <Button.Content>
                                 <Image Source="/WpfApp1;component/Resources/rightUp.png" Width="26" Height="26"/>
                             </Button.Content>
                         </Button>
-                        <Button Width="26" Height="26"  Padding="0" Margin="100 0 0 0" BorderThickness="0" Background="Transparent">
+                        <Button Width="26" Height="26"  Padding="0" Margin="100 0 0 0" BorderThickness="0" Background="Transparent" PreviewMouseDown="Button_MouseDown_PAN_RIGHT"  
+            PreviewMouseUp="Button_MouseUp">
                             <Button.Content>
                                 <Image Source="/WpfApp1;component/Resources/right.png" Width="26" Height="26"/>
                             </Button.Content>
                         </Button>
-                        <Button Width="26" Height="26"  Padding="0" Margin="72 72 0 0" BorderThickness="0" Background="Transparent">
+                        <Button Width="26" Height="26"  Padding="0" Margin="72 72 0 0" BorderThickness="0" Background="Transparent" PreviewMouseDown="Button_MouseDown_DOWN_RIGHT"  
+            PreviewMouseUp="Button_MouseUp">
                             <Button.Content>
                                 <Image Source="/WpfApp1;component/Resources/rightDown.png" Width="26" Height="26"/>
                             </Button.Content>
                         </Button>
-                        <Button Width="26" Height="26" Padding="0" Margin="0 100 0 0" BorderThickness="0" Background="Transparent">
+                        <Button Width="26" Height="26" Padding="0" Margin="0 100 0 0" BorderThickness="0" Background="Transparent"  PreviewMouseDown="Button_MouseDown_TILT_DOWN"  
+            PreviewMouseUp="Button_MouseUp">
                             <Button.Content>
                                 <Image Source="/WpfApp1;component/Resources/down.png" Width="26" Height="26"/>
                             </Button.Content>
                         </Button>
-                        <Button Width="26" Height="26" Padding="0" Margin="0 72 72 00" BorderThickness="0" Background="Transparent">
+                        <Button Width="26" Height="26" Padding="0" Margin="0 72 72 00" BorderThickness="0" Background="Transparent" PreviewMouseDown="Button_MouseDown_DOWN_LEFT"  
+            PreviewMouseUp="Button_MouseUp">
                             <Button.Content>
                                 <Image Source="/WpfApp1;component/Resources/leftDown.png" Width="26" Height="26"/>
                             </Button.Content>
@@ -529,7 +541,7 @@
                    
                 </Grid>
 
-                <Grid Width="200" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Margin="10">
+                <Grid Width="200" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
@@ -537,20 +549,33 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Grid Margin="10">
-                        <Grid.RowDefinitions>
+                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center" >
+                        <Button Margin="6" Name="ZoomIn" Width="36" Height="36"  Padding="0" BorderThickness="0" Background="Transparent" PreviewMouseDown="Zoom_in_MouseDown"  
+            PreviewMouseUp="Zoom_in_MouseUp">
+                            <Button.Content>
+                                <Image Source="/WpfApp1;component/Resources/zoom_in.png" Width="36" Height="36"/>
+                            </Button.Content>
+                        </Button>
+                        <!--  <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
+                        
 
-                        <Slider Grid.Row="0" HorizontalAlignment="Center" Background="Gray" Orientation="Vertical" VerticalAlignment="Center"  Height="100" Value="8" Maximum="15"/>
-                        <hc:SimpleText  Grid.Row="1"  HorizontalAlignment="Center"   Text="20dps"/>
+                        <Slider Grid.Row="0" Name="zoom_in_out_slider" TickFrequency="1"  ValueChanged="zoom_in_out_slider_ValueChanged" HorizontalAlignment="Center" Background="Gray" Orientation="Vertical" VerticalAlignment="Center"  Height="80" Value="8" Maximum="15"  Minimum="0" />
+                        <hc:SimpleText Name="zoom_in_out_text" Grid.Row="1"  HorizontalAlignment="Center"   Text="15dps"/>-->
                     </Grid>
-                    <Grid Margin="10" Grid.Column="1">
-                        <Grid.RowDefinitions>
+                    <Grid  VerticalAlignment="Center" HorizontalAlignment="Center"  Grid.Column="1">
+                        <Button Margin="6" Name="ZoomOut" Width="36" Height="36"  Padding="0" BorderThickness="0" Background="Transparent" PreviewMouseDown="Zoom_out_MouseDown"  
+            PreviewMouseUp="Zoom_out_MouseUp">
+                            <Button.Content>
+                                <Image Source="/WpfApp1;component/Resources/zoom_out.png" Width="36" Height="36"/>
+                            </Button.Content>
+                        </Button>
+                        <!--<Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
@@ -558,8 +583,8 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <Slider Grid.Row="0" HorizontalAlignment="Center" Background="Gray" Orientation="Vertical" VerticalAlignment="Center"  Height="100" Value="8" Maximum="15"/>
-                        <hc:SimpleText  HorizontalAlignment="Center"  Grid.Row="1"  Text="1x"/>
+                        <Slider Grid.Row="0" HorizontalAlignment="Center" Background="Gray" Orientation="Vertical" VerticalAlignment="Center"  Height="80" Value="8" Maximum="15"/>
+                        <hc:SimpleText  HorizontalAlignment="Center"  Grid.Row="1"  Text="8x"/>-->
                     </Grid>
 
                 </Grid>
@@ -574,8 +599,8 @@
                     <DataGrid.Columns>
                         
                         <DataGridTextColumn Width="120" Foreground="Green" Binding="{Binding name}"/>
-                        <DataGridTextColumn Width="100" Foreground="White"  Binding="{Binding time}"/>
-                        <DataGridTextColumn Width="100" Foreground="White"  Binding="{Binding preset_num}"/>
+                        <DataGridTextColumn Width="100" Foreground="White"  Binding="{Binding timeStr}"/>
+                        <DataGridTextColumn Width="100" Foreground="White"  Binding="{Binding speedStr}"/>
 
                     </DataGrid.Columns>
                 </DataGrid>
