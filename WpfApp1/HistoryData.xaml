@@ -6,52 +6,127 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="历史数据" Height="450" Width="800"
-        WindowStartupLocation="CenterScreen"  Background="#55554b">
-    <!-- <Grid>
-        <Button Content="查看图表" 
-           Command="{Binding  Path=ShowCommand}"/>
-    </Grid>-->
-  <!--  <DataGrid ItemsSource="{Binding People}" AutoGenerateColumns="False">
-        <DataGridTextColumn IsReadOnly="True" Width="80" CanUserResize="False" Binding="{Binding Name}"/>
-    </DataGrid> -->
-    <StackPanel Orientation="Vertical">
+        Title="历史数据" Height="450" Width="500"
+        WindowStartupLocation="CenterScreen"   
+        ResizeMode="CanMinimize"
+       BorderBrush="White"
+       BorderThickness="1"
+       Background="#55554b"
+       WindowStyle = "None">
+    <Window.Resources>
+        <Style x:Key="DataGridTextCenterColumnStyle" TargetType="DataGridRow">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#55554b" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition   Height="40"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid  Grid.Column="0" Grid.Row="0">
+            <Grid    Name="TitleBar" Grid.Column="0" Grid.Row="0" Background="#55554b">
+                <!--  窗体边框  -->
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="1">
+                    <Image  Height="23" Width="120"   VerticalAlignment="Center" HorizontalAlignment="Center" Source="/WpfApp1;component/Resources/history_data_text.png" Margin="0,0"></Image>
+                </Grid>
+                <Border
+              Grid.Column="2"
+          Background="#55554b"
+          BorderBrush="#55554b"
+          BorderThickness="0">
 
-
-        <Grid Grid.Row="0" Grid.Column="1"  Width="400"  HorizontalAlignment="Right" Margin="10">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="6*"/>
-                <ColumnDefinition Width="6*"/>
-                <ColumnDefinition Width="4*"/>
-            </Grid.ColumnDefinitions>
-            <hc:DatePicker Margin="10" Grid.Column="0"/>
-            <hc:DatePicker Margin="10"  Grid.Column="1"/>
-            <Button Margin="10"  BorderThickness="0"  Background="#326cf3" Foreground="White"  Grid.Column="2" Content="刷新" />
+                    <!--  内容区域  -->
+                    <Grid Margin="0 0 10 0">
+                        <!--  标题栏  -->
+                        <Border
+                      Background="#55554b"
+                      CornerRadius="0,0,0,0"
+                      Height="40"
+                      Padding="0">
+                            <DockPanel>
+                                <DockPanel LastChildFill="False">
+                                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                        <Button Margin="6" Name="BtMin" Width="16" Height="16"  Padding="0" BorderThickness="0" Background="Transparent">
+                                            <Button.Content>
+                                                <Image Source="/WpfApp1;component/Resources/Minimize.png" Width="16" Height="16"/>
+                                            </Button.Content>
+                                        </Button>
+                                        <!--       <Button  Margin="6"  Name="BtMax" Width="16" Height="16"  Padding="0" BorderThickness="0" Background="Transparent">
+                          <Button.Content>
+                              <Image Source="/WpfApp1;component/Resources/Maximize.png" Width="16" Height="16"/>
+                          </Button.Content>
+                      </Button>-->
+                                        <Button  Margin="6"  Name="BtClose" Width="16" Height="16"  Padding="0" BorderThickness="0" Background="Transparent">
+                                            <Button.Content>
+                                                <Image Source="/WpfApp1;component/Resources/Close.png" Width="16" Height="16"/>
+                                            </Button.Content>
+                                        </Button>
+                                    </StackPanel>
+                                </DockPanel>
+                            </DockPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
         </Grid>
+        <StackPanel Grid.Row="1" Orientation="Vertical">
+            <Grid Grid.Row="0" Grid.Column="1"  Width="400"  HorizontalAlignment="Right" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="6*"/>
+                    <ColumnDefinition Width="6*"/>
+                    <ColumnDefinition Width="4*"/>
+                </Grid.ColumnDefinitions>
+                <hc:DatePicker Margin="10" Width="100" Background="Silver" Grid.Column="0"/>
+                <hc:DatePicker Margin="10" Width="100" Background="Silver" Grid.Column="1"/>
+                <Button Margin="10"  BorderThickness="0"  Background="#326cf3" Foreground="White"  Grid.Column="2" Content="刷新" />
+            </Grid>
 
 
+            <DataGrid Name="Presets" BorderThickness="0" RowStyle="{StaticResource DataGridTextCenterColumnStyle}" HeadersVisibility="Column" Background="#55554b" RowHeight="30" AutoGenerateColumns="False" ItemsSource="{Binding Device}">
+                <DataGrid.Columns>
 
-        <DataGrid HeadersVisibility="All" RowHeaderWidth="60" AutoGenerateColumns="False" ItemsSource="{Binding Device}" CanUserAddRows="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn IsReadOnly="True" Width="160" CanUserResize="False" Binding="{Binding DeviceIP}"  Header="设备IP"/>
-                <DataGridTextColumn IsReadOnly="True" Width="160" CanUserResize="False" Binding="{Binding DeviceName}"  Header="设备名称"/>
-                <DataGridTextColumn IsReadOnly="True" Width="160" CanUserResize="False" Binding="{Binding Datetime}"  Header="时间"/>
-                <DataGridTemplateColumn Header="操作">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Content="查看图表"  Background="#326cf3" Foreground="White" BorderThickness="0" 
-                            Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" CommandParameter="{Binding DeviceIP}"/>
+                    <DataGridTextColumn Width="120" Foreground="Green" Binding="{Binding DeviceIP}" Header="设备IP"/>
+                    <DataGridTextColumn Width="100" Foreground="White"  Binding="{Binding DeviceName}" Header="设备名称"/>
+                    <DataGridTextColumn Width="180" Foreground="White"  Binding="{Binding Datetime}" Header="时间"/>
 
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+                </DataGrid.Columns>
+            </DataGrid>
 
-        
-    </StackPanel>
+      <!--      <DataGrid HeadersVisibility="All"  Background="Silver" Foreground="White" RowHeaderWidth="60" AutoGenerateColumns="False" ItemsSource="{Binding Device}" CanUserAddRows="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn IsReadOnly="True" Width="160" CanUserResize="False" Binding="{Binding DeviceIP}"  Header="设备IP"/>
+                    <DataGridTextColumn IsReadOnly="True" Width="160" CanUserResize="False" Binding="{Binding DeviceName}"  Header="设备名称"/>
+                    <DataGridTextColumn IsReadOnly="True" Width="160" CanUserResize="False" Binding="{Binding Datetime}"  Header="时间"/>
+                    <DataGridTemplateColumn Header="操作">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="查看图表"  Background="#326cf3" Foreground="White" BorderThickness="0" 
+                          Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" CommandParameter="{Binding DeviceIP}"/>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid> -->
+
+
+        </StackPanel>
+    </Grid>
+  
     
 </Window>

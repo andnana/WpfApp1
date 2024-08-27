@@ -6,77 +6,147 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="登录" Height="450" Width="800"
-         WindowStartupLocation="CenterScreen" Background="#55554b">
+        Title="登录" Height="380" Width="500"
+        WindowStartupLocation="CenterScreen"
+         WindowStyle = "None"
+         ResizeMode="CanMinimize"
+         BorderBrush="White"
+         BorderThickness="1"
+         Background="#55554b">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition   Height="40"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
 
-    <StackPanel>
-        <ToolBar Foreground="Black"  Padding="10,6" Header="菜单" VerticalAlignment="Center" HorizontalAlignment="Left" Background="#55554b">
-            <Button Width="100" Height="60" Foreground="Black" Content="删除当前预设数据"  Background="#55554b" BorderThickness="0" >
-                <Button.ContentTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Vertical">
-                            <Image Source="/WpfApp1;component/Resources/delete.png" Width="20" Height="20" Margin="4"/>
-                            <TextBlock FontSize="10" Text="删除当前预设数据" VerticalAlignment="Center" />
-                        </StackPanel>
-                    </DataTemplate>
-                </Button.ContentTemplate>
-            </Button>
-        </ToolBar>
-            <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical"  Margin="20 0 0 0">
-                <StackPanel Orientation="Horizontal">
-                    <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="预设："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
-                    <hc:ComboBox Margin="4" Height="26" Width="116" Foreground="Black" SelectedIndex="0">
-                        <ComboBoxItem  Foreground="Black" Content="12.52.12.135" IsSelected="True"></ComboBoxItem>
-                        <ComboBoxItem  Foreground="Black" Content="def"></ComboBoxItem>
-                        <ComboBoxItem  Foreground="Black" Content="ghi"></ComboBoxItem>
-                    </hc:ComboBox>
+        <Grid  Grid.Column="0" Grid.Row="0">
+            <Grid    Name="TitleBar" Grid.Column="0" Grid.Row="0" Background="#55554b">
+                <!--  窗体边框  -->
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="1">
+                    <Image Height="23" Width="120"  VerticalAlignment="Center" HorizontalAlignment="Center" Source="/WpfApp1;component/Resources/device_login_text.png" Margin="0,0"></Image>
+                </Grid>
+                <Border
+       Grid.Column="2"
+   Background="#55554b"
+   BorderBrush="#55554b"
+   BorderThickness="0">
 
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label  VerticalAlignment="Center"  Width="80"  Content="IP："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
-                    <TextBox  Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center"  Text="12.52.12.135"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label  VerticalAlignment="Center"  Width="80"  Content="设备名称："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
-                    <TextBox  Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center"  Text=""/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label  VerticalAlignment="Center"  Width="80"  Content="端口："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
-                    <TextBox  Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center" Text="8000"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label  VerticalAlignment="Center"  Width="80"  Content="高清："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
-                    <ToggleButton  Margin="4" VerticalAlignment="Center" Background="#b9b6b6"  HorizontalContentAlignment="Right" Height="20" Style="{StaticResource ToggleButtonSwitch}"/>
-                </StackPanel>
-            </StackPanel>
-            <StackPanel Orientation="Vertical"   Margin="20 0 0 0" Grid.Row="1" Grid.Column="1">
-                <StackPanel Orientation="Horizontal">
-                    <Label  VerticalAlignment="Center"  Width="80"  Content="设备编号："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
-                    <TextBox  Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center"  Text=""/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label  VerticalAlignment="Center"  Width="80"  Content="帐号："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
-                    <TextBox  Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center" Text="admin"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label  VerticalAlignment="Center"  Width="80"  Content="密码："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
-                    <PasswordBox PasswordChar="*" VerticalAlignment="Center" Width="120"></PasswordBox>
-                </StackPanel>
-
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
-                    <Button  Margin="12"  Background="#326cf3" Foreground="White" Click="LoginAction"  BorderThickness="0" Content="登录"/>
-                    <Button  Margin="12" Background="#326cf3" Foreground="White"  BorderThickness="0" Content="取消"/>
-
-                </StackPanel>
-            </StackPanel>
+                    <!--  内容区域  -->
+                    <Grid Margin="0 0 10 0">
+                        <!--  标题栏  -->
+                        <Border
+               Background="#55554b"
+               CornerRadius="0,0,0,0"
+               Height="40"
+               Padding="0">
+                            <DockPanel>
+                                <DockPanel LastChildFill="False">
+                                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                        <Button Margin="6" Name="BtMin" Width="16" Height="16"  Padding="0" BorderThickness="0" Background="Transparent">
+                                            <Button.Content>
+                                                <Image Source="/WpfApp1;component/Resources/Minimize.png" Width="16" Height="16"/>
+                                            </Button.Content>
+                                        </Button>
+                                        <!--       <Button  Margin="6"  Name="BtMax" Width="16" Height="16"  Padding="0" BorderThickness="0" Background="Transparent">
+                   <Button.Content>
+                       <Image Source="/WpfApp1;component/Resources/Maximize.png" Width="16" Height="16"/>
+                   </Button.Content>
+               </Button>-->
+                                        <Button  Margin="6"  Name="BtClose" Width="16" Height="16"  Padding="0" BorderThickness="0" Background="Transparent">
+                                            <Button.Content>
+                                                <Image Source="/WpfApp1;component/Resources/Close.png" Width="16" Height="16"/>
+                                            </Button.Content>
+                                        </Button>
+                                    </StackPanel>
+                                </DockPanel>
+                            </DockPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
         </Grid>
-    </StackPanel>
+
+        <StackPanel Grid.Row="1">
+            <ToolBar Foreground="White"  Padding="10,6" Header="菜单" VerticalAlignment="Center" HorizontalAlignment="Left" Background="#55554b">
+                <Button Width="100" Height="60" Foreground="White" Content="删除当前预设数据"  Background="#55554b" BorderThickness="0" >
+                    <Button.ContentTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <Image Source="/WpfApp1;component/Resources/delete.png" Width="20" Height="20" Margin="4"/>
+                                <TextBlock  Foreground="White"  FontSize="10" Text="删除当前预设数据" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </Button.ContentTemplate>
+                </Button>
+            </ToolBar>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical"  Margin="20 0 0 0">
+                    <StackPanel Orientation="Horizontal">
+                        <Label  VerticalAlignment="Center"  Width="80" HorizontalAlignment="Right" Content="预设："  HorizontalContentAlignment="Right"   Foreground="White" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                        <hc:ComboBox Name="deviceComboBox" Margin="4" Height="26" Width="116" Foreground="Black" SelectionChanged="deviceComboBoxChanged" SelectedIndex="0">
+                 <!--           <ComboBoxItem  Foreground="Black" Content="12.52.12.135" IsSelected="True"></ComboBoxItem>
+                            <ComboBoxItem  Foreground="Black" Content="def"></ComboBoxItem>
+                            <ComboBoxItem  Foreground="Black" Content="ghi"></ComboBoxItem> -->
+                        </hc:ComboBox>
+
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label  VerticalAlignment="Center"  Width="80"  Content="IP："  HorizontalContentAlignment="Right"   Foreground="White" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                        <TextBox Name="IPText"  Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center"  Text="12.52.12.135"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label  VerticalAlignment="Center"  Width="80"  Content="设备名称："  HorizontalContentAlignment="Right"   Foreground="White" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                        <TextBox Name="deviceName"  Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center"  Text=""/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label  VerticalAlignment="Center"  Width="80"  Content="端口："  HorizontalContentAlignment="Right"   Foreground="White" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                        <TextBox Name="PortText"  Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center" Text="8000"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label  VerticalAlignment="Center"  Width="80"  Content="高清："  HorizontalContentAlignment="Right"   Foreground="White" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                        <ToggleButton  Margin="4" VerticalAlignment="Center" Background="#b9b6b6"  HorizontalContentAlignment="Right" Height="20" Style="{StaticResource ToggleButtonSwitch}"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Vertical"   Margin="20 0 0 0" Grid.Row="1" Grid.Column="1">
+                    <StackPanel Orientation="Horizontal">
+                        <Label  VerticalAlignment="Center"  Width="80"  Content="设备编号："  HorizontalContentAlignment="Right"   Foreground="White" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                        <TextBox Name="deviceNum"  Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center"  Text=""/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label  VerticalAlignment="Center"  Width="80"  Content="帐号："  HorizontalContentAlignment="Right"   Foreground="White" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                        <TextBox Name="Username" Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center" Text="admin"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label  VerticalAlignment="Center"  Width="80"  Content="密码："  HorizontalContentAlignment="Right"   Foreground="White" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                        <PasswordBox Name="Password" Password="1234qwer" PasswordChar="*" VerticalAlignment="Center" Width="120"></PasswordBox>
+                    </StackPanel>
+
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+                        <Button  Margin="12"  Background="#326cf3" Foreground="White" Click="LoginAction"  BorderThickness="0" Content="登录"/>
+                        <Button  Margin="12" Background="#326cf3" Foreground="White"  BorderThickness="0" Content="取消"/>
+
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </Grid>
+
 </Window>

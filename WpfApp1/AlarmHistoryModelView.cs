@@ -32,11 +32,11 @@ namespace WpfApp1
             AlarmHistoryInfo = new ObservableCollection<AlarmHistoryInfo>
             {
                 new AlarmHistoryInfo { DeviceIP = "12.52.12.126", DeviceName = "12.52.12.126", Datetime = "2024/8/8 16:50:05" , 
-                concentration = 10, horizontalAngle = 1.1, verticalAngle = 2.1, presetComment = "备注1", presetPoint = 2},
+                concentration = 10000, horizontalAngle = 500.12, verticalAngle = 200.12, presetComment = "备注1", presetPoint = 2},
                 new AlarmHistoryInfo { DeviceIP = "12.52.12.121", DeviceName = "12.52.12.121", Datetime = "2024/8/8 16:50:05" ,
-                concentration = 101, horizontalAngle = 1.1, verticalAngle = 4.1, presetComment = "备注2", presetPoint = 3},
+                concentration = 7000, horizontalAngle = 600.13, verticalAngle = 400.13, presetComment = "备注2", presetPoint = 3},
                 new AlarmHistoryInfo { DeviceIP = "12.52.12.126", DeviceName = "12.52.12.126", Datetime = "2024/8/8 16:50:05",
-                concentration = 102, horizontalAngle = 1.1, verticalAngle = 3.1, presetComment = "备注3", presetPoint = 4}
+                concentration = 8000, horizontalAngle = 550.16, verticalAngle = 30.41, presetComment = "备注3", presetPoint = 4}
             };
         }
 

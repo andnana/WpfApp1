@@ -6,49 +6,123 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="激光甲烷探头设置" Height="280" Width="600"
-        WindowStartupLocation="CenterScreen"  Background="#55554b">
+        Title="设备设置" Height="300" Width="500"
+          WindowStyle = "None"
+      ResizeMode="CanMinimize"
+      Background="#55554b"
+        BorderBrush="White"
+        BorderThickness="1"
+     WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition   Height="40"/>
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center" Width="100" Content="设备名称：" HorizontalContentAlignment="Right" Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
-                <Label  VerticalAlignment="Center" Width="100" HorizontalAlignment="Left" Content="12.52.12.121" HorizontalContentAlignment="Left" Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center"  Width="100" Content="IP："  HorizontalContentAlignment="Right"  Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
-                <Label  VerticalAlignment="Center"  Width="100" HorizontalAlignment="Left" Content="12.52.12.121" HorizontalContentAlignment="Left" Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center"  Width="100" Content="设备编号："  HorizontalContentAlignment="Right"    Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
-                <Label  VerticalAlignment="Center"  Width="100" HorizontalAlignment="Left" Content="60121" HorizontalContentAlignment="Left"  Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label  VerticalAlignment="Center" Content="校准探头密码："  HorizontalContentAlignment="Right"   Foreground="Black" Margin="10" Background="#55554b" BorderThickness="0"></Label>
-                <TextBox  Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center"/>
-            </StackPanel>
+        <Grid Grid.Column="1">
+            <Image  Height="23" Width="120"   VerticalAlignment="Center" HorizontalAlignment="Center" Source="/WpfApp1;component/Resources/device_setup_text.png" Margin="0,0"></Image>
+        </Grid>
+        <Grid  Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0">
+            <Grid    Name="TitleBar" Grid.Column="0" Grid.Row="0" Background="#55554b">
+                <!--  窗体边框  -->
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="1">
+                    <Image  Height="23" Width="120"   VerticalAlignment="Center" HorizontalAlignment="Center" Source="/WpfApp1;component/Resources/device_setup_text.png" Margin="0,0"></Image>
+                </Grid>
+                <Border
+                Grid.Column="2"
+            Background="#55554b"
+            BorderBrush="#55554b"
+            BorderThickness="0">
 
-            <Button HorizontalAlignment="Right"  Background="#326cf3" Foreground="White"  BorderThickness="0"   Content="校准探头" Margin="12 12 16 12"/>
-        </StackPanel>
-        <StackPanel Orientation="Vertical"  HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
-                <Button  Margin="10"  Background="#326cf3" Foreground="White"  BorderThickness="0"    Content="开启探头"/>
-                <Button  Margin="10"  Background="#326cf3" Foreground="White"  BorderThickness="0"    Content="重启探头"/>
+                    <!--  内容区域  -->
+                    <Grid Margin="0 0 10 0">
+                        <!--  标题栏  -->
+                        <Border
+                        Background="#55554b"
+                        CornerRadius="0,0,0,0"
+                        Height="40"
+                        Padding="0">
+                            <DockPanel>
+                                <DockPanel LastChildFill="False">
+                                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                        <Button Margin="6" Name="BtMin" Width="16" Height="16"  Padding="0" BorderThickness="0" Background="Transparent">
+                                            <Button.Content>
+                                                <Image Source="/WpfApp1;component/Resources/Minimize.png" Width="16" Height="16"/>
+                                            </Button.Content>
+                                        </Button>
+                                        <!--       <Button  Margin="6"  Name="BtMax" Width="16" Height="16"  Padding="0" BorderThickness="0" Background="Transparent">
+                            <Button.Content>
+                                <Image Source="/WpfApp1;component/Resources/Maximize.png" Width="16" Height="16"/>
+                            </Button.Content>
+                        </Button>-->
+                                        <Button  Margin="6"  Name="BtClose" Width="16" Height="16"  Padding="0" BorderThickness="0" Background="Transparent">
+                                            <Button.Content>
+                                                <Image Source="/WpfApp1;component/Resources/Close.png" Width="16" Height="16"/>
+                                            </Button.Content>
+                                        </Button>
+                                    </StackPanel>
+                                </DockPanel>
+                            </DockPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Vertical"  Grid.Row="1" Grid.Column="0">
+                <StackPanel Orientation="Horizontal">
+                    <Label  VerticalAlignment="Center" Width="100" Content="设备名称：" HorizontalContentAlignment="Right" Foreground="White" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                    <Label  VerticalAlignment="Center" Width="100" HorizontalAlignment="Left" Content="12.52.12.121" HorizontalContentAlignment="Left" Foreground="White" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label  VerticalAlignment="Center"  Width="100" Content="IP："  HorizontalContentAlignment="Right"  Foreground="White" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                    <Label  VerticalAlignment="Center"  Width="100" HorizontalAlignment="Left" Content="12.52.12.121" HorizontalContentAlignment="Left" Foreground="White" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label  VerticalAlignment="Center"  Width="100" Content="设备编号："  HorizontalContentAlignment="Right"    Foreground="White" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                    <Label  VerticalAlignment="Center"  Width="100" HorizontalAlignment="Left" Content="60121" HorizontalContentAlignment="Left"  Foreground="White" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label  VerticalAlignment="Center" Content="校准探头密码："  HorizontalContentAlignment="Right"   Foreground="White" Margin="10" Background="#55554b" BorderThickness="0"></Label>
+                    <TextBox  Margin="4"  Style="{StaticResource TextBoxExtend}" Width="116" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <Button HorizontalAlignment="Right"  Background="#326cf3" Foreground="White"  BorderThickness="0"   Content="校准探头" Margin="12 12 16 12"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
-                <Button  Margin="10" Background="#326cf3" Foreground="White"  BorderThickness="0"    Content="关闭探头"/>
-                <Button  Margin="10" Background="#326cf3" Foreground="White"  BorderThickness="0"    Content="开启指示激光"/>
+            <StackPanel Orientation="Vertical"  HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <Button  Margin="10"  Background="#326cf3" Foreground="White"  BorderThickness="0"    Content="开启探头"/>
+                    <Button  Margin="10"  Background="#326cf3" Foreground="White"  BorderThickness="0"    Content="重启探头"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <Button  Margin="10" Background="#326cf3" Foreground="White"  BorderThickness="0"    Content="关闭探头"/>
+                    <Button  Margin="10" Background="#326cf3" Foreground="White"  BorderThickness="0"    Content="开启指示激光"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <Button  Margin="10" Background="#326cf3" Foreground="White"  BorderThickness="0"    Content="关闭指示激光"/>
+                </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
-                <Button  Margin="10" Background="#326cf3" Foreground="White"  BorderThickness="0"    Content="关闭指示激光"/>
-            </StackPanel>
-        </StackPanel>
+        </Grid>
+
      
     </Grid>
 </Window>

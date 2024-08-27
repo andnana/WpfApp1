@@ -22,6 +22,16 @@ namespace WpfApp1
         public About()
         {
             InitializeComponent();
+            TitleBar.MouseMove += (s, e) =>
+            {
+                if (e.LeftButton == MouseButtonState.Pressed)
+                    DragMove();
+            };
+
+            BtClose.Click += (s, e) =>
+            {
+                Close();
+            };
         }
     }
 }

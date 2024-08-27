@@ -32,6 +32,9 @@ using System.IO;
 using System.Runtime.InteropServices;
 using OpenTK.Graphics.OpenGL;
 using NPOI.Util;
+using System.Media;
+using System.Reflection;
+using Application = System.Windows.Forms.Application;
 
 namespace WpfApp1
 {
@@ -41,6 +44,17 @@ namespace WpfApp1
     /// </summary>
     public partial class MessageBoxWindow : System.Windows.Window
     {
+        /// <summary>
+        /// 高报报警音
+        /// </summary>
+        public SoundPlayer sp;
+
+        /// <summary>
+        /// 低报报警音
+        /// </summary>
+        public SoundPlayer sp1;
+
+        public static bool stopCruiseWhenWarningIsChecked = false;
         int ndTimesShowLength = 0;
         int MaxND = 0;
         System.Windows.Forms.PictureBox m_pictureBox;
@@ -332,7 +346,7 @@ namespace WpfApp1
                 if (real_PlayPOJOs[device_num].I_lUserID < 0)
                 {
                     real_PlayPOJOs.RemoveAt(device_num);
-                    Growl.SuccessGlobal("登录失败,err:" + NET_DVR_GetLastError());
+                    Growl.Warning("登录失败,err:" + NET_DVR_GetLastError());
                     return;
                 }
                 else
@@ -341,8 +355,9 @@ namespace WpfApp1
                     //开始预览
                     OpenPreview(Int32.Parse(info.TDid), device_num, HD_if);
                     presetPOJOList.Add(Tool.LoadFileToInstance(info.Ip));
+                    Change_speed(presetPOJOList[device_num].Speed, device_num);
                     real_PlayPOJOs[device_num].I_gbyz = 3000;
-
+                    real_PlayPOJOs[device_num].I_dbyz = 1000;
                     Growl.Success("登录成功");
 
 
@@ -352,6 +367,80 @@ namespace WpfApp1
 
 
 
+            }
+        }
+        #region 速度
+
+        public void Change_speed(string speed, int device_num)
+        {
+           Console.WriteLine("NET_DVR_PTZPreset1");
+            Console.WriteLine(NET_DVR_PTZPreset(real_PlayPOJOs[device_num].I_lRealHandle, (uint)CHCNetSDK.GOTO_PRESET, 65));
+            Thread.Sleep(500);
+            Console.WriteLine("NET_DVR_PTZPreset2");
+            Console.WriteLine(NET_DVR_PTZPreset(real_PlayPOJOs[device_num].I_lRealHandle, (uint)CHCNetSDK.GOTO_PRESET, 23));
+            Thread.Sleep(500);
+            Console.WriteLine("NET_DVR_PTZPreset3");
+            Console.WriteLine(NET_DVR_PTZPreset(real_PlayPOJOs[device_num].I_lRealHandle, (uint)CHCNetSDK.GOTO_PRESET, Speed_convert(speed)));
+            Thread.Sleep(500);
+            Console.WriteLine("NET_DVR_PTZPreset4");
+            Console.WriteLine(NET_DVR_PTZPreset(real_PlayPOJOs[device_num].I_lRealHandle, (uint)CHCNetSDK.GOTO_PRESET, 65));
+            Thread.Sleep(500);
+            Console.WriteLine("NET_DVR_PTZPreset5");
+            Console.WriteLine(NET_DVR_PTZPreset(real_PlayPOJOs[device_num].I_lRealHandle, (uint)CHCNetSDK.GOTO_PRESET, 24));
+            Thread.Sleep(500);
+            Console.WriteLine("NET_DVR_PTZPreset6");
+            Console.WriteLine(NET_DVR_PTZPreset(real_PlayPOJOs[device_num].I_lRealHandle, (uint)CHCNetSDK.GOTO_PRESET, Speed_convert(speed)));
+            Thread.Sleep(500);
+            real_PlayPOJOs[device_num].messageList[5] = speed + "";
+
+            presetPOJOList[device_num].Speed = speed;
+            Tool.SaveInstanceToFile(presetPOJOList[device_num], real_PlayPOJOs[device_num].IP);
+
+            Growl.Success("速度设置成功");
+        }
+        #endregion 速度
+        /// <summary>
+        /// 速度换算
+        /// </summary>
+        /// <param name="speed"></param>
+        /// <returns></returns>
+        public uint Speed_convert(string speed)
+        {
+            try
+            {
+                switch (Convert.ToInt32(speed))
+                {
+                    case 1:
+                        return 5;
+
+                    case 3:
+                        return 10;
+
+                    case 5:
+                        return 15;
+
+                    case 7:
+                        return 20;
+
+                    case 9:
+                        return 25;
+
+                    case 11:
+                        return 30;
+
+                    case 13:
+                        return 35;
+
+                    case 15:
+                        return 40;
+
+                    default:
+                        return 20;
+                }
+            }
+            catch
+            {
+                return 20;
             }
         }
 
@@ -475,10 +564,22 @@ namespace WpfApp1
         {
             Time.Text = DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss");
         }
+
+        public static string GetResourcePath(string resourceName)
+        {
+            return $"pack://application:,,,/Resources/{resourceName}";
+        }
+
         public MessageBoxWindow()
         {
             InitializeComponent();
-          
+            string namespaceName = Assembly.GetExecutingAssembly().GetName().Name.ToString();
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            string szPath = Application.StartupPath + "\\SoundFile\\alarm.wav";
+            sp = new SoundPlayer(assembly.GetManifestResourceStream(namespaceName + ".Resources" + ".alarm.wav"));
+            //sp = new SoundPlayer(@"C:\Users\Administrator\source\repos\WpfApp1\WpfApp1\Resources\alarm.wav");
+            sp1 = new SoundPlayer(assembly.GetManifestResourceStream(namespaceName + ".Resources" + ".alarm1.wav"));
+      
             NET_DVR_Init();
             
             DispatcherTimer timer = new DispatcherTimer();
@@ -791,9 +892,9 @@ namespace WpfApp1
                         {
                             // 测试
                             // clientSocket.Send(Tool.ModbusTCP_testResult(buffer));
-                             Console.WriteLine(Encoding.Default.GetString(buffer));
+                             //Console.WriteLine(Encoding.Default.GetString(buffer));
                             
-                            this.Dispatcher.BeginInvoke(new Change(R232Text), Encoding.Default.GetString(buffer), clientSocket);
+                            //this.Dispatcher.BeginInvoke(new Change(R232Text), Encoding.Default.GetString(buffer), clientSocket);
 
                             //clientSocket.Send(System.Text.Encoding.Default.GetBytes("AABB 3 60000 1016 01 AABB"));
                         }
@@ -1039,6 +1140,10 @@ namespace WpfApp1
 
                     }
 
+
+           
+                    speedText.Status = presetPOJOList[device_num].Speed + "°/s";
+
                     //后门
                     if (device_num == Chosen_device_num)
                     {
@@ -1058,9 +1163,11 @@ namespace WpfApp1
                     }
                     real_PlayPOJOs[device_num].messagePOJO.temperature = (int)wd;
                     real_PlayPOJOs[device_num].messagePOJO.alarmValue = bjz;
+                    //Message_update(device_num);
+                    SystemWarning(device_num);
 
                 }
-       
+          
             }
             catch (FormatException ex)
             {
@@ -1077,15 +1184,140 @@ namespace WpfApp1
 
             #endregion 处理字符串
 
-            //Message_update(device_num);
-            //SystemWarning(device_num);
-
+  
+/*
             if (device_num >= 0 && device_num < real_PlayPOJOs.Count)
             {
                 if (nd > real_PlayPOJOs[device_num].I_concentration && nd > bjz)
                 {
                     real_PlayPOJOs[device_num].I_concentration = nd;
                 }
+            }*/
+        }
+
+
+        /// <summary>
+        /// 系统声光警告
+        /// </summary>
+        public void SystemWarning(int device_num)
+        {
+            /*            if (Convert.ToInt32(messageList[device_num][0]) >= Convert.ToInt32(gbyz[device_num].Text) &&
+                            Convert.ToInt32(messageList[device_num][6]) >= Convert.ToInt32(gbyz[device_num].Text))
+            */
+            if (device_num < 0 || device_num >= real_PlayPOJOs.Count)
+            {
+                return;
+            }
+          if (real_PlayPOJOs[device_num].Save_if)
+            {
+                real_PlayPOJOs[device_num].Save_nd.Add(real_PlayPOJOs[device_num].messageList[0]);
+            }
+            if (Convert.ToInt32(real_PlayPOJOs[device_num].messageList[0]) >= real_PlayPOJOs[device_num].I_gbyz)
+            {
+                if (!real_PlayPOJOs[device_num].B_bRecord)
+                {
+                    //this.Dispatcher.BeginInvoke(new VideoSave(AutoSaveRecord), messageBox_showIf_checkBox.Checked, device_num);
+                }
+
+                if (real_PlayPOJOs[device_num].B_isAuto)
+                {
+                    if (stopCruiseWhenWarningIsChecked)
+                    {
+                        StopYTAutoMove(true, device_num);
+                    }
+                    //  UnAuto_button_Click(null, null);
+                    //  SavePicture(true, device_num);
+                }
+
+                // this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+                //sp1.Stop();
+                //Camera_panels[device_num].BackColor = Color.FromArgb(255, 0, 0);
+                //播放警报音
+                if (!real_PlayPOJOs[device_num].B_isGBaoJingZhong)
+                {
+                    if (real_PlayPOJOs[device_num].B_isDBaoJingZhong)
+                    {
+                        sp1.Stop();
+                    }
+
+                    sp.PlayLooping();
+                    MaxNDText.Background = Brushes.Red;
+                }
+
+                real_PlayPOJOs[device_num].B_isGBaoJingZhong = true;
+                real_PlayPOJOs[device_num].B_isDBaoJingZhong = false;
+                //HighHistory_updata(device_num);
+            }
+            else if (Convert.ToInt32(real_PlayPOJOs[device_num].messageList[0]) >= real_PlayPOJOs[device_num].I_dbyz &&
+                     Convert.ToInt32(real_PlayPOJOs[device_num].messageList[6]) >= real_PlayPOJOs[device_num].I_dbyz &&
+                     Convert.ToInt32(real_PlayPOJOs[device_num].messageList[7]) >= real_PlayPOJOs[device_num].I_dbyz)
+            {
+                if (!real_PlayPOJOs[device_num].B_bRecord)
+                {
+                    //this.Dispatcher.BeginInvoke(new VideoSave(AutoSaveRecord), messageBox_showIf_checkBox.Checked, device_num);
+                }
+
+                if (real_PlayPOJOs[device_num].B_isAuto)
+                {
+                    if (stopCruiseWhenWarningIsChecked)
+                    {
+                        StopYTAutoMove(true, device_num);
+                    }
+
+                    // UnAuto_button_Click(null, null);
+                    // SavePicture(true, device_num);
+                }
+
+                //播放警报音
+               /* if (!real_PlayPOJOs[device_num].B_isDBaoJingZhong && !real_PlayPOJOs[device_num].B_isGBaoJingZhong)
+                {
+                    Camera_panels[device_num].BackColor = Color.FromArgb(155, 155, 0);
+                    sp1.PlayLooping();
+                }
+                real_PlayPOJOs[device_num].B_isDBaoJingZhong = true;
+                HighHistory_updata(device_num);*/
+            }
+        }
+
+        
+       private void ResetAlarmValue(object sender, RoutedEventArgs e)
+        {
+            if (real_PlayPOJOs[Chosen_device_num].B_isGBaoJingZhong)
+            {
+                sp.Stop();
+            }
+            if (real_PlayPOJOs[Chosen_device_num].B_isDBaoJingZhong)
+            {
+                sp1.Stop();
+            }
+            real_PlayPOJOs[Chosen_device_num].B_isGBaoJingZhong = false;
+            real_PlayPOJOs[Chosen_device_num].B_isDBaoJingZhong = false;
+            MaxNDText.Text = "0";
+            MaxND = 0;
+            MaxNDText.Background = Brushes.Transparent;
+        }
+        /// <summary>
+        /// 检测到泄漏，停止巡航并放大图像
+        /// </summary>
+        public void StopYTAutoMove(bool isSavePic, int device_num)
+        {
+            //停止巡台巡航旋转
+            // int iSeq = Cruise_comBox.SelectedIndex + 1;    //+1
+            if (!CHCNetSDK.NET_DVR_PTZCruise(real_PlayPOJOs[device_num].I_lRealHandle, CHCNetSDK.STOP_SEQ, (byte)1, 0, 0))
+            {
+                MessageBox.Show("调用巡航失败");
+                return;
+            }
+            real_PlayPOJOs[device_num].B_isAuto = false;
+            if (isSavePic)
+            {
+                //摄像头焦距放大
+                CHCNetSDK.NET_DVR_PTZControl(real_PlayPOJOs[device_num].I_lRealHandle, CHCNetSDK.ZOOM_IN, 0);
+                Thread.Sleep(1000);
+                CHCNetSDK.NET_DVR_PTZControl(real_PlayPOJOs[device_num].I_lRealHandle, CHCNetSDK.ZOOM_IN, 1);
+                Thread.Sleep(1000);
+                //拍摄照片
+                //SavePicture(true, int.Parse(nongdu_text.Text));
             }
         }
 
@@ -1300,6 +1532,11 @@ namespace WpfApp1
         }
         private void CloudPlatform(object sender, RoutedEventArgs e)
         {
+            if (MessageBoxWindow.presetPOJOList.Count < 1)
+            {
+                Growl.Success("请先登录");
+                return;
+            }
             new CloudPlatform().Show();
         }
         private void DeviceSetup(object sender, RoutedEventArgs e)
@@ -1325,17 +1562,17 @@ namespace WpfApp1
         }
         private void Logout(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("退出系统后将无法实施接收云台数据，确认退出？", "退出系统", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-            {
-                Debug.WriteLine("退出成功");
-                Growl.Success("退出成功");
-            }
-            else
-            {
-                Debug.WriteLine("退出失败");
-            }
+            /*    if (MessageBox.Show("退出系统后将无法实施接收云台数据，确认退出？", "退出系统", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    Debug.WriteLine("退出成功");
+                    Growl.Success("退出成功");
+                }
+                else
+                {
+                    Debug.WriteLine("退出失败");
+                }*/
 
-
+            new Logout().Show();
         }
 
     }

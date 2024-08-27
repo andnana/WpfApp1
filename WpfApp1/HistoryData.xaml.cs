@@ -24,6 +24,28 @@ namespace WpfApp1
         {
             InitializeComponent();
             this.DataContext = new DeviceModelView();
+
+            TitleBar.MouseMove += (s, e) =>
+            {
+                if (e.LeftButton == MouseButtonState.Pressed)
+                    DragMove();
+            };
+
+            BtMin.Click += (s, e) =>
+            {
+                WindowState = WindowState.Minimized;
+            };
+
+            //BtMax.Click += (s, e) =>
+            //{
+            //    WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+            //};
+
+            BtClose.Click += (s, e) =>
+            {
+                Close();
+            };
+
         }
      
     }

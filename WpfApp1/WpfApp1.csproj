@@ -289,14 +289,23 @@
     <Resource Include="Resources\ch4test.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\software_name.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\buttonPanel.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\zoom_in.png" />
     <Resource Include="Resources\zoom_out.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\question.png" />
+    <Resource Include="Resources\software_name.png" />
+    <Resource Include="Resources\alarm_history_text.png" />
+    <Resource Include="Resources\control_text.png" />
+    <Resource Include="Resources\device_login_text.png" />
+    <Resource Include="Resources\device_setup_text.png" />
+    <Resource Include="Resources\history_data_text.png" />
+    <Resource Include="Resources\logout_text.png" />
+    <EmbeddedResource Include="Resources\alarm.wav" />
+    <Content Include="Resources\alarm1.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SkiaSharp.NativeAssets.macOS.2.88.8\build\net462\SkiaSharp.NativeAssets.macOS.targets" Condition="Exists('..\packages\SkiaSharp.NativeAssets.macOS.2.88.8\build\net462\SkiaSharp.NativeAssets.macOS.targets')" />
