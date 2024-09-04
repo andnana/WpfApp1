@@ -58,7 +58,7 @@ namespace WpfApp1
 
                         //从网络流中读取文件名
                         ns.Read(buffer, 0, buffer.Length);
-                        MessageBoxWindow.real_PlayPOJOs[device_num].messagePOJO.imgpath = Tool.streamToString(buffer);
+                        MainWindow.real_PlayPOJOs[device_num].messagePOJO.imgpath = Tool.streamToString(buffer);
                         Console.WriteLine(Tool.streamToString(buffer));
                     }
                 }
@@ -90,10 +90,10 @@ namespace WpfApp1
                     socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                     socket.Connect(iPEndPoint);
                     //发送
-                    for (int i = 0; i < MessageBoxWindow.real_PlayPOJOs.Count; i++)
+                    for (int i = 0; i < MainWindow.real_PlayPOJOs.Count; i++)
                     {
-                        MessageBoxWindow.real_PlayPOJOs[i].messagePOJO.deviceNum = MessageBoxWindow.real_PlayPOJOs[i].deviceNum;
-                        socket.Send(Encoding.Default.GetBytes(MessageBoxWindow.real_PlayPOJOs[i].messagePOJO.plus()));
+                        MainWindow.real_PlayPOJOs[i].messagePOJO.deviceNum = MainWindow.real_PlayPOJOs[i].deviceNum;
+                        socket.Send(Encoding.Default.GetBytes(MainWindow.real_PlayPOJOs[i].messagePOJO.plus()));
                         Thread.Sleep(200);
                     }
                     //接取

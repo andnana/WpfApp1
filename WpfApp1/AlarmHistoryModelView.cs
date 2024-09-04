@@ -11,7 +11,8 @@ namespace WpfApp1
 {
     public class AlarmHistoryModelView
     {
-        public ObservableCollection<AlarmHistoryInfo> AlarmHistoryInfo { get; set; }
+        public ObservableCollection<History_Message> HistoryInfos  =
+        new ObservableCollection<History_Message>();
 
         private ICommand _valueCommand;
         public ICommand ValueCommand
@@ -29,15 +30,10 @@ namespace WpfApp1
         public AlarmHistoryModelView()
         {
             _valueCommand = new MyCommand() { DoAction = new Action<object>(ValueCommandAction) };
-            AlarmHistoryInfo = new ObservableCollection<AlarmHistoryInfo>
+            for (int i = 0; i < MainWindow.historyMessages.Count; i++)
             {
-                new AlarmHistoryInfo { DeviceIP = "12.52.12.126", DeviceName = "12.52.12.126", Datetime = "2024/8/8 16:50:05" , 
-                concentration = 10000, horizontalAngle = 500.12, verticalAngle = 200.12, presetComment = "备注1", presetPoint = 2},
-                new AlarmHistoryInfo { DeviceIP = "12.52.12.121", DeviceName = "12.52.12.121", Datetime = "2024/8/8 16:50:05" ,
-                concentration = 7000, horizontalAngle = 600.13, verticalAngle = 400.13, presetComment = "备注2", presetPoint = 3},
-                new AlarmHistoryInfo { DeviceIP = "12.52.12.126", DeviceName = "12.52.12.126", Datetime = "2024/8/8 16:50:05",
-                concentration = 8000, horizontalAngle = 550.16, verticalAngle = 30.41, presetComment = "备注3", presetPoint = 4}
-            };
+                HistoryInfos.Add(MainWindow.historyMessages[i]);
+            }
         }
 
     }

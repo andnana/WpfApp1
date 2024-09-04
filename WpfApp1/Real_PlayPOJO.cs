@@ -89,7 +89,7 @@ namespace WpfApp1
         /// <summary>
         /// 下一个巡航点编号
         /// </summary>
-        internal int I_cruise_num_next = 0;
+        internal int I_cruise_num_next = 1;
 
         /// <summary>
         /// 巡航点编号集合
@@ -112,7 +112,7 @@ namespace WpfApp1
         internal bool Save_if = false;
 
         /// <summary>
-        /// 是否保存数据
+        /// 浓度集合
         /// </summary>
         internal List<string> Save_nd = new List<string>();
 

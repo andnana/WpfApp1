@@ -39,8 +39,8 @@ namespace WpfApp1
         }
         private void Yes(Object sender, RoutedEventArgs e)
         {
-           
-            MessageBoxWindow.In_Main_Form.Close();
+
+            MainWindow.In_Main_Form.Close();
             this.Close();
         }
         private void No(Object sender, RoutedEventArgs e)

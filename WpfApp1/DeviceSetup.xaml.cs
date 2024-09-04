@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,6 +45,69 @@ namespace WpfApp1
             {
                 Close();
             };
+        }
+
+        /// <summary>
+        /// 发送事件
+        /// </summary>
+        /// <param name="s">发送内容</param>
+        private void Send(string s)
+        {
+            /*            if (!CHCNetSDK.NET_DVR_SerialSend(Main_Form.real_PlayPOJOs[Main_Form.Chosen_device_num].ISerialHandle, 1, s, (uint)s.Length))
+                        {
+                            MessageBox.Show("发送失败" + CHCNetSDK.NET_DVR_GetLastError());
+                        }
+            */
+
+            MainWindow.In_Main_Form.Tcp_Send(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].deviceNum, Encoding.Default.GetBytes(s));
+            Thread.Sleep(3);
+            MainWindow.In_Main_Form.Tcp_Send(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].deviceNum, Encoding.Default.GetBytes(s));
+            Thread.Sleep(4);
+            MainWindow.In_Main_Form.Tcp_Send(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].deviceNum, Encoding.Default.GetBytes(s));
+            Thread.Sleep(3);
+            MainWindow.In_Main_Form.Tcp_Send(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].deviceNum, Encoding.Default.GetBytes(s));
+            Thread.Sleep(4);
+            MainWindow.In_Main_Form.Tcp_Send(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].deviceNum, Encoding.Default.GetBytes(s));
+        }
+      
+
+        private void openIndicatingLaser(object sender, EventArgs e)
+        {
+            Send("@lgk@");
+        }
+
+        private void closeIndicatingLaser(object sender, EventArgs e)
+        {
+            Send("@lgg@");
+        }
+        private void startDetector(object sender, EventArgs e)
+        {
+            Send("@start@");
+        }
+
+        private void restartDetector(object sender, EventArgs e)
+        {
+            Send("@stop@");
+            Thread.Sleep(5000);
+            Send("@start@");
+        }
+
+        private void closeDetector(object sender, EventArgs e)
+        {
+            Send("@stop@");
+            MainWindow.real_PlayPOJOs[MainWindow.choose_device_num].work_if = false;
+        }
+
+        private void calibration(object sender, EventArgs e)
+        {
+            if (Password.Password.Equals("check"))
+            {
+                Send("@jaozheng@");
+            }
+            else
+            {
+                Growl.SuccessGlobal("密码错误。");
+            }
         }
     }
 }

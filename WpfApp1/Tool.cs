@@ -315,7 +315,7 @@ namespace WpfApp1
             {
                 PresetPOJO presetPOJO = new PresetPOJO
                 {
-                    Speed = "20",
+                    Speed = "15",
                     Presets = new List<string>(),
                     Cruises = new List<List<CruisePOJO>>()
                 };

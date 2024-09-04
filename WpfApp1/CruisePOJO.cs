@@ -8,6 +8,9 @@ namespace WpfApp1
 {
     public class CruisePOJO
     {
+        public bool isCurrent { get; set; }
+
+        public string imagePath { get; set; }
         /// <summary>
         /// 预置点
         /// </summary>

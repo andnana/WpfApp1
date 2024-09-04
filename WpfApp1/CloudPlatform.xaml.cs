@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using HandyControl.Controls;
+using static WpfApp1.CHCNetSDK;
 namespace WpfApp1
 {
     /// <summary>
@@ -21,12 +23,19 @@ namespace WpfApp1
     {
         public static bool  stopCruiseWhenWarningIsChecked = false;
         public static CloudPlatform In_CloudPlat_Form;
+        ObservableCollection<string> device_ip_str_list = new ObservableCollection<string>();
         public CloudPlatform()
         {
             InitializeComponent();
             In_CloudPlat_Form = this;
-           
-            speedNumericUpDown.Value = double.Parse(MessageBoxWindow.presetPOJOList[MessageBoxWindow.Chosen_device_num].Speed);
+
+            DeviceIPCombobox.Items.Add(MainWindow.sbmc);
+            DeviceIPCombobox.Items.Add("全部");
+
+            HigherAlarmTextBox.Text = MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_gbyz.ToString();
+            LowerAlarmTextBox.Text = MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_dbyz.ToString();
+            speedNumericUpDown.Value = double.Parse(MainWindow.presetPOJOList[MainWindow.Chosen_device_num].Speed);
+
             TitleBar.MouseMove += (s, e) =>
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
@@ -48,27 +57,135 @@ namespace WpfApp1
                 Close();
             };
         }
-        private void stopCruiseWhenWarningFun(object sender, RoutedEventArgs e)
+
+        /// <summary>
+        /// 增加预置点
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void addPreset(object sender, RoutedEventArgs e)
         {
-            MessageBoxWindow.stopCruiseWhenWarningIsChecked = stopCruiseWhenWarning.IsChecked.Value;
+            //string str = PresetComboBox.Items[PresetComboBox.SelectedIndex].ToString();
+            //int item = int.Parse(PresetComboBox.Items[PresetComboBox.SelectedIndex].ToString());
+            ComboBoxItem selectedItem = PresetComboBox.SelectedItem as ComboBoxItem;
+            if (selectedItem != null)
+            {
+                //MessageBox.Show("选中的值是：" + selectedItem.Content.ToString());
+                int presetInt = int.Parse(selectedItem.Content.ToString());  
+                bool isOK = NET_DVR_PTZPreset(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_lRealHandle, (uint)CHCNetSDK.SET_PRESET, (uint)presetInt);
+                if (!isOK)
+                {
+                    Growl.SuccessGlobal("预置点增加失败");
+                }
+                else
+                {
+                    Growl.SuccessGlobal("预置点增加成功");
+                    MainWindow.presetPOJOList[MainWindow.Chosen_device_num].Presets[presetInt - 1] = PresetCommentTextBox.Text;
+                    Tool.SaveInstanceToFile(MainWindow.presetPOJOList[MainWindow.Chosen_device_num], MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].IP);
+                }
+
+            }
+            
         }
+
+        /// <summary>
+        /// 删除预置点
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void deletePreset(object sender, EventArgs e)
+        {
+
+            ComboBoxItem selectedItem = PresetComboBox.SelectedItem as ComboBoxItem;
+            if (selectedItem != null)
+            {
+                //MessageBox.Show("选中的值是：" + selectedItem.Content.ToString());
+                int presetInt = int.Parse(selectedItem.Content.ToString());
+                bool isOK = NET_DVR_PTZPreset(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_lRealHandle, (uint)CHCNetSDK.CLE_PRESET, (uint)presetInt);
+                if (!isOK)
+                {
+                    Growl.SuccessGlobal("预置点删除失败");
+                }
+                else
+                {
+                    Growl.SuccessGlobal("预置点删除成功");
+                    MainWindow.presetPOJOList[MainWindow.Chosen_device_num].Presets[Convert.ToInt16(PresetComboBox.Text) - 1] = "空";
+                    Tool.SaveInstanceToFile(MainWindow.presetPOJOList[MainWindow.Chosen_device_num], MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].IP);
+                }
+
+            }
+      
+        }
+
         private void Start_Button_Click(object sender, RoutedEventArgs e)
         {
             int iSeq = Cruise_comBox.SelectedIndex;    //+1
 
-            MessageBoxWindow.real_PlayPOJOs[MessageBoxWindow.Chosen_device_num].I_cruise_path_num = iSeq;
-            MessageBoxWindow.iSeq = iSeq;   
-            MessageBoxWindow.real_PlayPOJOs[MessageBoxWindow.Chosen_device_num].cruise_num_list = new List<int>();
-            for (int i = 0; i < MessageBoxWindow.presetPOJOList[MessageBoxWindow.Chosen_device_num].Cruises[iSeq].Count; i++)
+            MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_cruise_path_num = iSeq;
+            MainWindow.iSeq = iSeq;
+            MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].cruise_num_list = new List<int>();
+            for (int i = 0; i < MainWindow.presetPOJOList[MainWindow.Chosen_device_num].Cruises[iSeq].Count; i++)
             {
-                if (MessageBoxWindow.presetPOJOList[MessageBoxWindow.Chosen_device_num].Cruises[iSeq][i].preset_num > 0)
+                if (MainWindow.presetPOJOList[MainWindow.Chosen_device_num].Cruises[iSeq][i].preset_num > 0)
                 {
-                    MessageBoxWindow.real_PlayPOJOs[MessageBoxWindow.Chosen_device_num].cruise_num_list.Add(MessageBoxWindow.presetPOJOList[MessageBoxWindow.Chosen_device_num].Cruises[iSeq][i].preset_num);
+                    MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].cruise_num_list.Add(MainWindow.presetPOJOList[MainWindow.Chosen_device_num].Cruises[iSeq][i].preset_num);
                 }
             }
 
-            MessageBoxWindow.real_PlayPOJOs[MessageBoxWindow.Chosen_device_num].B_isAuto = true;
-            MessageBoxWindow.In_Main_Form.reloadCruiseData();
+            MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].B_isAuto = true;
+            MainWindow.In_Main_Form.reloadCruiseData();
+        }
+
+
+        /// <summary>
+        /// 停止巡航路径
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cruiseStop(object sender, EventArgs e)
+        {
+            NET_DVR_PTZControlWithSpeed(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_lRealHandle, CHCNetSDK.TILT_UP, 1, 1);
+            MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].B_isAuto = false;
+        }
+
+        /// <summary>
+        /// 设置报警阈值
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void setAlarmValue(object sender, EventArgs e)
+        {
+            if (DeviceIPCombobox.SelectedIndex == 0)
+            {
+                for (int i = 0; i < MainWindow.real_PlayPOJOs.Count; i++)
+                {
+                    MainWindow.real_PlayPOJOs[i].I_gbyz = Convert.ToInt32(HigherAlarmTextBox.Text);
+                    MainWindow.real_PlayPOJOs[i].I_dbyz = Convert.ToInt32(LowerAlarmTextBox.Text);
+                }
+            }
+            else
+            {
+                int device_num = MainWindow.real_PlayPOJOs.FindIndex(item => item.IP.Equals(DeviceIPCombobox.Text));
+                MainWindow.real_PlayPOJOs[device_num].I_gbyz = Convert.ToInt32(HigherAlarmTextBox.Text);
+                MainWindow.real_PlayPOJOs[device_num].I_dbyz = Convert.ToInt32(LowerAlarmTextBox.Text);
+            }
+            Growl.SuccessGlobal("设置成功");
+        }
+
+     
+        /// <summary>
+        /// 调用预置点
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void invokePreset(object sender, EventArgs e)
+        {
+            ComboBoxItem selectedItem = PresetComboBox.SelectedItem as ComboBoxItem;
+            if( selectedItem != null)
+            {
+                int presetInt = int.Parse(selectedItem.Content.ToString());
+                NET_DVR_PTZPreset(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_lRealHandle, (uint)CHCNetSDK.GOTO_PRESET, (uint)presetInt);
+            }
         }
 
         /*       private void speed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -84,12 +201,17 @@ namespace WpfApp1
                    }
 
                }*/
-         private void speedSetup(object sender, RoutedEventArgs e)
+        private void speedSetup(object sender, RoutedEventArgs e)
         {
             // 当Slider的值发生变化时，更新TextBlock的文本
-            MessageBoxWindow.In_Main_Form.Change_speed(speedNumericUpDown.Value.ToString(), MessageBoxWindow.choose_device_num);
+            MainWindow.In_Main_Form.Change_speed(speedNumericUpDown.Value.ToString(), MainWindow.choose_device_num);
 
         }
+        private void addCruisePoint(object sender, RoutedEventArgs e)
+        {
+            new AddCruisePoint().Show();
+        }
+
     }
 
 
