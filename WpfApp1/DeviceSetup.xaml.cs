@@ -45,6 +45,9 @@ namespace WpfApp1
             {
                 Close();
             };
+            deviceNameLabel.Content = MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].Device_name;
+            IPLabel.Content = MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].IP;
+            deviceNumLabel.Content = MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].deviceNum;
         }
 
         /// <summary>

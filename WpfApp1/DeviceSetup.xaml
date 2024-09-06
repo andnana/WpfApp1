@@ -150,6 +150,7 @@
                         Content="设备名称："
                         Foreground="White" />
                     <Label
+                        Name="deviceNameLabel"
                         Width="100"
                         Margin="10"
                         HorizontalAlignment="Left"
@@ -157,7 +158,6 @@
                         HorizontalContentAlignment="Left"
                         Background="#55554b"
                         BorderThickness="0"
-                        Content="12.52.12.121"
                         Foreground="White" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
@@ -171,6 +171,7 @@
                         Content="IP："
                         Foreground="White" />
                     <Label
+                        Name="IPLabel"
                         Width="100"
                         Margin="10"
                         HorizontalAlignment="Left"
@@ -178,7 +179,6 @@
                         HorizontalContentAlignment="Left"
                         Background="#55554b"
                         BorderThickness="0"
-                        Content="12.52.12.121"
                         Foreground="White" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
@@ -192,6 +192,7 @@
                         Content="设备编号："
                         Foreground="White" />
                     <Label
+                        Name="deviceNumLabel"
                         Width="100"
                         Margin="10"
                         HorizontalAlignment="Left"
@@ -199,7 +200,6 @@
                         HorizontalContentAlignment="Left"
                         Background="#55554b"
                         BorderThickness="0"
-                        Content="60121"
                         Foreground="White" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">

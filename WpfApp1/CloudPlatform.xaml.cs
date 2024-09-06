@@ -28,8 +28,10 @@ namespace WpfApp1
         {
             InitializeComponent();
             In_CloudPlat_Form = this;
-
-            DeviceIPCombobox.Items.Add(MainWindow.sbmc);
+            for (int i = 0; i < MainWindow.deviceIPList.Count; i++) {
+                DeviceIPCombobox.Items.Add(MainWindow.deviceIPList[i]);
+            }
+            
             DeviceIPCombobox.Items.Add("全部");
 
             HigherAlarmTextBox.Text = MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_gbyz.ToString();

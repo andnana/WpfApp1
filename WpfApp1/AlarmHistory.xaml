@@ -7,7 +7,7 @@
     xmlns:local="clr-namespace:WpfApp1"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="报警历史"
-    Width="1000"
+    Width="1040"
     Height="450"
     Background="Black"
     BorderBrush="White"
@@ -145,6 +145,7 @@
                         Height="60"
                         Background="#55554b"
                         BorderThickness="0"
+                        Click="copyVideoPath"
                         Content="复制视频保存目录"
                         Foreground="White">
                         <Button.ContentTemplate>
@@ -168,6 +169,7 @@
                         Height="60"
                         Background="#55554b"
                         BorderThickness="0"
+                        Click="copyExcelFilePath"
                         Content="复制表格保存目录"
                         Foreground="White">
                         <Button.ContentTemplate>
@@ -191,6 +193,7 @@
                         Height="60"
                         Background="#55554b"
                         BorderThickness="0"
+                        Click="saveExcel"
                         Content="保存表格"
                         Foreground="White">
                         <Button.ContentTemplate>

@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
+using HandyControl.Controls;
 
 namespace WpfApp1
 {
@@ -437,36 +438,17 @@ namespace WpfApp1
             try
             {
                 var bytes = ToExcelBytes(list);
-
-                //  var path = Path.Combine(AppContext.BaseDirectory, patch_path);
-                var path = "";
-                if (!Directory.Exists(path))
-                {
-                    //    Directory.CreateDirectory(path);
-                }
-                // var savePath = Path.Combine(path, "TestExport.xls");
-
-                //  Console.WriteLine($"保存路径：{savePath}");
-
-                //保存路径
-                //string savepath = Path.Combine(path, moreName + ".xls");
                 using (FileStream fs = new FileStream(savepath, FileMode.Create, FileAccess.Write))
                 {
                     fs.Write(bytes, 0, bytes.Length);
                     fs.Flush();
                 }
-
-                /*                if (!moreName.EndsWith("自动保存"))
-                                {
-                                    MessageBox.Show("Excel另存为" + savepath, "保存成功");
-                                }
-                */
-                MessageBox.Show("Excel另存为" + savepath, "保存成功");
+                Growl.SuccessGlobal("保存成功。文件路径为：" + savepath);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                MessageBox.Show("Excel后缀名格式有误，请检查后重试。", "系统提示");
+                Growl.SuccessGlobal("保存失败");
             }
         }
 

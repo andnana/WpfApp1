@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -69,21 +70,61 @@ namespace WpfApp1
         /// <param name="e"></param>
         private void invokePreset(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.sbmc == "")
+            {
+                Growl.SuccessGlobal("请先登录");
+                return;
+            }
             History_Message rowView = (History_Message)((Button)e.Source).DataContext;
             NET_DVR_PTZPreset(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_lRealHandle, (uint)CHCNetSDK.GOTO_PRESET, (uint)rowView.Preset_num);
         }
 
         private void remove(object sender, RoutedEventArgs e)
         {
-            History_Message rowView = (History_Message)((Button)e.Source).DataContext;
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "HistoryMessages.xml");
-            XmlElement xe = xmlDoc.DocumentElement; // DocumentElement 获取xml文档对象的根XmlElement.
-            string strPath = string.Format("/historymessage/message[@save_time=\"{0}\"]", rowView.save_time.ToString("yyyy-MM-dd HH:mm:ss"));
-            XmlElement selectXe = (XmlElement)xe.SelectSingleNode(strPath);  //selectSingleNode 根据XPath表达式,获得符合条件的第一个节点.
-            selectXe.ParentNode.RemoveChild(selectXe);
-            xmlDoc.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "HistoryMessages.xml");
-            Growl.SuccessGlobal("删除成功！");
+            MessageBoxResult result = System.Windows.MessageBox.Show("确认删除？", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+
+            if (result == MessageBoxResult.OK)
+            {
+                History_Message rowView = (History_Message)((Button)e.Source).DataContext;
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "HistoryMessages.xml");
+                XmlElement xe = xmlDoc.DocumentElement; // DocumentElement 获取xml文档对象的根XmlElement.
+                string strPath = string.Format("/historymessage/message[@save_time=\"{0}\"]", rowView.save_time.ToString("yyyy-MM-dd HH:mm:ss"));
+                XmlElement selectXe = (XmlElement)xe.SelectSingleNode(strPath);  //selectSingleNode 根据XPath表达式,获得符合条件的第一个节点.
+                selectXe.ParentNode.RemoveChild(selectXe);
+                xmlDoc.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "HistoryMessages.xml");
+
+                int removeIndex = MainWindow.historyMessages.FindIndex(item => item.save_time.ToString("yyyy-MM-dd HH:mm:ss").Equals(rowView.save_time.ToString("yyyy-MM-dd HH:mm:ss")));
+                MainWindow.historyMessages.RemoveAt(removeIndex);
+                AlarmHistoryDataGrid.Items.Refresh();
+                Growl.SuccessGlobal("删除成功！");
+            }
+        }
+
+        private void saveExcel(object sender, RoutedEventArgs e)
+        {
+            //录像保存路径和文件名
+            string filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "\\History\\"
+                                    + DateTime.Now.ToString("yyyy") + "\\"
+                                    + DateTime.Now.ToString("MM") + "\\"
+                                    + DateTime.Now.ToString("dd") + "\\";
+            Directory.CreateDirectory(filePath);
+            string sBmpPicFileName;
+            sBmpPicFileName = filePath + DateTime.Now.ToString("HH-mm-ss") + ".xls";
+            Tool.saveExcel(MainWindow.historyMessages, sBmpPicFileName);
+        }
+
+        private void copyVideoPath(object sender, RoutedEventArgs e)
+        {
+            string folderPath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Record";
+            Clipboard.SetDataObject(folderPath, true);
+            Growl.SuccessGlobal("已将视频保存目录\"" + folderPath + "\"复制到剪切板");
+        }
+        private void copyExcelFilePath(object sender, RoutedEventArgs e)
+        {
+            string folderPath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "History";
+            Clipboard.SetDataObject(folderPath, true);
+            Growl.SuccessGlobal("已将Excel保存目录\"" + folderPath + "\"复制到剪切板");
         }
 
         private void refreshData(object sender, RoutedEventArgs e)

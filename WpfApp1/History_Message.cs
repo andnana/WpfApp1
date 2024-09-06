@@ -46,13 +46,13 @@ namespace WpfApp1
         public string concentration { get; set; }
 
         /// <summary>
-        /// 浓度
+        /// 水平角度
         /// </summary>
         [ExcelColumn("水平角度")]
         public string Horiz { get; set; }
 
         /// <summary>
-        /// 浓度
+        /// 垂直角度
         /// </summary>
         [ExcelColumn("垂直角度")]
         public string Vert { get; set; }

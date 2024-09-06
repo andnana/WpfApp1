@@ -8,15 +8,114 @@
     xmlns:vlc="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"
     Title="Video"
     Width="700"
-    Height="450"
+    Height="480"
+    Background="Black"
+    BorderBrush="White"
+    BorderThickness="1"
+    ResizeMode="CanMinimize"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="9.5*" />
-            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="40" />
+            <RowDefinition />
         </Grid.RowDefinitions>
-        <vlc:VlcControl x:Name="vlcPlayer" Grid.Row="0" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="0,0,0,1">
+            <Grid
+                Name="TitleBar"
+                Grid.Row="0"
+                Grid.Column="0"
+                Background="#55554b">
+                <!--  窗体边框  -->
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Border
+                    Grid.Column="2"
+                    Background="#55554b"
+                    BorderBrush="#55554b"
+                    BorderThickness="0">
 
+                    <!--  内容区域  -->
+                    <Grid Margin="0,0,10,0">
+                        <!--  标题栏  -->
+                        <Border
+                            Height="40"
+                            Padding="0"
+                            Background="#55554b"
+                            CornerRadius="0,0,0,0">
+                            <DockPanel>
+                                <DockPanel LastChildFill="False">
+                                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+
+                                        <!--       <Button  Margin="6"  Name="BtMax" Width="16" Height="16"  Padding="0" BorderThickness="0" Background="Transparent">
+               <Button.Content>
+                   <Image Source="/WpfApp1;component/Resources/Maximize.png" Width="16" Height="16"/>
+               </Button.Content>
+           </Button>-->
+                                        <Button
+                                            Name="BtClose"
+                                            Width="16"
+                                            Height="16"
+                                            Margin="6"
+                                            Padding="0"
+                                            Background="Transparent"
+                                            BorderThickness="0">
+                                            <Button.Content>
+                                                <Image
+                                                    Width="16"
+                                                    Height="16"
+                                                    Source="/WpfApp1;component/Resources/Close.png" />
+                                            </Button.Content>
+                                        </Button>
+                                    </StackPanel>
+                                </DockPanel>
+                            </DockPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1" Background="#55554b">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="9*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <vlc:VlcControl x:Name="vlcPlayer" Grid.Row="0" />
+            <StackPanel
+                Grid.Row="1"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <Button
+                    Name="PauseOrPlay"
+                    Margin="10"
+                    Background="#326cf3"
+                    BorderThickness="0"
+                    Click="PauseOrPlayFun"
+                    Content="暂停"
+                    Foreground="White" />
+                <Button
+                    Name="Stop"
+                    Margin="10"
+                    Background="#326cf3"
+                    BorderThickness="0"
+                    Click="StopFun"
+                    Content="停止"
+                    Foreground="White" />
+            </StackPanel>
+        </Grid>
 
     </Grid>
 </Window>

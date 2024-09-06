@@ -37,6 +37,10 @@ using System.Reflection;
 using Application = System.Windows.Forms.Application;
 using System.Timers;
 using System.Xml;
+using Button = System.Windows.Controls.Button;
+using System.Windows.Forms.Integration;
+using System.Collections;
+using ScottPlot.ArrowShapes;
 
 namespace WpfApp1
 {
@@ -46,6 +50,12 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : System.Windows.Window
     {
+
+        double MaxND = 0;
+
+        public static List<string> deviceIPList = new List<string>();
+
+        Dictionary<string, int> map1 = new Dictionary<string, int>();
 
         int presetInt = 0;
         string presetName = "";
@@ -76,8 +86,12 @@ namespace WpfApp1
 
         public static bool stopCruiseWhenWarningIsChecked = false;
         int ndTimesShowLength = 0;
-        double MaxND = 0;
-        System.Windows.Forms.PictureBox m_pictureBox;
+
+        System.Windows.Forms.PictureBox m_pictureBoxTemp;
+        List<WindowsFormsHost> windowsFormsHosts = new List<WindowsFormsHost>();
+        System.Windows.Forms.PictureBox m_pictureBox0;
+        System.Windows.Forms.PictureBox m_pictureBox1;
+        System.Windows.Forms.PictureBox m_pictureBox2;
         System.Windows.Forms.ToolTip m_toolTip;
         //ToolTip m_tp;
 
@@ -324,6 +338,8 @@ namespace WpfApp1
         // 当鼠标按下按钮时触发（可以看作是开始点击）  
         private void Button_MouseDown_PAN_LEFT(object sender, MouseButtonEventArgs e)
         {
+
+
             //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
             // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
             real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
@@ -409,6 +425,7 @@ namespace WpfApp1
         internal void SetLoginInfo(TD_INFO info, int device_num, bool HD_if)
         {
             choose_device_num = device_num;
+            deviceIPList.Add(info.Ip);
             if (real_PlayPOJOs[device_num].I_lUserID < 0)
             {
                 struLogInfo = new NET_DVR_USER_LOGIN_INFO();
@@ -709,7 +726,7 @@ namespace WpfApp1
                 historyMessage.device_name = xnl0.Item(2).InnerText;
                 historyMessage.save_time = DateTime.Parse(xnl0.Item(3).InnerText);
                 historyMessage.Horiz = xnl0.Item(4).InnerText;
-                historyMessage.Vert = xnl0.Item(5).InnerText;   
+                historyMessage.Vert = xnl0.Item(5).InnerText;
                 historyMessage.concentration = xnl0.Item(6).InnerText;
                 historyMessage.Preset_num = int.Parse(xnl0.Item(7).InnerText);
                 historyMessage.Preset_name = xnl0.Item(8).InnerText;
@@ -720,11 +737,87 @@ namespace WpfApp1
             maxPid = historyMessages.Max(h => h.pid);
             reader.Close();
         }
+        public void changeWindow(object sender, EventArgs e)
+        {
+            // 将sender转型成PictureBox
+            PictureBox pic = sender as PictureBox;
+
+            if (null == pic) return;
+
+            string name = pic.Name; // 取出pictureBox的名称
+                                    // 以下就你读取到的名称去处理你要做的事情
+            if (name.Equals("m_pictureBox1"))
+            {
+
+                int value0 = map1["0"];
+                for (int i = 0; i < windowsFormsHosts.Count; i++)
+                {
+                    if (windowsFormsHosts[i] != null && windowsFormsHosts[i].Child == m_pictureBox1)
+                    {
+                        map1.Remove(i.ToString());
+                        map1.Add(i.ToString(), value0);
+                        windowsFormsHosts[i].Child = m_pictureBoxTemp;
+                        map1.Remove(i.ToString());
+                        map1.Add(i.ToString(), Chosen_device_num);
+                    }
+                }
+                map1.Remove("0");
+                map1.Add("0", 1);
+                m_pictureBoxTemp = m_pictureBox1;
+                Chosen_device_num = 1;
+                pictureBoxHost0.Child = m_pictureBox1;
+
+
+            }
+            if (name.Equals("m_pictureBox2"))
+            {
+
+                int value0 = map1["0"];
+                for (int i = 0; i < windowsFormsHosts.Count; i++)
+                {
+                    if (windowsFormsHosts[i] != null && windowsFormsHosts[i].Child == m_pictureBox2)
+                    {
+                        map1.Remove(i.ToString());
+                        map1.Add(i.ToString(), value0);
+                        windowsFormsHosts[i].Child = m_pictureBoxTemp;
+                        map1.Remove(i.ToString());
+                        map1.Add(i.ToString(), Chosen_device_num);
+                    }
+                }
+                map1.Remove("0");
+                map1.Add("0", 2);
+                m_pictureBoxTemp = m_pictureBox2;
+                Chosen_device_num = 2;
+                pictureBoxHost0.Child = m_pictureBox2;
+
+
+            }
+            if (name.Equals("m_pictureBox0"))
+            {
+                for (int i = 0; i < windowsFormsHosts.Count; i++)
+                {
+                    if (windowsFormsHosts[i] != null && windowsFormsHosts[i].Child == m_pictureBox0)
+                    {
+                        windowsFormsHosts[i].Child = m_pictureBoxTemp;
+                        map1.Remove(i.ToString());
+                        map1.Add(i.ToString(), Chosen_device_num);
+                    }
+                }
+                map1.Remove("0");
+                map1.Add("0", 0);
+                pictureBoxHost0.Child = m_pictureBox0;
+                m_pictureBoxTemp = m_pictureBox0;
+                Chosen_device_num = 0;
+            }
+        }
         public MainWindow()
         {
             InitializeComponent();
 
-
+            map1.Add("0", 0);
+            map1.Add("1", 1);
+            map1.Add("2", 2);
+            map1.Add("3", 3);
             LoadHistoryMessageFile();
 
             /*       //初始化历史数据
@@ -851,15 +944,32 @@ namespace WpfApp1
 
             this.DataContext = this;
 
-            m_pictureBox = new System.Windows.Forms.PictureBox();
+            m_pictureBox0 = new System.Windows.Forms.PictureBox();
+
+            m_pictureBox0.Name = "m_pictureBox0";
+            m_pictureBoxTemp = m_pictureBox0;
+            m_pictureBox1 = new System.Windows.Forms.PictureBox();
             /*      m_tp = new ToolTip();
                   m_toolTip = new System.Windows.Forms.ToolTip();
                   m_toolTip.SetToolTip(m_pictureBox, "1");
                   m_tp.PlacementTarget = pictureBoxHost;*/
+            m_pictureBox1.Name = "m_pictureBox1";
 
-            cameras = new List<PictureBox> { m_pictureBox };
+            m_pictureBox2 = new System.Windows.Forms.PictureBox();
+            m_pictureBox2.Name = "m_pictureBox2";
 
-            pictureBoxHost.Child = m_pictureBox;
+            cameras = new List<PictureBox> { m_pictureBox0, m_pictureBox1, m_pictureBox2 };
+
+            pictureBoxHost0.Child = m_pictureBox0;
+            pictureBoxHost1.Child = m_pictureBox1;
+            pictureBoxHost2.Child = m_pictureBox2;
+            m_pictureBox0.Click += changeWindow;
+            m_pictureBox1.Click += changeWindow;
+            m_pictureBox2.Click += changeWindow;
+            windowsFormsHosts = new List<WindowsFormsHost> { pictureBoxHost0, pictureBoxHost1, pictureBoxHost2 };
+
+
+
             //m_pictureBox.Paint += new System.Windows.Forms.PaintEventHandler(picturebox_Paint);
 
 
@@ -1128,9 +1238,7 @@ namespace WpfApp1
             // Console.WriteLine("text:");
             Console.WriteLine("text:" + text);
             ndTimesShowLength++;
-            int bjz = 0;
             string nmwd = "";
-            string ndStr = "0";
             double wd = 0;
             double spjd = 0;
             double czjd = 0;
@@ -1211,7 +1319,7 @@ namespace WpfApp1
 
                 strArray = nmwd.Split('M');
                 //平均值
-                ndStr = strArray[0];
+                string ndStr = strArray[0];
 
                 //最大值
                 //mnd = int.Parse(strArray[0]);
@@ -1223,6 +1331,13 @@ namespace WpfApp1
                 }
 
                 double doubleND = double.Parse(ndStr);
+
+
+                if (MaxND < doubleND)
+                {
+                    MaxND = doubleND;
+                }
+
                 Console.WriteLine("浓度：{0}", doubleND);
                 if (ndTimesShowLength % 20 == 0)
                 {
@@ -1233,13 +1348,7 @@ namespace WpfApp1
                     }
 
                     ValueList.Add(doubleND);
-                    NDText.Text = ndStr;
 
-                    if (MaxND < doubleND)
-                    {
-                        MaxND = doubleND;
-                    }
-                    MaxNDText.Text = MaxND.ToString();
 
 
 
@@ -1278,9 +1387,7 @@ namespace WpfApp1
 
                     #region 给浓度赋值
 
-                    //real_PlayPOJOs[device_num].messageList[9] = real_PlayPOJOs[device_num].messageList[8];
                     //real_PlayPOJOs[device_num].messageList[8] = real_PlayPOJOs[device_num].messageList[7];
-
                     real_PlayPOJOs[device_num].messageList[7] = real_PlayPOJOs[device_num].messageList[6];
                     real_PlayPOJOs[device_num].messageList[6] = real_PlayPOJOs[device_num].messageList[0];
                     real_PlayPOJOs[device_num].messageList[0] = ndStr;
@@ -1405,43 +1512,39 @@ namespace WpfApp1
         /// <param name="device_num"></param>
         private void Message_update(int device_num)
         {
-            try
+
+            foreach (KeyValuePair<string, int> kvp in map1)
             {
-                switch (device_num)
+                if (kvp.Value == device_num)
                 {
-                    // "浓度", "温度", "设备编号", "水平角度", "垂直角度", "速度"
-                    case 0:
+                    if (kvp.Key.Equals("2"))
+                    {
+                        concentrationText2.Text = real_PlayPOJOs[device_num].messageList[0];
+                        break;
+                    }
+                    if (kvp.Key.Equals("1"))
+                    {
+                        concentrationText1.Text = real_PlayPOJOs[device_num].messageList[0];
+                        break;
+                    }
+                    else if (kvp.Key.Equals("0"))
+                    {
+
+                        MaxNDText.Text = MaxND.ToString();
                         NDText.Text = real_PlayPOJOs[device_num].messageList[0];
                         temprature.Status = real_PlayPOJOs[device_num].messageList[1];
                         horizontalAngle.Status = real_PlayPOJOs[device_num].messageList[3];
                         verticalAngle.Status = real_PlayPOJOs[device_num].messageList[4];
                         speedText.Status = real_PlayPOJOs[device_num].messageList[5] + "°/s";
                         break;
-
-                        /*      case 1:
-                                  Camera1_nd_lable.Text = real_PlayPOJOs[device_num].messageList[0];
-                                  Camera1_wd_lable.Text = real_PlayPOJOs[device_num].messageList[1];
-                                  Camera1_x_lable.Text = real_PlayPOJOs[device_num].messageList[3];
-                                  Camera1_y_lable.Text = real_PlayPOJOs[device_num].messageList[4];
-                                  Camera1_sd_lable.Text = real_PlayPOJOs[device_num].messageList[5];
-                                  break;
-
-                              case 2:
-                                  Camera2_nd_lable.Text = real_PlayPOJOs[device_num].messageList[0];
-                                  Camera2_wd_lable.Text = real_PlayPOJOs[device_num].messageList[1];
-                                  Camera2_x_lable.Text = real_PlayPOJOs[device_num].messageList[3];
-                                  Camera2_y_lable.Text = real_PlayPOJOs[device_num].messageList[4];
-                                  Camera2_sd_lable.Text = real_PlayPOJOs[device_num].messageList[5];
-                                  break;
-
-                              case 3:
-                                  Camera3_nd_lable.Text = real_PlayPOJOs[device_num].messageList[0];
-                                  Camera3_wd_lable.Text = real_PlayPOJOs[device_num].messageList[1];
-                                  Camera3_x_lable.Text = real_PlayPOJOs[device_num].messageList[3];
-                                  Camera3_y_lable.Text = real_PlayPOJOs[device_num].messageList[4];
-                                  Camera3_sd_lable.Text = real_PlayPOJOs[device_num].messageList[5];
-                                  break;*/
+                    }
                 }
+                //Console.WriteLine("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
+            }
+
+            try
+            {
+
 
 
                 #endregion 更新柱状图
@@ -1489,6 +1592,10 @@ namespace WpfApp1
             {
                 return;
             }
+
+
+
+
             if (real_PlayPOJOs[device_num].Save_if)
             {
                 real_PlayPOJOs[device_num].Save_nd.Add(real_PlayPOJOs[device_num].messageList[0]);
@@ -1520,7 +1627,26 @@ namespace WpfApp1
                     }
 
                     sp.PlayLooping();
-                    MaxNDText.Background = Brushes.Red;
+
+                    foreach (KeyValuePair<string, int> kvp in map1)
+                    {
+                        if (kvp.Value == device_num)
+                        {
+                            if (kvp.Key.Equals("0"))
+                            {
+                                MaxNDText.Background = Brushes.Red;
+                                break;
+                            }
+                            else if (kvp.Key.Equals("1"))
+                            {
+                                concentrationText1.Background = Brushes.Red;
+                                break;
+                            }
+                        }
+                    }
+
+
+
                 }
 
                 real_PlayPOJOs[device_num].B_isGBaoJingZhong = true;
@@ -1533,7 +1659,7 @@ namespace WpfApp1
             {
                 if (!real_PlayPOJOs[device_num].B_bRecord)
                 {
-                    //this.Dispatcher.BeginInvoke(new VideoSave(AutoSaveRecord), messageBox_showIf_checkBox.Checked, device_num);
+                    this.Dispatcher.BeginInvoke(new VideoSave(AutoSaveRecord), MessageShowToggle.IsChecked, device_num);
                 }
 
                 if (real_PlayPOJOs[device_num].B_isAuto)
@@ -1548,13 +1674,15 @@ namespace WpfApp1
                 }
 
                 //播放警报音
-                /* if (!real_PlayPOJOs[device_num].B_isDBaoJingZhong && !real_PlayPOJOs[device_num].B_isGBaoJingZhong)
-                 {
-                     Camera_panels[device_num].BackColor = Color.FromArgb(155, 155, 0);
-                     sp1.PlayLooping();
-                 }
-                 real_PlayPOJOs[device_num].B_isDBaoJingZhong = true;
-                 HighHistory_updata(device_num);*/
+                if (!real_PlayPOJOs[device_num].B_isDBaoJingZhong && !real_PlayPOJOs[device_num].B_isGBaoJingZhong)
+                {
+                    MaxNDText.Background = Brushes.Green;
+                    sp1.PlayLooping();
+                }
+
+
+                real_PlayPOJOs[device_num].B_isDBaoJingZhong = true;
+                HighHistory_updata(device_num);
             }
         }
 
@@ -1736,18 +1864,19 @@ namespace WpfApp1
 
         private void ResetAlarmValue(object sender, RoutedEventArgs e)
         {
-            if (real_PlayPOJOs[Chosen_device_num].B_isGBaoJingZhong)
+
+            if (real_PlayPOJOs[map1["0"]].B_isGBaoJingZhong)
             {
                 sp.Stop();
             }
-            if (real_PlayPOJOs[Chosen_device_num].B_isDBaoJingZhong)
+            if (real_PlayPOJOs[map1["0"]].B_isDBaoJingZhong)
             {
                 sp1.Stop();
             }
-            real_PlayPOJOs[Chosen_device_num].B_isGBaoJingZhong = false;
-            real_PlayPOJOs[Chosen_device_num].B_isDBaoJingZhong = false;
-            MaxNDText.Text = "0";
+            real_PlayPOJOs[map1["0"]].B_isGBaoJingZhong = false;
+            real_PlayPOJOs[map1["0"]].B_isDBaoJingZhong = false;
             MaxND = 0;
+            MaxNDText.Text = "0";
             MaxNDText.Background = Brushes.Transparent;
         }
         /// <summary>
@@ -2127,7 +2256,23 @@ namespace WpfApp1
                     Debug.WriteLine("退出失败");
                 }*/
 
-            new Logout().Show();
+            //new Logout().Show();
+            MessageBoxResult result = System.Windows.MessageBox.Show("确认退出？", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+
+            if (result == MessageBoxResult.OK)
+            {
+                Close();
+            }
+
+            /*       Growl.AskGlobal(null, isConfirmed =>
+                   {
+                       if (isConfirmed)
+                       {
+                           Close();
+                       }
+                       return true;
+                   });*/
+
         }
 
 
