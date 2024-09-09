@@ -90,12 +90,17 @@ namespace WpfApp1
                     socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                     socket.Connect(iPEndPoint);
                     //发送
+
                     for (int i = 0; i < MainWindow.real_PlayPOJOs.Count; i++)
                     {
-                        MainWindow.real_PlayPOJOs[i].messagePOJO.deviceNum = MainWindow.real_PlayPOJOs[i].deviceNum;
-                        socket.Send(Encoding.Default.GetBytes(MainWindow.real_PlayPOJOs[i].messagePOJO.plus()));
-                        Thread.Sleep(200);
+                        if (MainWindow.real_PlayPOJOs[i].messagePOJO != null)
+                        {
+                            MainWindow.real_PlayPOJOs[i].messagePOJO.deviceNum = MainWindow.real_PlayPOJOs[i].deviceNum;
+                            socket.Send(Encoding.Default.GetBytes(MainWindow.real_PlayPOJOs[i].messagePOJO.plus()));
+                            Thread.Sleep(200);
+                        }
                     }
+
                     //接取
                     //Console.WriteLine("服务器:" + Encoding.Default.GetString(mesbuffer, 0, socket.Receive(mesbuffer)));
                 }

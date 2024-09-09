@@ -51,7 +51,7 @@ namespace WpfApp1
     public partial class MainWindow : System.Windows.Window
     {
 
-        double MaxND = 0;
+
 
         public static List<string> deviceIPList = new List<string>();
 
@@ -195,6 +195,10 @@ namespace WpfApp1
         {
             try
             {
+               /* if(real_PlayPOJOs == null)
+                {
+                    real_PlayPOJOs = new List<Real_PlayPOJO> { };
+                }*/
                 for (int i = 0; i < real_PlayPOJOs.Count; i++)
                 {
                     //指定设备是否正在巡航
@@ -1330,31 +1334,10 @@ namespace WpfApp1
                     ndStr = strArray[0];
                 }
 
-                double doubleND = double.Parse(ndStr);
-
-
-                if (MaxND < doubleND)
+           
+                if (ndTimesShowLength % 1 == 0)
                 {
-                    MaxND = doubleND;
-                }
-
-                Console.WriteLine("浓度：{0}", doubleND);
-                if (ndTimesShowLength % 20 == 0)
-                {
-                    Console.WriteLine("添加了一个浓度值 ");
-                    if (ValueList.Count > 20)
-                    {
-                        ValueList.RemoveAt(0);
-                    }
-
-                    ValueList.Add(doubleND);
-
-
-
-
                     strArray = strArray[1].Split('W');
-
-
                     //温度
                     strArray = strArray[1].Split('D');
                     wd = double.Parse(strArray[0]);
@@ -1385,9 +1368,27 @@ namespace WpfApp1
                         return;
                     }
 
-                    #region 给浓度赋值
+                    double doubleND = double.Parse(ndStr);
 
-                    //real_PlayPOJOs[device_num].messageList[8] = real_PlayPOJOs[device_num].messageList[7];
+
+                    Console.WriteLine("浓度：{0}", doubleND);
+
+
+             
+                    if (ValueList.Count > 20)
+                    {
+                        ValueList.RemoveAt(0);
+                    }
+
+                    ValueList.Add(doubleND);
+
+                    Console.WriteLine("添加了一个浓度值 ");
+
+                    #region 给浓度赋值
+                    if (double.Parse(real_PlayPOJOs[device_num].messageList[9].ToString()) < doubleND) {
+                        real_PlayPOJOs[device_num].messageList[9] = doubleND.ToString();
+                    }
+
                     real_PlayPOJOs[device_num].messageList[7] = real_PlayPOJOs[device_num].messageList[6];
                     real_PlayPOJOs[device_num].messageList[6] = real_PlayPOJOs[device_num].messageList[0];
                     real_PlayPOJOs[device_num].messageList[0] = ndStr;
@@ -1530,7 +1531,7 @@ namespace WpfApp1
                     else if (kvp.Key.Equals("0"))
                     {
 
-                        MaxNDText.Text = MaxND.ToString();
+                        MaxNDText.Text = real_PlayPOJOs[device_num].messageList[9];
                         NDText.Text = real_PlayPOJOs[device_num].messageList[0];
                         temprature.Status = real_PlayPOJOs[device_num].messageList[1];
                         horizontalAngle.Status = real_PlayPOJOs[device_num].messageList[3];
@@ -1875,7 +1876,7 @@ namespace WpfApp1
             }
             real_PlayPOJOs[map1["0"]].B_isGBaoJingZhong = false;
             real_PlayPOJOs[map1["0"]].B_isDBaoJingZhong = false;
-            MaxND = 0;
+            real_PlayPOJOs[map1["0"]].messageList[9] = "0";
             MaxNDText.Text = "0";
             MaxNDText.Background = Brushes.Transparent;
         }
