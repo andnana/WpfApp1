@@ -219,16 +219,29 @@
                         VerticalAlignment="Center"
                         PasswordChar="*" />
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Name="calibrationBtn"
+                        Margin="20,10,10,10"
+                        Background="#326cf3"
+                        BorderThickness="0"
+                        Click="calibration"
+                        Content="校准探头"
+                        Foreground="White" />
+                    <hc:LoadingCircle
+                        Name="loading"
+                        Width="20"
+                        Height="20"
+                        Margin="10"
+                        Foreground="White"
+                        Visibility="Hidden" />
+                    <TextBlock
+                        Name="loadingTips"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        Foreground="White" />
+                </StackPanel>
 
-                <Button
-                    Name="calibrationBtn"
-                    Margin="12,12,16,12"
-                    HorizontalAlignment="Right"
-                    Background="#326cf3"
-                    BorderThickness="0"
-                    Click="calibration"
-                    Content="校准探头"
-                    Foreground="White" />
             </StackPanel>
             <StackPanel
                 Grid.Row="1"

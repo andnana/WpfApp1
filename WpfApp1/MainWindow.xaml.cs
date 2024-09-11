@@ -51,9 +51,12 @@ namespace WpfApp1
     public partial class MainWindow : System.Windows.Window
     {
 
+        public static List<Preset> cruisesPresets = new List<Preset>();
+        DispatcherTimer disapearSuccessTipsTimer;
 
+        DeviceSetup deviceSetup = null;
 
-        public static List<string> deviceIPList = new List<string>();
+        public static List<DeviceInfo> deviceInfoList = new List<DeviceInfo>();
 
         Dictionary<string, int> map1 = new Dictionary<string, int>();
 
@@ -92,6 +95,7 @@ namespace WpfApp1
         System.Windows.Forms.PictureBox m_pictureBox0;
         System.Windows.Forms.PictureBox m_pictureBox1;
         System.Windows.Forms.PictureBox m_pictureBox2;
+        System.Windows.Forms.PictureBox m_pictureBox3;
         System.Windows.Forms.ToolTip m_toolTip;
         //ToolTip m_tp;
 
@@ -101,8 +105,6 @@ namespace WpfApp1
         private ChartValues<double> ValueList2 { get; set; }
 
         public static List<CruisePOJO> cruisePOJOs = new List<CruisePOJO>();
-
-        private System.Windows.Forms.PictureBox camera0;
 
         /// <summary>
         /// 运行时选中的设备编号
@@ -150,6 +152,9 @@ namespace WpfApp1
         /// </summary>
         internal static List<PresetPOJO> presetPOJOList;
 
+        internal static List<CruisePOJO> cruises = new List<CruisePOJO>();
+        internal static List<CruisePOJO> deviceCruises = new List<CruisePOJO>();
+
 
         /// <summary>
         /// 选中的设备编号
@@ -195,10 +200,10 @@ namespace WpfApp1
         {
             try
             {
-               /* if(real_PlayPOJOs == null)
-                {
-                    real_PlayPOJOs = new List<Real_PlayPOJO> { };
-                }*/
+                /* if(real_PlayPOJOs == null)
+                 {
+                     real_PlayPOJOs = new List<Real_PlayPOJO> { };
+                 }*/
                 for (int i = 0; i < real_PlayPOJOs.Count; i++)
                 {
                     //指定设备是否正在巡航
@@ -211,7 +216,8 @@ namespace WpfApp1
                             NET_DVR_PTZPreset(real_PlayPOJOs[i].I_lRealHandle, 39,
                                 (uint)real_PlayPOJOs[i].cruise_num_list[real_PlayPOJOs[i].I_cruise_num_now]);
                             presetInt = real_PlayPOJOs[i].cruise_num_list[real_PlayPOJOs[i].I_cruise_num_now];
-                            presetName = presetPOJOList[Chosen_device_num].Cruises[real_PlayPOJOs[Chosen_device_num].I_cruise_path_num][real_PlayPOJOs[Chosen_device_num].I_cruise_num_now].name;
+                            //presetName = presetPOJOList[Chosen_device_num].Cruises[real_PlayPOJOs[Chosen_device_num].I_cruise_path_num][real_PlayPOJOs[Chosen_device_num].I_cruise_num_now].name;
+                            presetName = cruisesPresets[real_PlayPOJOs[Chosen_device_num].I_cruise_num_now].notes;
                             Console.WriteLine();
                             // Console.WriteLine("设备" + i + "正在前往预置点" + real_PlayPOJOs[i].I_cruise_num_now);
                             Console.WriteLine("设备" + i + "正在前往预置点" + real_PlayPOJOs[i].cruise_num_list[real_PlayPOJOs[i].I_cruise_num_now]);
@@ -231,10 +237,11 @@ namespace WpfApp1
                                 {
                                     real_PlayPOJOs[i].I_cruise_num_next = 0;
                                 }
-                                real_PlayPOJOs[i].I_cruise_num_time =
-                                         presetPOJOList[i].
-                                         Cruises[real_PlayPOJOs[i].I_cruise_path_num]
-                                         [real_PlayPOJOs[i].I_cruise_num_next].time + 1;
+                                /*   real_PlayPOJOs[i].I_cruise_num_time =
+                                            presetPOJOList[i].
+                                            Cruises[real_PlayPOJOs[i].I_cruise_path_num]
+                                            [real_PlayPOJOs[i].I_cruise_num_next].time + 1;*/
+                                real_PlayPOJOs[i].I_cruise_num_time = cruisesPresets[real_PlayPOJOs[Chosen_device_num].I_cruise_num_now].time + 1;
 
                                 Console.WriteLine("设备" + i + "巡航路径" + real_PlayPOJOs[i].I_cruise_path_num);
                             }
@@ -296,20 +303,60 @@ namespace WpfApp1
             NET_DVR_PTZControl(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, CHCNetSDK.ZOOM_IN, 1);
         }
 
+        public void LoadCruisesPresets(string fileNamePrefix)
+        {
 
+            // 创建XmlDDocument对象，并装入xml文件
+            XmlDocument xmlDoc = new XmlDocument();
+
+            XmlReaderSettings settings = new XmlReaderSettings();
+            settings.IgnoreComments = true;//忽略文档里面的注释
+            XmlReader reader = XmlReader.Create(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + fileNamePrefix + "_cruises.xml", settings);
+            xmlDoc.Load(reader);
+
+            //xn 代表一个结点
+            //xn.Name;//这个结点的名称
+            //xn.Value;//这个结点的值
+            //xn.ChildNodes;//这个结点的所有子结点
+            //xn.ParentNode;//这个结点的父结点
+
+            // 得到根节点bookstore
+            XmlNode xn = xmlDoc.SelectSingleNode("cruises");
+
+
+            // 得到根节点的所有子节点
+            XmlNodeList xnl = xn.ChildNodes;
+            XmlNodeList presetNodeList = xnl[0].ChildNodes;
+
+            foreach (XmlNode xn2 in presetNodeList)
+            {
+                Preset preset = new Preset();
+                XmlElement xmlPreset = (XmlElement)xn2;
+                XmlNodeList xnl0 = xmlPreset.ChildNodes;
+                preset.preset_num = int.Parse(xnl0.Item(2).InnerText);
+                preset.notes = xnl0.Item(8).InnerText;
+                preset.time = int.Parse(xnl0.Item(3).InnerText);
+                preset.speed = int.Parse(xnl0.Item(5).InnerText);
+                cruisesPresets.Add(preset);
+
+            }
+
+            reader.Close();
+        }
 
 
         public void reloadCruiseData()
         {
             cruisePOJOs.Clear();
-            for (int i = 0; i < presetPOJOList[Chosen_device_num].Cruises[iSeq].Count; i++)
+            //for (int i = 0; i < presetPOJOList[Chosen_device_num].Cruises[iSeq].Count; i++)
+            for (int i = 0; i < cruisesPresets.Count; i++)
             {
-                if (presetPOJOList[Chosen_device_num].Cruises[iSeq][i].preset_num >= 0)
+                if (cruisesPresets[i].preset_num >= 0)
                 {
-                    int time = presetPOJOList[Chosen_device_num].Cruises[iSeq][i].time;
-                    int preset_num = presetPOJOList[Chosen_device_num].Cruises[iSeq][i].preset_num;
+                    int time = cruisesPresets[i].time;
+                    int preset_num = cruisesPresets[i].preset_num;
                     //int speed = presetPOJOList[Chosen_device_num].Cruises[iSeq][i].speed;
-                    cruisePOJOs.Add(new CruisePOJO() { imagePath = "/WpfApp1;component/Resources/current_play_empty.png", speedStr = presetPOJOList[Chosen_device_num].Speed + " °/s", timeStr = time.ToString() + "s", name = presetPOJOList[Chosen_device_num].Cruises[iSeq][i].name, preset_num = preset_num });
+                    cruisePOJOs.Add(new CruisePOJO() { imagePath = "/WpfApp1;component/Resources/current_play_empty.png", speedStr = cruisesPresets[i].speed.ToString() + " °/s", timeStr = time.ToString() + "s", name = cruisesPresets[i].notes, preset_num = preset_num });
                 }
             }
 
@@ -429,7 +476,16 @@ namespace WpfApp1
         internal void SetLoginInfo(TD_INFO info, int device_num, bool HD_if)
         {
             choose_device_num = device_num;
-            deviceIPList.Add(info.Ip);
+            DeviceInfo deviceInfo = new DeviceInfo();
+            deviceInfo.ip = info.Ip;
+            deviceInfo.speed = 15;
+            deviceInfoList.Add(deviceInfo);
+            LoadCruisesFile(info.Ip);
+            if (cruises.Count > 0)
+            {
+                deviceCruises.Add(cruises[0]);
+            }
+
             if (real_PlayPOJOs[device_num].I_lUserID < 0)
             {
                 struLogInfo = new NET_DVR_USER_LOGIN_INFO();
@@ -476,7 +532,11 @@ namespace WpfApp1
                     //开始预览
                     OpenPreview(Int32.Parse(info.TDid), device_num, HD_if);
                     presetPOJOList.Add(Tool.LoadFileToInstance(info.Ip));
-                    Change_speed(presetPOJOList[device_num].Speed, device_num);
+                    if (cruises.Count > 0)
+                    {
+                        Change_speed(deviceInfoList[device_num].speed.ToString(), device_num);
+                    }
+
                     real_PlayPOJOs[device_num].I_gbyz = 3000;
                     real_PlayPOJOs[device_num].I_dbyz = 1000;
                     Growl.SuccessGlobal("登录成功");
@@ -491,6 +551,75 @@ namespace WpfApp1
 
             }
         }
+
+
+
+
+        public static void LoadCruisesFile(string fileNamePrefix)
+        {
+            try
+            {
+                // 创建XmlDDocument对象，并装入xml文件
+                XmlDocument xmlDoc = new XmlDocument();
+
+                XmlReaderSettings settings = new XmlReaderSettings();
+                settings.IgnoreComments = true;//忽略文档里面的注释
+                XmlReader reader = XmlReader.Create(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + fileNamePrefix + "_cruises.xml", settings);
+                xmlDoc.Load(reader);
+
+                //xn 代表一个结点
+                //xn.Name;//这个结点的名称
+                //xn.Value;//这个结点的值
+                //xn.ChildNodes;//这个结点的所有子结点
+                //xn.ParentNode;//这个结点的父结点
+
+                // 得到根节点bookstore
+                XmlNode xn = xmlDoc.SelectSingleNode("cruises");
+
+
+                // 得到根节点的所有子节点
+                XmlNodeList xnl = xn.ChildNodes;
+
+                foreach (XmlNode xn1 in xnl)
+                {
+                    CruisePOJO cruise = new CruisePOJO();
+                    // 将节点转换为元素，便于得到节点的属性值
+                    XmlElement xe = (XmlElement)xn1;
+                    // 得到Type和ISBN两个属性的属性值
+                    //bookModel.BookISBN = xe.GetAttribute("ISBN").ToString();
+                    //bookModel.BookType = xe.GetAttribute("Type").ToString();
+
+
+                    cruise.timeStr = xe.GetAttribute("save_time").ToString();
+                    cruise.notes = xe.GetAttribute("notes").ToString();
+
+                    cruises.Add(cruise);
+                }
+                reader.Close();
+            }
+            catch (Exception e)
+            {
+                //创建一个空的XML
+                XmlDocument document = new XmlDocument();
+                //声明头部
+                XmlDeclaration dec = document.CreateXmlDeclaration("1.0", "utf-8", "yes");
+                document.AppendChild(dec);
+
+                //创建根节点
+                XmlElement root = document.CreateElement("cruises");
+                document.AppendChild(root);
+
+
+                //保存文档
+                document.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + MainWindow.deviceInfoList[MainWindow.Chosen_device_num].ip + "_cruises.xml");
+
+
+                Console.WriteLine(e.Message);
+            }
+
+
+        }
+
         #region 速度
 
         public void Change_speed(string speed, int device_num)
@@ -515,10 +644,12 @@ namespace WpfApp1
             Thread.Sleep(500);
             real_PlayPOJOs[device_num].messageList[5] = speed + "";
 
-            presetPOJOList[device_num].Speed = speed;
-            Tool.SaveInstanceToFile(presetPOJOList[device_num], real_PlayPOJOs[device_num].IP);
-
+            deviceInfoList[MainWindow.Chosen_device_num].speed = int.Parse(speed);
             Growl.SuccessGlobal("速度设置成功");
+
+            //Tool.SaveInstanceToFile(presetPOJOList[device_num], real_PlayPOJOs[device_num].IP);
+
+
         }
         #endregion 速度
         /// <summary>
@@ -796,6 +927,29 @@ namespace WpfApp1
 
 
             }
+            if (name.Equals("m_pictureBox3"))
+            {
+
+                int value0 = map1["0"];
+                for (int i = 0; i < windowsFormsHosts.Count; i++)
+                {
+                    if (windowsFormsHosts[i] != null && windowsFormsHosts[i].Child == m_pictureBox3)
+                    {
+                        map1.Remove(i.ToString());
+                        map1.Add(i.ToString(), value0);
+                        windowsFormsHosts[i].Child = m_pictureBoxTemp;
+                        map1.Remove(i.ToString());
+                        map1.Add(i.ToString(), Chosen_device_num);
+                    }
+                }
+                map1.Remove("0");
+                map1.Add("0", 3);
+                m_pictureBoxTemp = m_pictureBox3;
+                Chosen_device_num = 3;
+                pictureBoxHost0.Child = m_pictureBox3;
+
+
+            }
             if (name.Equals("m_pictureBox0"))
             {
                 for (int i = 0; i < windowsFormsHosts.Count; i++)
@@ -817,6 +971,10 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
+
+
+
+            disapearSuccessTipsTimer = new DispatcherTimer();
 
             map1.Add("0", 0);
             map1.Add("1", 1);
@@ -962,15 +1120,20 @@ namespace WpfApp1
             m_pictureBox2 = new System.Windows.Forms.PictureBox();
             m_pictureBox2.Name = "m_pictureBox2";
 
-            cameras = new List<PictureBox> { m_pictureBox0, m_pictureBox1, m_pictureBox2 };
+            m_pictureBox3 = new System.Windows.Forms.PictureBox();
+            m_pictureBox3.Name = "m_pictureBox3";
+
+            cameras = new List<PictureBox> { m_pictureBox0, m_pictureBox1, m_pictureBox2, m_pictureBox3 };
 
             pictureBoxHost0.Child = m_pictureBox0;
             pictureBoxHost1.Child = m_pictureBox1;
             pictureBoxHost2.Child = m_pictureBox2;
+            pictureBoxHost3.Child = m_pictureBox3;
             m_pictureBox0.Click += changeWindow;
             m_pictureBox1.Click += changeWindow;
             m_pictureBox2.Click += changeWindow;
-            windowsFormsHosts = new List<WindowsFormsHost> { pictureBoxHost0, pictureBoxHost1, pictureBoxHost2 };
+            m_pictureBox3.Click += changeWindow;
+            windowsFormsHosts = new List<WindowsFormsHost> { pictureBoxHost0, pictureBoxHost1, pictureBoxHost2, pictureBoxHost3 };
 
 
 
@@ -1221,6 +1384,14 @@ namespace WpfApp1
 
         #region 数据透传
 
+
+        private void disapearSuccessTips(object sender, EventArgs e)
+        {
+            disapearSuccessTipsTimer.Stop();
+            deviceSetup.loadingTips.Text = "";
+        }
+
+
         /// <summary>
         /// 委托
         /// </summary>
@@ -1273,14 +1444,8 @@ namespace WpfApp1
                             break;
                          */
                         case 2:
-                            MessageBox.Show("开始校准，请稍后。" + exStrArray[i], "探头校准");
-                            try
-                            {
-                            }
-                            catch (Exception)
-                            {
-                                throw;
-                            }
+                            //Growl.InfoGlobal("开始校准，请稍后。" + exStrArray[i]);
+                            deviceSetup.loadingTips.Text = "开始校准，请稍后。" + exStrArray[i];
                             break;
                         /*
 
@@ -1294,12 +1459,17 @@ namespace WpfApp1
                             break;
 
                         case 5:
-                            Tool.KillMessageBox("探头校准");
-                            MessageBox.Show("校准成功。", "校准结束");
+                            //Growl.SuccessGlobal("校准成功。");
+                            deviceSetup.loadingTips.Text = "校准成功。";
+                            disapearSuccessTipsTimer.Interval = TimeSpan.FromSeconds(5);
+                            disapearSuccessTipsTimer.Tick += disapearSuccessTips;
+                            disapearSuccessTipsTimer.Start();
+                            deviceSetup.loading.Visibility = Visibility.Hidden;
                             break;
                     }
                 }
             }
+
 
             #endregion 判断是否接收到异常字符
 
@@ -1334,7 +1504,7 @@ namespace WpfApp1
                     ndStr = strArray[0];
                 }
 
-           
+
                 if (ndTimesShowLength % 1 == 0)
                 {
                     strArray = strArray[1].Split('W');
@@ -1374,7 +1544,7 @@ namespace WpfApp1
                     Console.WriteLine("浓度：{0}", doubleND);
 
 
-             
+
                     if (ValueList.Count > 20)
                     {
                         ValueList.RemoveAt(0);
@@ -1385,7 +1555,8 @@ namespace WpfApp1
                     Console.WriteLine("添加了一个浓度值 ");
 
                     #region 给浓度赋值
-                    if (double.Parse(real_PlayPOJOs[device_num].messageList[9].ToString()) < doubleND) {
+                    if (double.Parse(real_PlayPOJOs[device_num].messageList[9].ToString()) < doubleND)
+                    {
                         real_PlayPOJOs[device_num].messageList[9] = doubleND.ToString();
                     }
 
@@ -1456,7 +1627,9 @@ namespace WpfApp1
                         ValueList2.Add(0);
 
                     }
-                    real_PlayPOJOs[device_num].messageList[5] = presetPOJOList[device_num].Speed;
+                    //real_PlayPOJOs[device_num].messageList[5] = presetPOJOList[device_num].Speed;
+                    real_PlayPOJOs[device_num].messageList[5] = deviceInfoList[Chosen_device_num].speed.ToString(); //todowrj
+
                     //后门
                     /*   if (device_num == Chosen_device_num)
                       {
@@ -2226,7 +2399,13 @@ namespace WpfApp1
         }
         private void DeviceSetup(object sender, RoutedEventArgs e)
         {
-            new DeviceSetup().Show();
+            if (MainWindow.sbmc == "")
+            {
+                Growl.SuccessGlobal("请先登录");
+                return;
+            }
+            deviceSetup = new DeviceSetup();
+            deviceSetup.Show();
         }
         private void HistoryData(object sender, RoutedEventArgs e)
         {
@@ -2398,6 +2577,11 @@ namespace WpfApp1
         /// <param name="e"></param>
         private void screenshot(object sender, EventArgs e)
         {
+            if (MainWindow.sbmc == "")
+            {
+                Growl.SuccessGlobal("请先登录");
+                return;
+            }
             SavePicture(true, Chosen_device_num);
         }
 

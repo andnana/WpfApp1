@@ -22,9 +22,11 @@ namespace WpfApp1
     /// </summary>
     public partial class DeviceSetup : System.Windows.Window
     {
+        public static DeviceSetup DeviceSetupObj;
         public DeviceSetup()
         {
             InitializeComponent();
+            DeviceSetupObj = this;
             TitleBar.MouseMove += (s, e) =>
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
@@ -103,6 +105,7 @@ namespace WpfApp1
 
         private void calibration(object sender, EventArgs e)
         {
+            loading.Visibility = Visibility.Visible;
             if (Password.Password.Equals("check"))
             {
                 Send("@jaozheng@");

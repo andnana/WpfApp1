@@ -1,0 +1,338 @@
+﻿<Window
+    x:Class="WpfApp1.CruiseDetail"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
+    xmlns:local="clr-namespace:WpfApp1"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="巡航详细信息"
+    Width="600"
+    Height="450"
+    Background="Black"
+    BorderBrush="White"
+    BorderThickness="1"
+    ResizeMode="CanMinimize"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <Style x:Key="DataGridTextCenterColumnStyle" TargetType="DataGridRow">
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="Background" Value="#55554b" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="80" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="0,0,0,1">
+            <Grid
+                Name="TitleBar"
+                Grid.Row="0"
+                Grid.Column="0"
+                Background="#55554b">
+                <!--  窗体边框  -->
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="1">
+                    <Image
+                        Width="120"
+                        Height="23"
+                        Margin="0,0,0,8"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Source="/WpfApp1;component/Resources/cruises_detail.png" />
+                </Grid>
+                <Border
+                    Grid.Column="2"
+                    Background="#55554b"
+                    BorderBrush="#55554b"
+                    BorderThickness="0">
+
+                    <!--  内容区域  -->
+                    <Grid Margin="0,0,10,0">
+                        <!--  标题栏  -->
+                        <Border
+                            Height="40"
+                            Padding="0"
+                            Background="#55554b"
+                            CornerRadius="0,0,0,0">
+                            <DockPanel>
+                                <DockPanel LastChildFill="False">
+                                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                        <Button
+                                            Name="BtMin"
+                                            Width="16"
+                                            Height="16"
+                                            Margin="6"
+                                            Padding="0"
+                                            Background="Transparent"
+                                            BorderThickness="0">
+                                            <Button.Content>
+                                                <Image
+                                                    Width="16"
+                                                    Height="16"
+                                                    Source="/WpfApp1;component/Resources/Minimize.png" />
+                                            </Button.Content>
+                                        </Button>
+                                        <!--       <Button  Margin="6"  Name="BtMax" Width="16" Height="16"  Padding="0" BorderThickness="0" Background="Transparent">
+                 <Button.Content>
+                     <Image Source="/WpfApp1;component/Resources/Maximize.png" Width="16" Height="16"/>
+                 </Button.Content>
+             </Button>-->
+                                        <Button
+                                            Name="BtClose"
+                                            Width="16"
+                                            Height="16"
+                                            Margin="6"
+                                            Padding="0"
+                                            Background="Transparent"
+                                            BorderThickness="0">
+                                            <Button.Content>
+                                                <Image
+                                                    Width="16"
+                                                    Height="16"
+                                                    Source="/WpfApp1;component/Resources/Close.png" />
+                                            </Button.Content>
+                                        </Button>
+                                    </StackPanel>
+                                </DockPanel>
+                            </DockPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+        <StackPanel
+            Grid.Row="1"
+            Background="#55554b"
+            Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal">
+                <Label
+                    Width="100"
+                    Margin="10"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    Background="#55554b"
+                    BorderThickness="0"
+                    Content="备注："
+                    Foreground="White" />
+                <Label
+                    Name="NotesLabel"
+                    Width="100"
+                    Margin="10"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Left"
+                    Background="#55554b"
+                    BorderThickness="0"
+                    Content="dafdfdfs"
+                    Foreground="White" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label
+                    Width="100"
+                    Margin="10"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    Background="#55554b"
+                    BorderThickness="0"
+                    Content="保存时间："
+                    Foreground="White" />
+                <Label
+                    Name="SaveTimeLabel"
+                    Width="100"
+                    Margin="10"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Left"
+                    Background="#55554b"
+                    BorderThickness="0"
+                    Content="fgfgjkfdjk"
+                    Foreground="White" />
+            </StackPanel>
+        </StackPanel>
+        <StackPanel
+            Grid.Row="2"
+            Background="#55554b"
+            Orientation="Vertical">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="AUTO" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <ToolBar
+                    Padding="10,6"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Background="#55554b"
+                    Foreground="White"
+                    Header="预置点">
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Width="80"
+                            Margin="10"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Right"
+                            Background="#55554b"
+                            BorderThickness="0"
+                            Content="选择预置点："
+                            Foreground="White" />
+                        <hc:ComboBox
+                            Name="PresetsCombobox"
+                            Width="116"
+                            Height="26"
+                            Margin="4"
+                            Foreground="Black"
+                            SelectedIndex="0">
+                            <!--    <ComboBoxItem
+                 Content="全部"
+                 Foreground="Black"
+                 IsSelected="True" />-->
+                        </hc:ComboBox>
+
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Width="80"
+                            Margin="10"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Right"
+                            Background="#55554b"
+                            BorderThickness="0"
+                            Content="时间："
+                            Foreground="White" />
+                        <hc:ComboBox
+                            Name="TimeCombobox"
+                            Width="116"
+                            Height="26"
+                            Margin="4"
+                            Foreground="Black"
+                            SelectedIndex="3">
+                            <ComboBoxItem Content="2" Foreground="Black" />
+                            <ComboBoxItem Content="3" Foreground="Black" />
+                            <ComboBoxItem Content="4" Foreground="Black" />
+                            <ComboBoxItem Content="5" Foreground="Black" />
+                            <ComboBoxItem Content="6" Foreground="Black" />
+                            <ComboBoxItem Content="7" Foreground="Black" />
+                            <ComboBoxItem Content="8" Foreground="Black" />
+                            <ComboBoxItem Content="9" Foreground="Black" />
+                            <ComboBoxItem Content="10" Foreground="Black" />
+                        </hc:ComboBox>
+
+                    </StackPanel>
+
+                    <Button
+                        Width="100"
+                        Height="60"
+                        Background="#55554b"
+                        BorderThickness="0"
+                        Click="AddPreset"
+                        Content="添加"
+                        Foreground="White">
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <Image
+                                        Width="20"
+                                        Height="20"
+                                        Margin="4"
+                                        Source="/WpfApp1;component/Resources/add.png" />
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        FontSize="10"
+                                        Text="添加" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </Button.ContentTemplate>
+                    </Button>
+                </ToolBar>
+
+
+
+                <!--<Grid
+              Grid.Row="0"
+              Grid.Column="1"
+              Width="160"
+              Margin="10"
+              HorizontalAlignment="Right">
+              <Grid.RowDefinitions>
+                  <RowDefinition />
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="6*" />
+                  <ColumnDefinition Width="6*" />
+                  <ColumnDefinition Width="4*" />
+              </Grid.ColumnDefinitions>
+          </Grid>-->
+
+            </Grid>
+            <DataGrid
+                Name="PresetsDataGrid"
+                Height="240"
+                AutoGenerateColumns="False"
+                Background="#55554b"
+                BorderThickness="0"
+                Foreground="White"
+                HeadersVisibility="Column"
+                RowHeight="30"
+                RowStyle="{StaticResource DataGridTextCenterColumnStyle}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Width="160"
+                        Binding="{Binding preset_num}"
+                        Foreground="White"
+                        Header="预置点" />
+                    <DataGridTextColumn
+                        Width="120"
+                        Binding="{Binding notes}"
+                        Foreground="White"
+                        Header="预置点备注" />
+
+                    <DataGridTemplateColumn Header="操作">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button
+                                        Margin="2"
+                                        Background="Red"
+                                        BorderThickness="0"
+                                        Click="remove"
+                                        Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                        CommandParameter="{Binding DeviceIP}"
+                                        Content="删除"
+                                        Foreground="White" />
+                                </StackPanel>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+
+        </StackPanel>
+    </Grid>
+</Window>

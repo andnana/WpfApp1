@@ -208,12 +208,23 @@
       <DependentUpon>AddCruisePoint.xaml</DependentUpon>
     </Compile>
     <Compile Include="BookModel.cs" />
+    <Compile Include="CruiseDetail.xaml.cs">
+      <DependentUpon>CruiseDetail.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CruisePOJO.cs" />
+    <Compile Include="Cruises.xaml.cs">
+      <DependentUpon>Cruises.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DeviceInfo.cs" />
     <Compile Include="History_Message.cs" />
     <Compile Include="LoginInfo.cs" />
     <Compile Include="LoginPOJO.cs" />
     <Compile Include="MessagePOJO.cs" />
+    <Compile Include="Preset.cs" />
     <Compile Include="PresetPOJO.cs" />
+    <Compile Include="Presets.xaml.cs">
+      <DependentUpon>Presets.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Prompt.xaml.cs">
       <DependentUpon>Prompt.xaml</DependentUpon>
     </Compile>
@@ -239,6 +250,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CloudPlatform.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CruiseDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Cruises.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -295,6 +314,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Presets.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -427,6 +450,21 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\presets.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\cruises.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\current_play_empty.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\cruises_detail.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SkiaSharp.NativeAssets.macOS.2.88.8\build\net462\SkiaSharp.NativeAssets.macOS.targets" Condition="Exists('..\packages\SkiaSharp.NativeAssets.macOS.2.88.8\build\net462\SkiaSharp.NativeAssets.macOS.targets')" />

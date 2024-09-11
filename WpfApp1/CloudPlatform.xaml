@@ -229,6 +229,30 @@
                 Grid.Row="0"
                 Grid.Column="1"
                 Orientation="Vertical">
+
+                <StackPanel
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <Button
+                        Margin="12"
+                        Background="#326cf3"
+                        BorderThickness="0"
+                        Click="presets"
+                        Content="预置点"
+                        Foreground="White" />
+                    <Button
+                        Margin="12"
+                        Background="#326cf3"
+                        BorderThickness="0"
+                        Click="ToCruises"
+                        Content="巡航"
+                        Foreground="White" />
+                </StackPanel>
+
+                <!--
                 <StackPanel Orientation="Horizontal">
                     <Label
                         Width="80"
@@ -317,7 +341,7 @@
                         Content="删除"
                         Foreground="White" />
 
-                </StackPanel>
+                </StackPanel>-->
                 <StackPanel Orientation="Horizontal">
                     <Label
                         Width="80"
@@ -336,7 +360,7 @@
                         Margin="4"
                         Foreground="Black"
                         SelectedIndex="0">
-                        <ComboBoxItem
+                        <!--    <ComboBoxItem
                             Content="路径1"
                             Foreground="Black"
                             IsSelected="True" />
@@ -346,7 +370,7 @@
                         <ComboBoxItem Content="路径5" Foreground="Black" />
                         <ComboBoxItem Content="路径6" Foreground="Black" />
                         <ComboBoxItem Content="路径7" Foreground="Black" />
-                        <ComboBoxItem Content="路径8" Foreground="Black" />
+                        <ComboBoxItem Content="路径8" Foreground="Black" />-->
                     </hc:ComboBox>
                 </StackPanel>
 
@@ -371,13 +395,13 @@
                         Click="cruiseStop"
                         Content="停止"
                         Foreground="White" />
-                    <Button
+                    <!--  <Button
                         Margin="12"
                         Background="#326cf3"
                         BorderThickness="0"
                         Click="addCruisePoint"
                         Content="设置"
-                        Foreground="White" />
+                        Foreground="White" />-->
 
                 </StackPanel>
 

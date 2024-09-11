@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Xml;
 using HandyControl.Controls;
 using static WpfApp1.CHCNetSDK;
 namespace WpfApp1
@@ -21,23 +22,26 @@ namespace WpfApp1
     /// </summary>
     public partial class CloudPlatform : System.Windows.Window
     {
-        public static bool  stopCruiseWhenWarningIsChecked = false;
+
+        internal static List<CruisePOJO> cruises2 = new List<CruisePOJO>();
+        public static bool stopCruiseWhenWarningIsChecked = false;
         public static CloudPlatform In_CloudPlat_Form;
         ObservableCollection<string> device_ip_str_list = new ObservableCollection<string>();
         public CloudPlatform()
         {
             InitializeComponent();
             In_CloudPlat_Form = this;
-            for (int i = 0; i < MainWindow.deviceIPList.Count; i++) {
-                DeviceIPCombobox.Items.Add(MainWindow.deviceIPList[i]);
+            for (int i = 0; i < MainWindow.deviceInfoList.Count; i++)
+            {
+                DeviceIPCombobox.Items.Add(MainWindow.deviceInfoList[i].ip);
             }
-            
+
             DeviceIPCombobox.Items.Add("全部");
 
             HigherAlarmTextBox.Text = MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_gbyz.ToString();
             LowerAlarmTextBox.Text = MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_dbyz.ToString();
-            speedNumericUpDown.Value = double.Parse(MainWindow.presetPOJOList[MainWindow.Chosen_device_num].Speed);
-
+            speedNumericUpDown.Value = double.Parse(MainWindow.deviceInfoList[MainWindow.Chosen_device_num].speed.ToString());
+        
             TitleBar.MouseMove += (s, e) =>
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
@@ -58,79 +62,98 @@ namespace WpfApp1
             {
                 Close();
             };
+            LoadCruise(MainWindow.deviceInfoList[MainWindow.Chosen_device_num].ip);
+            for (int i = 0; i < cruises2.Count; i++)
+            {
+                Cruise_comBox.Items.Add(cruises2[i].notes);
+            }
+
         }
 
-        /// <summary>
-        /// 增加预置点
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void addPreset(object sender, RoutedEventArgs e)
-        {
-            //string str = PresetComboBox.Items[PresetComboBox.SelectedIndex].ToString();
-            //int item = int.Parse(PresetComboBox.Items[PresetComboBox.SelectedIndex].ToString());
-            ComboBoxItem selectedItem = PresetComboBox.SelectedItem as ComboBoxItem;
-            if (selectedItem != null)
-            {
-                //MessageBox.Show("选中的值是：" + selectedItem.Content.ToString());
-                int presetInt = int.Parse(selectedItem.Content.ToString());  
-                bool isOK = NET_DVR_PTZPreset(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_lRealHandle, (uint)CHCNetSDK.SET_PRESET, (uint)presetInt);
-                if (!isOK)
-                {
-                    Growl.SuccessGlobal("预置点增加失败");
-                }
-                else
-                {
-                    Growl.SuccessGlobal("预置点增加成功");
-                    MainWindow.presetPOJOList[MainWindow.Chosen_device_num].Presets[presetInt - 1] = PresetCommentTextBox.Text;
-                    Tool.SaveInstanceToFile(MainWindow.presetPOJOList[MainWindow.Chosen_device_num], MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].IP);
-                }
 
-            }
-            
+        private void presets(object sender, RoutedEventArgs e)
+        {
+            new Presets().Show();
         }
 
-        /// <summary>
-        /// 删除预置点
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void deletePreset(object sender, EventArgs e)
+
+        private void ToCruises(object sender, RoutedEventArgs e)
         {
+            new Cruises().Show();
+        }
 
-            ComboBoxItem selectedItem = PresetComboBox.SelectedItem as ComboBoxItem;
-            if (selectedItem != null)
+
+
+        public void LoadCruise(string fileNamePrefix)
+        {
+            try
             {
-                //MessageBox.Show("选中的值是：" + selectedItem.Content.ToString());
-                int presetInt = int.Parse(selectedItem.Content.ToString());
-                bool isOK = NET_DVR_PTZPreset(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_lRealHandle, (uint)CHCNetSDK.CLE_PRESET, (uint)presetInt);
-                if (!isOK)
-                {
-                    Growl.SuccessGlobal("预置点删除失败");
-                }
-                else
-                {
-                    Growl.SuccessGlobal("预置点删除成功");
-                    MainWindow.presetPOJOList[MainWindow.Chosen_device_num].Presets[Convert.ToInt16(PresetComboBox.Text) - 1] = "空";
-                    Tool.SaveInstanceToFile(MainWindow.presetPOJOList[MainWindow.Chosen_device_num], MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].IP);
-                }
+                // 创建XmlDDocument对象，并装入xml文件
+                XmlDocument xmlDoc = new XmlDocument();
 
+            XmlReaderSettings settings = new XmlReaderSettings();
+            settings.IgnoreComments = true;//忽略文档里面的注释
+            XmlReader reader = XmlReader.Create(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + fileNamePrefix + "_cruises.xml", settings);
+            xmlDoc.Load(reader);
+
+            //xn 代表一个结点
+            //xn.Name;//这个结点的名称
+            //xn.Value;//这个结点的值
+            //xn.ChildNodes;//这个结点的所有子结点
+            //xn.ParentNode;//这个结点的父结点
+
+            // 得到根节点bookstore
+            XmlNode xn = xmlDoc.SelectSingleNode("cruises");
+
+
+            // 得到根节点的所有子节点
+            XmlNodeList xnl = xn.ChildNodes;
+
+                if(xnl.Count > 0)
+                {
+                    CruisePOJO cruise = new CruisePOJO();
+                    // 将节点转换为元素，便于得到节点的属性值
+
+                    XmlElement xe = (XmlElement)xnl[0];
+                    // 得到Type和ISBN两个属性的属性值
+                    //bookModel.BookISBN = xe.GetAttribute("ISBN").ToString();
+                    //bookModel.BookType = xe.GetAttribute("Type").ToString();
+
+
+                    cruise.timeStr = xe.GetAttribute("save_time").ToString();
+                    cruise.notes = xe.GetAttribute("notes").ToString();
+
+                    cruises2.Add(cruise);
+                }
+         
+
+
+            reader.Close();
             }
-      
+            catch (Exception e)
+            {
+               
+
+
+                Console.WriteLine(e.Message);
+            }
         }
 
         private void Start_Button_Click(object sender, RoutedEventArgs e)
         {
-            int iSeq = Cruise_comBox.SelectedIndex;    //+1
+            int iSeq = Cruise_comBox.SelectedIndex;
+            MainWindow.In_Main_Form.LoadCruisesPresets(MainWindow.deviceInfoList[MainWindow.Chosen_device_num].ip);
+            MainWindow.LoadCruisesFile(MainWindow.deviceInfoList[MainWindow.Chosen_device_num].ip);
+            MainWindow.deviceCruises[MainWindow.Chosen_device_num] = MainWindow.cruises[iSeq];
 
             MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_cruise_path_num = iSeq;
             MainWindow.iSeq = iSeq;
             MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].cruise_num_list = new List<int>();
-            for (int i = 0; i < MainWindow.presetPOJOList[MainWindow.Chosen_device_num].Cruises[iSeq].Count; i++)
+            for (int i = 0; i < MainWindow.cruisesPresets.Count; i++)
             {
-                if (MainWindow.presetPOJOList[MainWindow.Chosen_device_num].Cruises[iSeq][i].preset_num > 0)
+                if (MainWindow.cruisesPresets[i].preset_num > 0)
                 {
-                    MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].cruise_num_list.Add(MainWindow.presetPOJOList[MainWindow.Chosen_device_num].Cruises[iSeq][i].preset_num);
+                    MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].cruise_num_list.Add(MainWindow.cruisesPresets[i].preset_num);
                 }
             }
 
@@ -174,21 +197,8 @@ namespace WpfApp1
             Growl.SuccessGlobal("设置成功");
         }
 
-     
-        /// <summary>
-        /// 调用预置点
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void invokePreset(object sender, EventArgs e)
-        {
-            ComboBoxItem selectedItem = PresetComboBox.SelectedItem as ComboBoxItem;
-            if( selectedItem != null)
-            {
-                int presetInt = int.Parse(selectedItem.Content.ToString());
-                NET_DVR_PTZPreset(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_lRealHandle, (uint)CHCNetSDK.GOTO_PRESET, (uint)presetInt);
-            }
-        }
+
+
 
         /*       private void speed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
                {
@@ -205,15 +215,14 @@ namespace WpfApp1
                }*/
         private void speedSetup(object sender, RoutedEventArgs e)
         {
-            // 当Slider的值发生变化时，更新TextBlock的文本
-            MainWindow.In_Main_Form.Change_speed(speedNumericUpDown.Value.ToString(), MainWindow.choose_device_num);
+            MainWindow.In_Main_Form.Change_speed(speedNumericUpDown.Value.ToString(), MainWindow.Chosen_device_num);
 
         }
-        private void addCruisePoint(object sender, RoutedEventArgs e)
-        {
-            new AddCruisePoint().Show();
-        }
-
+        /*   private void addCruisePoint(object sender, RoutedEventArgs e)
+           {
+               new AddCruisePoint().Show();
+           }
+   */
     }
 
 

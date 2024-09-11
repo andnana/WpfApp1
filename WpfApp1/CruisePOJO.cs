@@ -31,5 +31,7 @@ namespace WpfApp1
         public string timeStr { get; set; }
 
         public string speedStr { get; set; }
+
+        public string notes { get; set; }
     }
 }
