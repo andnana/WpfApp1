@@ -89,7 +89,7 @@ namespace WpfApp1
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "HistoryMessages.xml");
                 XmlElement xe = xmlDoc.DocumentElement; // DocumentElement 获取xml文档对象的根XmlElement.
-                string strPath = string.Format("/historymessage/message[@save_time=\"{0}\"]", rowView.save_time.ToString("yyyy-MM-dd HH:mm:ss"));
+                string strPath = string.Format("/historymessages/message[@save_time=\"{0}\"]", rowView.save_time.ToString("yyyy-MM-dd HH:mm:ss"));
                 XmlElement selectXe = (XmlElement)xe.SelectSingleNode(strPath);  //selectSingleNode 根据XPath表达式,获得符合条件的第一个节点.
                 selectXe.ParentNode.RemoveChild(selectXe);
                 xmlDoc.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "HistoryMessages.xml");

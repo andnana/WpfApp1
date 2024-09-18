@@ -31,7 +31,7 @@
                 Name="TitleBar"
                 Grid.Row="0"
                 Grid.Column="0"
-                Background="#55554b">
+                Background="#5a5a58">
                 <!--  窗体边框  -->
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -52,8 +52,8 @@
                 </Grid>
                 <Border
                     Grid.Column="2"
-                    Background="#55554b"
-                    BorderBrush="#55554b"
+                    Background="#5a5a58"
+                    BorderBrush="#5a5a58"
                     BorderThickness="0">
 
                     <!--  内容区域  -->
@@ -62,7 +62,7 @@
                         <Border
                             Height="40"
                             Padding="0"
-                            Background="#55554b"
+                            Background="#5a5a58"
                             CornerRadius="0,0,0,0">
                             <DockPanel>
                                 <DockPanel LastChildFill="False">
@@ -90,7 +90,7 @@
                 </Border>
             </Grid>
         </Grid>
-        <Grid Grid.Row="1" Background="#55554b">
+        <Grid Grid.Row="1" Background="#5a5a58">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40" />

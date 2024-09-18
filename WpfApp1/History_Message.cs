@@ -67,7 +67,7 @@ namespace WpfApp1
         /// 预置点备注
         /// </summary>
         [ExcelColumn("预置点备注")]
-        public string Preset_name { get; set; }
+        public string Preset_notes { get; set; }
 
         /// <summary>
         /// 视频路径
@@ -75,10 +75,5 @@ namespace WpfApp1
         [ExcelColumn("视频路径")]
         public string video_path { get; set; }
 
-        /// <summary>
-        /// 是否为新数据
-        /// </summary>
-        /// [ExcelColumn("是否为新数据")]
-        public bool new_if { get; set; }
     }
 }

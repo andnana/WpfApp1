@@ -41,6 +41,10 @@ using Button = System.Windows.Controls.Button;
 using System.Windows.Forms.Integration;
 using System.Collections;
 using ScottPlot.ArrowShapes;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Xml.Linq;
+using NPOI.SS.Formula.Functions;
+using ScottPlot.Palettes;
 
 namespace WpfApp1
 {
@@ -50,15 +54,13 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : System.Windows.Window
     {
-
-        public static List<Preset> cruisesPresets = new List<Preset>();
         DispatcherTimer disapearSuccessTipsTimer;
 
         DeviceSetup deviceSetup = null;
 
         public static List<DeviceInfo> deviceInfoList = new List<DeviceInfo>();
 
-        Dictionary<string, int> map1 = new Dictionary<string, int>();
+        Dictionary<string, Status> map1 = new Dictionary<string, Status>();
 
         int presetInt = 0;
         string presetName = "";
@@ -111,7 +113,6 @@ namespace WpfApp1
         /// </summary>
         public static int Chosen_device_num;
 
-        public static int iSeq;
 
         /// <summary>
         /// 码流数据回调函数
@@ -145,15 +146,10 @@ namespace WpfApp1
         /// <summary>
         /// 设备独立信息集合
         /// </summary>
-        internal static List<Real_PlayPOJO> real_PlayPOJOs;
+        public static List<Real_PlayPOJO> real_PlayPOJOs;
 
-        /// <summary>
-        /// 预置点备注
-        /// </summary>
-        internal static List<PresetPOJO> presetPOJOList;
-
-        internal static List<CruisePOJO> cruises = new List<CruisePOJO>();
-        internal static List<CruisePOJO> deviceCruises = new List<CruisePOJO>();
+        public static List<CruisePOJO> cruises = new List<CruisePOJO>();
+        public static List<CruisePOJO> deviceCruises = new List<CruisePOJO>();
 
 
         /// <summary>
@@ -216,13 +212,15 @@ namespace WpfApp1
                             NET_DVR_PTZPreset(real_PlayPOJOs[i].I_lRealHandle, 39,
                                 (uint)real_PlayPOJOs[i].cruise_num_list[real_PlayPOJOs[i].I_cruise_num_now]);
                             presetInt = real_PlayPOJOs[i].cruise_num_list[real_PlayPOJOs[i].I_cruise_num_now];
-                            //presetName = presetPOJOList[Chosen_device_num].Cruises[real_PlayPOJOs[Chosen_device_num].I_cruise_path_num][real_PlayPOJOs[Chosen_device_num].I_cruise_num_now].name;
-                            presetName = cruisesPresets[real_PlayPOJOs[Chosen_device_num].I_cruise_num_now].notes;
+                            presetName = real_PlayPOJOs[MainWindow.Chosen_device_num].cruisesPresets[real_PlayPOJOs[Chosen_device_num].I_cruise_num_now].notes;
                             Console.WriteLine();
                             // Console.WriteLine("设备" + i + "正在前往预置点" + real_PlayPOJOs[i].I_cruise_num_now);
-                            Console.WriteLine("设备" + i + "正在前往预置点" + real_PlayPOJOs[i].cruise_num_list[real_PlayPOJOs[i].I_cruise_num_now]);
+                            Console.WriteLine("设备" + i + "正在前往预置点" + "cruise" + i + "_" + real_PlayPOJOs[i].cruise_num_list[real_PlayPOJOs[i].I_cruise_num_now]);
+                            if (Chosen_device_num == i)
+                            {
+                                this.Dispatcher.BeginInvoke(new updateCruiseCurrentIconDelegate(updateCruiseCurrentIcon));
+                            }
 
-                            this.Dispatcher.BeginInvoke(new updateCruiseCurrentIconDelegate(updateCruiseCurrentIcon));
                             //更新当前巡航点编号
                             real_PlayPOJOs[i].I_cruise_num_now = real_PlayPOJOs[i].I_cruise_num_next;
                             //更新下一个巡航点编号和倒计时
@@ -237,11 +235,8 @@ namespace WpfApp1
                                 {
                                     real_PlayPOJOs[i].I_cruise_num_next = 0;
                                 }
-                                /*   real_PlayPOJOs[i].I_cruise_num_time =
-                                            presetPOJOList[i].
-                                            Cruises[real_PlayPOJOs[i].I_cruise_path_num]
-                                            [real_PlayPOJOs[i].I_cruise_num_next].time + 1;*/
-                                real_PlayPOJOs[i].I_cruise_num_time = cruisesPresets[real_PlayPOJOs[Chosen_device_num].I_cruise_num_now].time + 1;
+
+                                real_PlayPOJOs[i].I_cruise_num_time = real_PlayPOJOs[MainWindow.Chosen_device_num].cruisesPresets[real_PlayPOJOs[Chosen_device_num].I_cruise_num_now].time + 1;
 
                                 Console.WriteLine("设备" + i + "巡航路径" + real_PlayPOJOs[i].I_cruise_path_num);
                             }
@@ -303,60 +298,81 @@ namespace WpfApp1
             NET_DVR_PTZControl(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, CHCNetSDK.ZOOM_IN, 1);
         }
 
-        public void LoadCruisesPresets(string fileNamePrefix)
+        public void LoadCruisesPresets(string fileNamePrefix, int cruiseIndex)
         {
-
-            // 创建XmlDDocument对象，并装入xml文件
-            XmlDocument xmlDoc = new XmlDocument();
-
-            XmlReaderSettings settings = new XmlReaderSettings();
-            settings.IgnoreComments = true;//忽略文档里面的注释
-            XmlReader reader = XmlReader.Create(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + fileNamePrefix + "_cruises.xml", settings);
-            xmlDoc.Load(reader);
-
-            //xn 代表一个结点
-            //xn.Name;//这个结点的名称
-            //xn.Value;//这个结点的值
-            //xn.ChildNodes;//这个结点的所有子结点
-            //xn.ParentNode;//这个结点的父结点
-
-            // 得到根节点bookstore
-            XmlNode xn = xmlDoc.SelectSingleNode("cruises");
-
-
-            // 得到根节点的所有子节点
-            XmlNodeList xnl = xn.ChildNodes;
-            XmlNodeList presetNodeList = xnl[0].ChildNodes;
-
-            foreach (XmlNode xn2 in presetNodeList)
+            try
             {
-                Preset preset = new Preset();
-                XmlElement xmlPreset = (XmlElement)xn2;
-                XmlNodeList xnl0 = xmlPreset.ChildNodes;
-                preset.preset_num = int.Parse(xnl0.Item(2).InnerText);
-                preset.notes = xnl0.Item(8).InnerText;
-                preset.time = int.Parse(xnl0.Item(3).InnerText);
-                preset.speed = int.Parse(xnl0.Item(5).InnerText);
-                cruisesPresets.Add(preset);
+                real_PlayPOJOs[MainWindow.Chosen_device_num].cruisesPresets.Clear();
+                // 创建XmlDDocument对象，并装入xml文件
+                XmlDocument xmlDoc = new XmlDocument();
 
+                XmlReaderSettings settings = new XmlReaderSettings();
+                settings.IgnoreComments = true;//忽略文档里面的注释
+                XmlReader reader = XmlReader.Create(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + fileNamePrefix + "_cruises.xml", settings);
+                xmlDoc.Load(reader);
+
+                //xn 代表一个结点
+                //xn.Name;//这个结点的名称
+                //xn.Value;//这个结点的值
+                //xn.ChildNodes;//这个结点的所有子结点
+                //xn.ParentNode;//这个结点的父结点
+
+                // 得到根节点bookstore
+                XmlNode xn = xmlDoc.SelectSingleNode("cruises");
+
+
+                // 得到根节点的所有子节点
+                XmlNodeList xnl = xn.ChildNodes;
+                XmlNodeList presetNodeList = xnl[cruiseIndex].ChildNodes;
+
+                foreach (XmlNode xn2 in presetNodeList)
+                {
+                    Preset preset = new Preset();
+                    XmlElement xmlPreset = (XmlElement)xn2;
+                    XmlNodeList xnl0 = xmlPreset.ChildNodes;
+                    preset.preset_num = int.Parse(xnl0.Item(2).InnerText);
+                    preset.notes = xnl0.Item(8).InnerText;
+                    preset.time = int.Parse(xnl0.Item(3).InnerText);
+                    preset.speed = int.Parse(xnl0.Item(5).InnerText);
+                    real_PlayPOJOs[MainWindow.Chosen_device_num].cruisesPresets.Add(preset);
+
+                }
+
+                reader.Close();
+            }
+            catch (FileNotFoundException e)
+            {
+                //创建一个空的XML
+                XmlDocument document = new XmlDocument();
+                //声明头部
+                XmlDeclaration dec = document.CreateXmlDeclaration("1.0", "utf-8", "yes");
+                document.AppendChild(dec);
+
+                //创建根节点
+                XmlElement root = document.CreateElement("cruises");
+                document.AppendChild(root);
+
+
+                //保存文档
+                document.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + MainWindow.deviceInfoList[MainWindow.Chosen_device_num].ip + "_cruises.xml");
+
+
+                Console.WriteLine(e.Message);
             }
 
-            reader.Close();
         }
 
 
         public void reloadCruiseData()
         {
             cruisePOJOs.Clear();
-            //for (int i = 0; i < presetPOJOList[Chosen_device_num].Cruises[iSeq].Count; i++)
-            for (int i = 0; i < cruisesPresets.Count; i++)
+            for (int i = 0; i < real_PlayPOJOs[MainWindow.Chosen_device_num].cruisesPresets.Count; i++)
             {
-                if (cruisesPresets[i].preset_num >= 0)
+                if (real_PlayPOJOs[MainWindow.Chosen_device_num].cruisesPresets[i].preset_num >= 0)
                 {
-                    int time = cruisesPresets[i].time;
-                    int preset_num = cruisesPresets[i].preset_num;
-                    //int speed = presetPOJOList[Chosen_device_num].Cruises[iSeq][i].speed;
-                    cruisePOJOs.Add(new CruisePOJO() { imagePath = "/WpfApp1;component/Resources/current_play_empty.png", speedStr = cruisesPresets[i].speed.ToString() + " °/s", timeStr = time.ToString() + "s", name = cruisesPresets[i].notes, preset_num = preset_num });
+                    int time = real_PlayPOJOs[MainWindow.Chosen_device_num].cruisesPresets[i].time;
+                    int preset_num = real_PlayPOJOs[MainWindow.Chosen_device_num].cruisesPresets[i].preset_num;
+                    cruisePOJOs.Add(new CruisePOJO() { imagePath = "/WpfApp1;component/Resources/current_play_empty.png", speedStr = real_PlayPOJOs[MainWindow.Chosen_device_num].cruisesPresets[i].speed.ToString() + " °/s", timeStr = time.ToString() + "s", name = real_PlayPOJOs[MainWindow.Chosen_device_num].cruisesPresets[i].notes, preset_num = preset_num });
                 }
             }
 
@@ -485,6 +501,10 @@ namespace WpfApp1
             {
                 deviceCruises.Add(cruises[0]);
             }
+            else
+            {
+                deviceCruises.Add(new CruisePOJO());
+            }
 
             if (real_PlayPOJOs[device_num].I_lUserID < 0)
             {
@@ -528,10 +548,10 @@ namespace WpfApp1
                 }
                 else
                 {
+                    map1[device_num.ToString()].hd = HD_if;
 
                     //开始预览
                     OpenPreview(Int32.Parse(info.TDid), device_num, HD_if);
-                    presetPOJOList.Add(Tool.LoadFileToInstance(info.Ip));
                     if (cruises.Count > 0)
                     {
                         Change_speed(deviceInfoList[device_num].speed.ToString(), device_num);
@@ -597,7 +617,7 @@ namespace WpfApp1
                 }
                 reader.Close();
             }
-            catch (Exception e)
+            catch (FileNotFoundException e)
             {
                 //创建一个空的XML
                 XmlDocument document = new XmlDocument();
@@ -646,8 +666,6 @@ namespace WpfApp1
 
             deviceInfoList[MainWindow.Chosen_device_num].speed = int.Parse(speed);
             Growl.SuccessGlobal("速度设置成功");
-
-            //Tool.SaveInstanceToFile(presetPOJOList[device_num], real_PlayPOJOs[device_num].IP);
 
 
         }
@@ -824,56 +842,81 @@ namespace WpfApp1
         }
         public void LoadHistoryMessageFile()
         {
-
-            // 创建XmlDDocument对象，并装入xml文件
-            XmlDocument xmlDoc = new XmlDocument();
-
-            XmlReaderSettings settings = new XmlReaderSettings();
-            settings.IgnoreComments = true;//忽略文档里面的注释
-            XmlReader reader = XmlReader.Create(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "HistoryMessages.xml", settings);
-            xmlDoc.Load(reader);
-
-            //xn 代表一个结点
-            //xn.Name;//这个结点的名称
-            //xn.Value;//这个结点的值
-            //xn.ChildNodes;//这个结点的所有子结点
-            //xn.ParentNode;//这个结点的父结点
-
-            // 得到根节点bookstore
-            XmlNode xn = xmlDoc.SelectSingleNode("historymessage");
-
-
-            // 得到根节点的所有子节点
-            XmlNodeList xnl = xn.ChildNodes;
-
-            foreach (XmlNode xn1 in xnl)
+            try
             {
-                History_Message historyMessage = new History_Message();
-                // 将节点转换为元素，便于得到节点的属性值
-                XmlElement xe = (XmlElement)xn1;
-                // 得到Type和ISBN两个属性的属性值
-                //bookModel.BookISBN = xe.GetAttribute("ISBN").ToString();
-                //bookModel.BookType = xe.GetAttribute("Type").ToString();
-                // 得到LoginInfo节点的所有子节点
-                XmlNodeList xnl0 = xe.ChildNodes;
-                historyMessage.pid = int.Parse(xnl0.Item(0).InnerText);
-                historyMessage.device_IP = xnl0.Item(1).InnerText;
-                historyMessage.device_name = xnl0.Item(2).InnerText;
-                historyMessage.save_time = DateTime.Parse(xnl0.Item(3).InnerText);
-                historyMessage.Horiz = xnl0.Item(4).InnerText;
-                historyMessage.Vert = xnl0.Item(5).InnerText;
-                historyMessage.concentration = xnl0.Item(6).InnerText;
-                historyMessage.Preset_num = int.Parse(xnl0.Item(7).InnerText);
-                historyMessage.Preset_name = xnl0.Item(8).InnerText;
-                historyMessage.new_if = bool.Parse(xnl0.Item(9).InnerText);
-                historyMessage.video_path = xnl0.Item(10).InnerText;
-                historyMessages.Add(historyMessage);
+                // 创建XmlDDocument对象，并装入xml文件
+                XmlDocument xmlDoc = new XmlDocument();
+
+                XmlReaderSettings settings = new XmlReaderSettings();
+                settings.IgnoreComments = true;//忽略文档里面的注释
+                XmlReader reader = XmlReader.Create(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "HistoryMessages.xml", settings);
+                xmlDoc.Load(reader);
+
+                //xn 代表一个结点
+                //xn.Name;//这个结点的名称
+                //xn.Value;//这个结点的值
+                //xn.ChildNodes;//这个结点的所有子结点
+                //xn.ParentNode;//这个结点的父结点
+
+                // 得到根节点bookstore
+                XmlNode xn = xmlDoc.SelectSingleNode("historymessages");
+
+
+                // 得到根节点的所有子节点
+                XmlNodeList xnl = xn.ChildNodes;
+
+                foreach (XmlNode xn1 in xnl)
+                {
+                    History_Message historyMessage = new History_Message();
+                    // 将节点转换为元素，便于得到节点的属性值
+                    XmlElement xe = (XmlElement)xn1;
+                    // 得到Type和ISBN两个属性的属性值
+                    //bookModel.BookISBN = xe.GetAttribute("ISBN").ToString();
+                    //bookModel.BookType = xe.GetAttribute("Type").ToString();
+                    // 得到LoginInfo节点的所有子节点
+                    XmlNodeList xnl0 = xe.ChildNodes;
+                    historyMessage.pid = int.Parse(xnl0.Item(0).InnerText);
+                    historyMessage.device_IP = xnl0.Item(1).InnerText;
+                    historyMessage.device_name = xnl0.Item(2).InnerText;
+                    historyMessage.save_time = DateTime.Parse(xnl0.Item(3).InnerText);
+                    historyMessage.Horiz = xnl0.Item(4).InnerText;
+                    historyMessage.Vert = xnl0.Item(5).InnerText;
+                    historyMessage.concentration = xnl0.Item(6).InnerText;
+                    historyMessage.Preset_num = int.Parse(xnl0.Item(7).InnerText);
+                    historyMessage.Preset_notes = xnl0.Item(8).InnerText;
+                    historyMessage.video_path = xnl0.Item(9).InnerText;
+                    historyMessages.Add(historyMessage);
+                }
+                maxPid = historyMessages.Max(h => h.pid);
+                reader.Close();
             }
-            maxPid = historyMessages.Max(h => h.pid);
-            reader.Close();
+            catch (FileNotFoundException e)
+            {
+                //创建一个空的XML
+                XmlDocument document = new XmlDocument();
+                //声明头部
+                XmlDeclaration dec = document.CreateXmlDeclaration("1.0", "utf-8", "yes");
+                document.AppendChild(dec);
+
+                //创建根节点
+                XmlElement root = document.CreateElement("historymessages");
+                document.AppendChild(root);
+
+
+                //保存文档
+                document.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "HistoryMessages.xml");
+                Console.WriteLine(e.Message);
+            }
+
         }
         public void changeWindow(object sender, EventArgs e)
         {
+            System.Windows.Forms.PictureBox pictureBox1 = (System.Windows.Forms.PictureBox)sender;
+            if (pictureBox1 != null && pictureBox1 == pictureBoxHost0.Child)
+            {
+                return;
+            }
+
             // 将sender转型成PictureBox
             PictureBox pic = sender as PictureBox;
 
@@ -881,69 +924,102 @@ namespace WpfApp1
 
             string name = pic.Name; // 取出pictureBox的名称
                                     // 以下就你读取到的名称去处理你要做的事情
-            if (name.Equals("m_pictureBox1"))
+            if (name.Equals("m_pictureBox1") && real_PlayPOJOs.Count >= 2)
             {
-
-                int value0 = map1["0"];
+                string color1 = "nomal";
+                bool hd1 = false;
+                Status value0 = map1["0"];
                 for (int i = 0; i < windowsFormsHosts.Count; i++)
                 {
                     if (windowsFormsHosts[i] != null && windowsFormsHosts[i].Child == m_pictureBox1)
                     {
+                        color1 = map1[i.ToString()].color;
+                        hd1 = map1[i.ToString()].hd;
                         map1.Remove(i.ToString());
                         map1.Add(i.ToString(), value0);
                         windowsFormsHosts[i].Child = m_pictureBoxTemp;
                         map1.Remove(i.ToString());
-                        map1.Add(i.ToString(), Chosen_device_num);
+                        Status status1 = new Status();
+                        status1.color = map1["0"].color;
+                        status1.hd = map1["0"].hd;
+                        status1.index = Chosen_device_num;
+                        map1.Add(i.ToString(), status1);
                     }
                 }
+                Status status10 = new Status();
+                status10.color = color1;
+                status10.index = 1;
+                status10.hd = hd1;
                 map1.Remove("0");
-                map1.Add("0", 1);
+                map1.Add("0", status10);
                 m_pictureBoxTemp = m_pictureBox1;
                 Chosen_device_num = 1;
                 pictureBoxHost0.Child = m_pictureBox1;
 
 
             }
-            if (name.Equals("m_pictureBox2"))
+            if (name.Equals("m_pictureBox2") && real_PlayPOJOs.Count >= 3)
             {
-
-                int value0 = map1["0"];
+                string color2 = "nomal";
+                bool hd2 = false;
+                Status value0 = map1["0"];
                 for (int i = 0; i < windowsFormsHosts.Count; i++)
                 {
                     if (windowsFormsHosts[i] != null && windowsFormsHosts[i].Child == m_pictureBox2)
                     {
+                        color2 = map1[i.ToString()].color;
+                        hd2 = map1[i.ToString()].hd;
                         map1.Remove(i.ToString());
                         map1.Add(i.ToString(), value0);
                         windowsFormsHosts[i].Child = m_pictureBoxTemp;
                         map1.Remove(i.ToString());
-                        map1.Add(i.ToString(), Chosen_device_num);
+                        Status status2 = new Status();
+                        status2.color = map1["0"].color;
+                        status2.hd = map1["0"].hd;
+                        status2.index = Chosen_device_num;
+                        map1.Add(i.ToString(), status2);
                     }
                 }
+                Status status20 = new Status();
+                status20.color = color2;
+                status20.index = 3;
+                status20.hd = hd2;
                 map1.Remove("0");
-                map1.Add("0", 2);
+                map1.Add("0", status20);
                 m_pictureBoxTemp = m_pictureBox2;
                 Chosen_device_num = 2;
                 pictureBoxHost0.Child = m_pictureBox2;
 
 
             }
-            if (name.Equals("m_pictureBox3"))
+            if (name.Equals("m_pictureBox3") && real_PlayPOJOs.Count >= 4)
             {
-
-                int value0 = map1["0"];
+                string color3 = "nomal";
+                bool hd3 = false;
+                Status value0 = map1["0"];
                 for (int i = 0; i < windowsFormsHosts.Count; i++)
                 {
                     if (windowsFormsHosts[i] != null && windowsFormsHosts[i].Child == m_pictureBox3)
                     {
+                        color3 = map1[i.ToString()].color;
+                        hd3 = map1[i.ToString()].hd;
                         map1.Remove(i.ToString());
                         map1.Add(i.ToString(), value0);
                         windowsFormsHosts[i].Child = m_pictureBoxTemp;
                         map1.Remove(i.ToString());
-                        map1.Add(i.ToString(), Chosen_device_num);
+                        Status status3 = new Status();
+                        status3.color = map1["0"].color;
+                        status3.hd = map1["0"].hd;
+                        status3.index = Chosen_device_num;
+                        map1.Add(i.ToString(), status3);
                     }
                 }
                 map1.Remove("0");
-                map1.Add("0", 3);
+                Status status30 = new Status();
+                status30.color = color3;
+                status30.hd = hd3;
+                status30.index = 3;
+                map1.Add("0", status30);
                 m_pictureBoxTemp = m_pictureBox3;
                 Chosen_device_num = 3;
                 pictureBoxHost0.Child = m_pictureBox3;
@@ -952,34 +1028,147 @@ namespace WpfApp1
             }
             if (name.Equals("m_pictureBox0"))
             {
+                string color0 = "nomal";
+                bool hd0 = false;
                 for (int i = 0; i < windowsFormsHosts.Count; i++)
                 {
                     if (windowsFormsHosts[i] != null && windowsFormsHosts[i].Child == m_pictureBox0)
                     {
+
+                        color0 = map1[i.ToString()].color;
+                        hd0 = map1[i.ToString()].hd;
                         windowsFormsHosts[i].Child = m_pictureBoxTemp;
                         map1.Remove(i.ToString());
-                        map1.Add(i.ToString(), Chosen_device_num);
+                        Status status0 = new Status();
+                        status0.color = map1["0"].color;
+                        status0.hd = map1["0"].hd;
+                        status0.index = Chosen_device_num;
+                        map1.Add(i.ToString(), status0);
                     }
                 }
+                Status status00 = new Status();
+                status00.color = color0;
+                status00.hd = hd0;
+                status00.index = 0;
                 map1.Remove("0");
-                map1.Add("0", 0);
+                map1.Add("0", status00);
                 pictureBoxHost0.Child = m_pictureBox0;
                 m_pictureBoxTemp = m_pictureBox0;
                 Chosen_device_num = 0;
             }
+            try
+            {
+                foreach (KeyValuePair<string, Status> kvp in map1)
+                {
+                    Console.WriteLine("sddsfsd");
+                    bool b0 = kvp.Key.Equals("0");
+                    bool b1 = kvp.Key.Equals("1");
+                    bool b2 = kvp.Key.Equals("2");
+                    bool b3 = kvp.Key.Equals("3");
+                    Console.WriteLine(kvp.Key + ":" + kvp.Key.Equals("0"));
+                    Console.WriteLine(kvp.Key + ":" + kvp.Key.Equals("1"));
+                    Console.WriteLine(kvp.Key + ":" + kvp.Key.Equals("2"));
+                    Console.WriteLine(kvp.Key + ":" + kvp.Key.Equals("3"));
+                    if (kvp.Key.Equals("0"))
+                    {
+                        Console.WriteLine("sddsfsd");
+                        Console.WriteLine("nomal:" + kvp.Value.color.Equals("nomal"));
+                        Console.WriteLine("red:" + kvp.Value.color.Equals("red"));
+                        Console.WriteLine("green:" + kvp.Value.color.Equals("green"));
+                        if (kvp.Value.color.Equals("nomal"))
+                        {
+                            MaxNDText.Background = Brushes.Transparent;
+                        }
+                        else if (kvp.Value.color.Equals("red"))
+                        {
+                            MaxNDText.Background = Brushes.Red;
+                        }
+                        else if (kvp.Value.color.Equals("green"))
+                        {
+                            MaxNDText.Background = Brushes.Green;
+                        }
+                    }
+                    else if (kvp.Key.Equals("1"))
+                    {
+                        Console.WriteLine("sddsfsd");
+                        Console.WriteLine("nomal:" + kvp.Value.color.Equals("nomal"));
+                        Console.WriteLine("red:" + kvp.Value.color.Equals("red"));
+                        Console.WriteLine("green:" + kvp.Value.color.Equals("green"));
+                        if (kvp.Value.color.Equals("nomal"))
+                        {
+                            concentrationText1.Background = Brushes.Transparent;
+                        }
+                        else if (kvp.Value.color.Equals("red"))
+                        {
+                            concentrationText1.Background = Brushes.Red;
+                        }
+                        else if (kvp.Value.color.Equals("green"))
+                        {
+                            concentrationText1.Background = Brushes.Green;
+                        }
+
+                    }
+                    else if (kvp.Key.Equals("2"))
+                    {
+                        Console.WriteLine("sddsfsd");
+                        Console.WriteLine("nomal:" + kvp.Value.color.Equals("nomal"));
+                        Console.WriteLine("red:" + kvp.Value.color.Equals("red"));
+                        Console.WriteLine("green:" + kvp.Value.color.Equals("green"));
+                        if (kvp.Value.color.Equals("nomal"))
+                        {
+                            concentrationText2.Background = Brushes.Transparent;
+                        }
+                        else if (kvp.Value.color.Equals("red"))
+                        {
+                            concentrationText2.Background = Brushes.Red;
+                        }
+                        else if (kvp.Value.color.Equals("green"))
+                        {
+                            concentrationText2.Background = Brushes.Green;
+                        }
+
+
+                    }
+
+
+                }
+            }
+            catch (Exception e2)
+            {
+                Console.WriteLine(e2.ToString());
+            }
+
+            reloadCruiseData();
         }
         public MainWindow()
         {
             InitializeComponent();
 
-
-
             disapearSuccessTipsTimer = new DispatcherTimer();
-
-            map1.Add("0", 0);
-            map1.Add("1", 1);
-            map1.Add("2", 2);
-            map1.Add("3", 3);
+            Status status0 = new Status();
+            status0.color = "nomal";
+            status0.index = 0;
+            status0.online = false;
+            status0.hd = false;
+            map1.Add("0", status0);
+            Status status1 = new Status();
+            status1.color = "nomal";
+            status1.index = 1;
+            status1.online = false;
+            status1.hd = false;
+            map1.Add("1", status1);
+            Status status2 = new Status();
+            status2.color = "nomal";
+            status2.index = 0;
+            status2.online = false;
+            status2.hd = false;
+            map1.Add("2", status2);
+            Status status3 = new Status();
+            status3.color = "nomal";
+            status3.index = 0;
+            status3.online = false;
+            status3.hd = false;
+            map1.Add("3", status3);
             LoadHistoryMessageFile();
 
             /*       //初始化历史数据
@@ -1013,7 +1202,6 @@ namespace WpfApp1
             timer.Start();
 
             real_PlayPOJOs = new List<Real_PlayPOJO>();
-            presetPOJOList = new List<PresetPOJO>();
 
             TitleBar.MouseMove += (s, e) =>
             {
@@ -1066,7 +1254,7 @@ namespace WpfApp1
                 Title = "浓度123",
                 PointGeometry = null, // 使点不可见
                 Stroke = Brushes.Silver,
-                StrokeThickness = 1,
+                StrokeThickness = 0,
                 Fill = Brushes.LightSkyBlue,
 
             };
@@ -1363,7 +1551,7 @@ namespace WpfApp1
                         {
                             // 测试
                             // clientSocket.Send(Tool.ModbusTCP_testResult(buffer));
-                            Console.WriteLine(Encoding.Default.GetString(buffer));
+                            //Console.WriteLine(Encoding.Default.GetString(buffer));
 
                             this.Dispatcher.BeginInvoke(new Change(R232Text), Encoding.Default.GetString(buffer), clientSocket);
 
@@ -1404,11 +1592,7 @@ namespace WpfApp1
 
         private void R232Text(string text, Socket socket)
         {
-            if (MainWindow.sbmc != "")
-            {
-                OnlineText.Content = "在线";
-                OnlineText.Background = (Brush)new BrushConverter().ConvertFrom("#afe484");
-            }
+
 
             // Console.WriteLine("text:");
             Console.WriteLine("text:" + text);
@@ -1499,10 +1683,10 @@ namespace WpfApp1
                 //mnd = int.Parse(strArray[0]);
 
                 //如果勾选最大值
-                if (AlgorithmToggle.IsChecked.GetValueOrDefault())
-                {
-                    ndStr = strArray[0];
-                }
+                /*       if (AlgorithmToggle.IsChecked.GetValueOrDefault())
+                       {
+                           ndStr = strArray[0];
+                       }*/
 
 
                 if (ndTimesShowLength % 1 == 0)
@@ -1533,6 +1717,8 @@ namespace WpfApp1
 
                     //对device_num赋值
                     device_num = real_PlayPOJOs.FindIndex(item => item.messagePOJO.deviceNum.Equals(deviceNum));
+
+                    Console.WriteLine(string.Format("device_num:{0}", device_num));
                     if (device_num < 0)
                     {
                         return;
@@ -1541,18 +1727,7 @@ namespace WpfApp1
                     double doubleND = double.Parse(ndStr);
 
 
-                    Console.WriteLine("浓度：{0}", doubleND);
 
-
-
-                    if (ValueList.Count > 20)
-                    {
-                        ValueList.RemoveAt(0);
-                    }
-
-                    ValueList.Add(doubleND);
-
-                    Console.WriteLine("添加了一个浓度值 ");
 
                     #region 给浓度赋值
                     if (double.Parse(real_PlayPOJOs[device_num].messageList[9].ToString()) < doubleND)
@@ -1604,30 +1779,11 @@ namespace WpfApp1
                     //verticalAngle.Status = czjd.ToString("0.00") + "°";
                     real_PlayPOJOs[device_num].messageList[4] = czjd.ToString("0.00") + "°";
                     //光强
+
                     strArray = strArray[1].Split('C');
                     string lightIntensityStr = strArray[0];
                     real_PlayPOJOs[device_num].messageList[8] = lightIntensityStr;
-                    lightIntensity.Status = strArray[0];
 
-                    if (ValueList2.Count == 0)
-                    {
-                        ValueList2.Add(0);
-                        ValueList2.Add(0);
-                        ValueList2.Add(double.Parse(strArray[0])); ValueList2.Add(0);
-                        ValueList2.Add(0);
-                        ValueList2.Add(0);
-                    }
-                    else
-                    {
-                        ValueList2.Clear();
-                        ValueList2.Add(0);
-                        ValueList2.Add(0);
-                        ValueList2.Add(double.Parse(strArray[0])); ValueList2.Add(0);
-                        ValueList2.Add(0);
-                        ValueList2.Add(0);
-
-                    }
-                    //real_PlayPOJOs[device_num].messageList[5] = presetPOJOList[device_num].Speed;
                     real_PlayPOJOs[device_num].messageList[5] = deviceInfoList[Chosen_device_num].speed.ToString(); //todowrj
 
                     //后门
@@ -1686,30 +1842,214 @@ namespace WpfApp1
         /// <param name="device_num"></param>
         private void Message_update(int device_num)
         {
-
-            foreach (KeyValuePair<string, int> kvp in map1)
+            if (!map1[device_num.ToString()].online)
             {
-                if (kvp.Value == device_num)
+                map1[device_num.ToString()].online = true;
+            }
+
+            foreach (KeyValuePair<string, Status> kvp in map1)
+            {
+                if (kvp.Value.index == device_num)
                 {
                     if (kvp.Key.Equals("2"))
                     {
+                        if (map1["2"].online == true)
+                        {
+
+
+                        }
                         concentrationText2.Text = real_PlayPOJOs[device_num].messageList[0];
+
+                        if (map1["2"].hd == true)
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+
                         break;
                     }
                     if (kvp.Key.Equals("1"))
                     {
+                        if (map1["1"].online == true)
+                        {
+                            BitmapImage bitmapImage = new BitmapImage();
+                            bitmapImage.BeginInit();
+                            bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/online_active_dot.png", UriKind.Relative);
+                            bitmapImage.EndInit();
+                            online_image1.Source = bitmapImage;
+                        }
                         concentrationText1.Text = real_PlayPOJOs[device_num].messageList[0];
+
+
+                        if (map1["1"].hd == true)
+                        {
+                            BitmapImage bitmapImage = new BitmapImage();
+                            bitmapImage.BeginInit();
+                            bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/hd_active_dot.png", UriKind.Relative);
+                            bitmapImage.EndInit();
+                            hd_image1.Source = bitmapImage;
+                        }
+                        else
+                        {
+                            BitmapImage bitmapImage = new BitmapImage();
+                            bitmapImage.BeginInit();
+                            bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/inactive_dot.png", UriKind.Relative);
+                            bitmapImage.EndInit();
+                            hd_image1.Source = bitmapImage;
+                        }
+
                         break;
                     }
                     else if (kvp.Key.Equals("0"))
                     {
 
+
+                        if (map1["0"].hd == true)
+                        {
+                            BitmapImage bitmapImage = new BitmapImage();
+                            bitmapImage.BeginInit();
+                            bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/hd_active.png", UriKind.Relative);
+                            bitmapImage.EndInit();
+                            hd_image0.Source = bitmapImage;
+                        }
+                        else
+                        {
+                            BitmapImage bitmapImage = new BitmapImage();
+                            bitmapImage.BeginInit();
+                            bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/hd.png", UriKind.Relative);
+                            bitmapImage.EndInit();
+                            hd_image0.Source = bitmapImage;
+                        }
+
+                        if (map1["0"].online == true)
+                        {
+                            /* OnlineText.Content = "在线";
+                             OnlineText.Background = (Brush)new BrushConverter().ConvertFrom("#afe484");*/
+                            BitmapImage bitmapImage = new BitmapImage();
+                            bitmapImage.BeginInit();
+                            bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/online_active.png", UriKind.Relative);
+                            bitmapImage.EndInit();
+                            onlineImage.Source = bitmapImage;
+                        }
+
+                        //lightIntensity.Status = real_PlayPOJOs[device_num].messageList[8]; //光强
+                        double num1 = double.Parse(real_PlayPOJOs[device_num].messageList[8]);
+                        double percentNum = Math.Round(num1 / 8 * 100);
+                        lightIntensityPercent.Text = percentNum.ToString() + "%";
+                        switch (num1)
+                        {
+                            case 0:
+                                BitmapImage bitmapImage0 = new BitmapImage();
+                                bitmapImage0.BeginInit();
+                                bitmapImage0.UriSource = new Uri("/WpfApp1;component/Resources/line0.png", UriKind.Relative);
+                                bitmapImage0.EndInit();
+                                lightIntensityImg.Source = bitmapImage0;
+                                break;
+                            case 1:
+                                BitmapImage bitmapImage1 = new BitmapImage();
+                                bitmapImage1.BeginInit();
+                                bitmapImage1.UriSource = new Uri("/WpfApp1;component/Resources/line1.png", UriKind.Relative);
+                                bitmapImage1.EndInit();
+                                lightIntensityImg.Source = bitmapImage1;
+                                break;
+                            case 2:
+                                BitmapImage bitmapImage2 = new BitmapImage();
+                                bitmapImage2.BeginInit();
+                                bitmapImage2.UriSource = new Uri("/WpfApp1;component/Resources/line2.png", UriKind.Relative);
+                                bitmapImage2.EndInit();
+                                lightIntensityImg.Source = bitmapImage2;
+                                break;
+                            case 3:
+                                BitmapImage bitmapImage3 = new BitmapImage();
+                                bitmapImage3.BeginInit();
+                                bitmapImage3.UriSource = new Uri("/WpfApp1;component/Resources/line3.png", UriKind.Relative);
+                                bitmapImage3.EndInit();
+                                lightIntensityImg.Source = bitmapImage3;
+                                break;
+                            case 4:
+                                BitmapImage bitmapImage4 = new BitmapImage();
+                                bitmapImage4.BeginInit();
+                                bitmapImage4.UriSource = new Uri("/WpfApp1;component/Resources/line4.png", UriKind.Relative);
+                                bitmapImage4.EndInit();
+                                lightIntensityImg.Source = bitmapImage4;
+                                break;
+
+                            case 5:
+                                BitmapImage bitmapImage5 = new BitmapImage();
+                                bitmapImage5.BeginInit();
+                                bitmapImage5.UriSource = new Uri("/WpfApp1;component/Resources/line5.png", UriKind.Relative);
+                                bitmapImage5.EndInit();
+                                lightIntensityImg.Source = bitmapImage5;
+                                break;
+                            case 6:
+                                BitmapImage bitmapImage6 = new BitmapImage();
+                                bitmapImage6.BeginInit();
+                                bitmapImage6.UriSource = new Uri("/WpfApp1;component/Resources/line6.png", UriKind.Relative);
+                                bitmapImage6.EndInit();
+                                lightIntensityImg.Source = bitmapImage6;
+                                break;
+                            case 7:
+                                BitmapImage bitmapImage7 = new BitmapImage();
+                                bitmapImage7.BeginInit();
+                                bitmapImage7.UriSource = new Uri("/WpfApp1;component/Resources/line7.png", UriKind.Relative);
+                                bitmapImage7.EndInit();
+                                lightIntensityImg.Source = bitmapImage7;
+                                break;
+                            case 8:
+                                BitmapImage bitmapImage8 = new BitmapImage();
+                                bitmapImage8.BeginInit();
+                                bitmapImage8.UriSource = new Uri("/WpfApp1;component/Resources/line8.png", UriKind.Relative);
+                                bitmapImage8.EndInit();
+                                lightIntensityImg.Source = bitmapImage8;
+                                break;
+                            
+                        }
                         MaxNDText.Text = real_PlayPOJOs[device_num].messageList[9];
                         NDText.Text = real_PlayPOJOs[device_num].messageList[0];
                         temprature.Status = real_PlayPOJOs[device_num].messageList[1];
                         horizontalAngle.Status = real_PlayPOJOs[device_num].messageList[3];
                         verticalAngle.Status = real_PlayPOJOs[device_num].messageList[4];
                         speedText.Status = real_PlayPOJOs[device_num].messageList[5] + "°/s";
+
+
+                        Console.WriteLine("浓度：{0}", real_PlayPOJOs[device_num].messageList[0]);
+
+                        double doubleND = double.Parse(real_PlayPOJOs[device_num].messageList[0]);
+
+                        if (ValueList.Count > 20)
+                        {
+                            ValueList.RemoveAt(0);
+                        }
+
+                        ValueList.Add(doubleND);
+
+                        Console.WriteLine("添加了一个浓度值 ");
+
+                        if (ValueList2.Count == 0)
+                        {
+                            ValueList2.Add(0);
+                            ValueList2.Add(0);
+                            ValueList2.Add(double.Parse(real_PlayPOJOs[device_num].messageList[8]));
+                            ValueList2.Add(0);
+                            ValueList2.Add(0);
+                            ValueList2.Add(0);
+                        }
+                        else
+                        {
+                            ValueList2.Clear();
+                            ValueList2.Add(0);
+                            ValueList2.Add(0);
+                            ValueList2.Add(double.Parse(real_PlayPOJOs[device_num].messageList[8]));
+                            ValueList2.Add(0);
+                            ValueList2.Add(0);
+                            ValueList2.Add(0);
+
+                        }
+
+
                         break;
                     }
                 }
@@ -1766,9 +2106,18 @@ namespace WpfApp1
             {
                 return;
             }
+            double HighAlarmDouble = double.Parse(real_PlayPOJOs[MainWindow.Chosen_device_num].I_gbyz.ToString());
+            double bottomDoubleHigh = (172 - 24) / 6000.0 * HighAlarmDouble;
+            Console.WriteLine("bottomDoubleHigh: " + ((172 - 24) / 6000.0 * 24 + bottomDoubleHigh));
+            HightAlarmStackPanel.Margin = new Thickness(20, 0, 0, (172 - 24) / 6000.0 * 24 + bottomDoubleHigh + 24);
+            HighAlarmNum.Text = HighAlarmDouble.ToString();
 
-
-
+            double LowerAlarmDouble = double.Parse(real_PlayPOJOs[MainWindow.Chosen_device_num].I_dbyz.ToString());
+            double bottomDoubleLower = (172 - 24) / 6000.0 * LowerAlarmDouble;
+            Console.WriteLine("bottomDoubleLower: " + (172 / 6000.0 * 24 + bottomDoubleLower));
+            LowerAlarmStackPanel.Margin = new Thickness(20, 0, 0, (172 - 24) / 6000.0 * 24 + bottomDoubleLower + 24);
+            LowerAlarmNum.Text = LowerAlarmDouble.ToString();
+            
 
             if (real_PlayPOJOs[device_num].Save_if)
             {
@@ -1778,16 +2127,16 @@ namespace WpfApp1
             {
                 if (!real_PlayPOJOs[device_num].B_bRecord)
                 {
-                    this.Dispatcher.BeginInvoke(new VideoSave(AutoSaveRecord), MessageShowToggle.IsChecked, device_num);
+                    this.Dispatcher.BeginInvoke(new VideoSave(AutoSaveRecord), true, device_num);
                 }
 
-                if (real_PlayPOJOs[device_num].B_isAuto)
-                {
-                    if (stopCruiseWhenWarning.IsChecked.GetValueOrDefault())
-                    {
-                        StopYTAutoMove(true, device_num);
-                    }
-                }
+                /*      if (real_PlayPOJOs[device_num].B_isAuto)
+                      {
+                          if (stopCruiseWhenWarning.IsChecked.GetValueOrDefault())
+                          {
+                              StopYTAutoMove(true, device_num);
+                          }
+                      }*/
 
                 // this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
                 //sp1.Stop();
@@ -1802,18 +2151,26 @@ namespace WpfApp1
 
                     sp.PlayLooping();
 
-                    foreach (KeyValuePair<string, int> kvp in map1)
+                    foreach (KeyValuePair<string, Status> kvp in map1)
                     {
-                        if (kvp.Value == device_num)
+                        if (kvp.Value.index == device_num)
                         {
                             if (kvp.Key.Equals("0"))
                             {
+                                map1["0"].color = "red";
                                 MaxNDText.Background = Brushes.Red;
                                 break;
                             }
                             else if (kvp.Key.Equals("1"))
                             {
+                                map1["1"].color = "red";
                                 concentrationText1.Background = Brushes.Red;
+                                break;
+                            }
+                            else if (kvp.Key.Equals("2"))
+                            {
+                                map1["2"].color = "red";
+                                concentrationText2.Background = Brushes.Red;
                                 break;
                             }
                         }
@@ -1833,7 +2190,7 @@ namespace WpfApp1
             {
                 if (!real_PlayPOJOs[device_num].B_bRecord)
                 {
-                    this.Dispatcher.BeginInvoke(new VideoSave(AutoSaveRecord), MessageShowToggle.IsChecked, device_num);
+                    this.Dispatcher.BeginInvoke(new VideoSave(AutoSaveRecord), true, device_num);
                 }
 
                 if (real_PlayPOJOs[device_num].B_isAuto)
@@ -1850,7 +2207,33 @@ namespace WpfApp1
                 //播放警报音
                 if (!real_PlayPOJOs[device_num].B_isDBaoJingZhong && !real_PlayPOJOs[device_num].B_isGBaoJingZhong)
                 {
-                    MaxNDText.Background = Brushes.Green;
+
+                    foreach (KeyValuePair<string, Status> kvp in map1)
+                    {
+                        if (kvp.Value.index == device_num)
+                        {
+                            if (kvp.Key.Equals("0"))
+                            {
+                                map1["0"].color = "green";
+                                MaxNDText.Background = Brushes.Green;
+                                break;
+                            }
+                            else if (kvp.Key.Equals("1"))
+                            {
+                                map1["1"].color = "green";
+                                concentrationText1.Background = Brushes.Green;
+                                break;
+                            }
+                            else if (kvp.Key.Equals("2"))
+                            {
+                                map1["2"].color = "green";
+                                concentrationText2.Background = Brushes.Green;
+                                break;
+                            }
+                        }
+                    }
+
+
                     sp1.PlayLooping();
                 }
 
@@ -1860,96 +2243,96 @@ namespace WpfApp1
             }
         }
 
-        private void SaveRecord(object sender, RoutedEventArgs e)
-        {
-            if (MainWindow.sbmc == "")
-            {
-                Growl.SuccessGlobal("请先登录");
-                return;
-            }
-
-            SaveRecord(true);
-        }
-
-        public void SaveRecord(bool isShowMB)
-        {
-            string sVideoFilePath = "";
-            string sVideoFileName = "";
-            if (real_PlayPOJOs[Chosen_device_num].Save_if)
-            {
-                MessageBox.Show("该设备正在自动录像中");
-                return;
-            }
-
-            //录像保存路径和文件名 the path and file name to save
-            //录像保存路径和文件名
-            sVideoFilePath = Application.StartupPath + "\\Record\\"
-                                   + real_PlayPOJOs[Chosen_device_num].Device_name + "\\"
-                                   + DateTime.Now.ToString("yyyy") + "\\"
-                                   + DateTime.Now.ToString("MM") + "\\"
-                                   + DateTime.Now.ToString("dd") + "\\";
-
-            Directory.CreateDirectory(sVideoFilePath);
-
-
-            /*            string sVideoFileName;
-                        sVideoFileName = "Record/" + DateTime.Now.ToString("yyyy-MM-dd-") + DateTime.Now.ToString("HH-mm-ss") + ".mp4";
-            */
-            string str = "";
-
-            if (real_PlayPOJOs[Chosen_device_num].B_bRecord == false)
-            {
-                sVideoFileName = sVideoFilePath + DateTime.Now.ToString("HH-mm-ss");
-                //强制I帧 Make a I frame
-                int lChannel = Int16.Parse("1"); //通道号 Channel number
-                                                 //   CHCNetSDK.NET_DVR_MakeKeyFrame(real_PlayPOJOs[Chosen_device_num].I_lUserID, lChannel);
-
-                //开始录像 Start recording
-                if (!CHCNetSDK.NET_DVR_SaveRealData(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, sVideoFileName + ".wmv"))
+        /*        private void SaveRecord(object sender, RoutedEventArgs e)
                 {
-                    if (isShowMB)
+                    if (MainWindow.sbmc == "")
                     {
-                        str = "图像录制错误";
-                        Growl.SuccessGlobal(str);
-                    }
-                    return;
-                }
-                else
-                {
-                    RecordBtn.Content = "停止";
-                    real_PlayPOJOs[Chosen_device_num].B_bRecord = true;
-                }
-            }
-            else if (!sVideoFileName.Equals(""))
-            {
-                //停止录像 Stop recording
-                if (!CHCNetSDK.NET_DVR_StopSaveRealData(real_PlayPOJOs[Chosen_device_num].I_lRealHandle))
-                {
-                    if (isShowMB)
-                    {
-                        str = "停止录像错误";
-                        Growl.SuccessGlobal(str);
+                        Growl.SuccessGlobal("请先登录");
+                        return;
                     }
 
-                    return;
-                }
-                else
-                {
-                    if (isShowMB)
-                    {
-                        str = "录像保存成功，文件名为:" + sVideoFileName;
-                        Growl.SuccessGlobal(str);
-                    }
-                    RecordBtn.Content = "录像";
-                    real_PlayPOJOs[Chosen_device_num].B_bRecord = false;
-                }
-            }
-        }
+                    SaveRecord(true);
+                }*/
 
-        private void stopCruiseWhenWarningFun(object sender, RoutedEventArgs e)
-        {
-            stopCruiseWhenWarningIsChecked = stopCruiseWhenWarning.IsChecked.Value;
-        }
+        /*        public void SaveRecord(bool isShowMB)
+                {
+                    string sVideoFilePath = "";
+                    string sVideoFileName = "";
+                    if (real_PlayPOJOs[Chosen_device_num].Save_if)
+                    {
+                        MessageBox.Show("该设备正在自动录像中");
+                        return;
+                    }
+
+                    //录像保存路径和文件名 the path and file name to save
+                    //录像保存路径和文件名
+                    sVideoFilePath = Application.StartupPath + "\\Record\\"
+                                           + real_PlayPOJOs[Chosen_device_num].Device_name + "\\"
+                                           + DateTime.Now.ToString("yyyy") + "\\"
+                                           + DateTime.Now.ToString("MM") + "\\"
+                                           + DateTime.Now.ToString("dd") + "\\";
+
+                    Directory.CreateDirectory(sVideoFilePath);
+
+
+                    *//*            string sVideoFileName;
+                                sVideoFileName = "Record/" + DateTime.Now.ToString("yyyy-MM-dd-") + DateTime.Now.ToString("HH-mm-ss") + ".mp4";
+                    *//*
+                    string str = "";
+
+                    if (real_PlayPOJOs[Chosen_device_num].B_bRecord == false)
+                    {
+                        sVideoFileName = sVideoFilePath + DateTime.Now.ToString("HH-mm-ss");
+                        //强制I帧 Make a I frame
+                        int lChannel = Int16.Parse("1"); //通道号 Channel number
+                                                         //   CHCNetSDK.NET_DVR_MakeKeyFrame(real_PlayPOJOs[Chosen_device_num].I_lUserID, lChannel);
+
+                        //开始录像 Start recording
+                        if (!CHCNetSDK.NET_DVR_SaveRealData(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, sVideoFileName + ".wmv"))
+                        {
+                            if (isShowMB)
+                            {
+                                str = "图像录制错误";
+                                Growl.SuccessGlobal(str);
+                            }
+                            return;
+                        }
+                        else
+                        {
+                            RecordBtn.Content = "停止";
+                            real_PlayPOJOs[Chosen_device_num].B_bRecord = true;
+                        }
+                    }
+                    else if (!sVideoFileName.Equals(""))
+                    {
+                        //停止录像 Stop recording
+                        if (!CHCNetSDK.NET_DVR_StopSaveRealData(real_PlayPOJOs[Chosen_device_num].I_lRealHandle))
+                        {
+                            if (isShowMB)
+                            {
+                                str = "停止录像错误";
+                                Growl.SuccessGlobal(str);
+                            }
+
+                            return;
+                        }
+                        else
+                        {
+                            if (isShowMB)
+                            {
+                                str = "录像保存成功，文件名为:" + sVideoFileName;
+                                Growl.SuccessGlobal(str);
+                            }
+                            RecordBtn.Content = "录像";
+                            real_PlayPOJOs[Chosen_device_num].B_bRecord = false;
+                        }
+                    }
+                }*/
+
+        /*        private void stopCruiseWhenWarningFun(object sender, RoutedEventArgs e)
+                {
+                    stopCruiseWhenWarningIsChecked = stopCruiseWhenWarning.IsChecked.Value;
+                }*/
         /// <summary>
         /// 自动录像
         /// </summary>
@@ -2038,18 +2421,18 @@ namespace WpfApp1
 
         private void ResetAlarmValue(object sender, RoutedEventArgs e)
         {
-
-            if (real_PlayPOJOs[map1["0"]].B_isGBaoJingZhong)
+            map1["0"].color = "nomal";
+            if (real_PlayPOJOs[map1["0"].index].B_isGBaoJingZhong)
             {
                 sp.Stop();
             }
-            if (real_PlayPOJOs[map1["0"]].B_isDBaoJingZhong)
+            if (real_PlayPOJOs[map1["0"].index].B_isDBaoJingZhong)
             {
                 sp1.Stop();
             }
-            real_PlayPOJOs[map1["0"]].B_isGBaoJingZhong = false;
-            real_PlayPOJOs[map1["0"]].B_isDBaoJingZhong = false;
-            real_PlayPOJOs[map1["0"]].messageList[9] = "0";
+            real_PlayPOJOs[map1["0"].index].B_isGBaoJingZhong = false;
+            real_PlayPOJOs[map1["0"].index].B_isDBaoJingZhong = false;
+            real_PlayPOJOs[map1["0"].index].messageList[9] = "0";
             MaxNDText.Text = "0";
             MaxNDText.Background = Brushes.Transparent;
         }
@@ -2182,9 +2565,8 @@ namespace WpfApp1
                 Horiz = real_PlayPOJOs[device_num].messageList[3],
                 Vert = real_PlayPOJOs[device_num].messageList[4],
                 Preset_num = presetInt,
-                Preset_name = presetName,
+                Preset_notes = presetName,
                 video_path = sVideoFileName,
-                new_if = true
             };
 
             XmlDocument doc = new XmlDocument();
@@ -2193,7 +2575,7 @@ namespace WpfApp1
             {
                 //doc.LoadXml("<bookstore></bookstore>");//用这句话,会把以前的数据全部覆盖掉,只有你增加的数据
                 doc.Load(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "HistoryMessages.xml");
-                XmlNode root = doc.SelectSingleNode("historymessage");
+                XmlNode root = doc.SelectSingleNode("historymessages");
 
 
                 XmlElement xelMessage = doc.CreateElement("message");
@@ -2236,13 +2618,9 @@ namespace WpfApp1
                 xelPresetNum.InnerText = historyMessage.Preset_num.ToString();
                 xelMessage.AppendChild(xelPresetNum);
 
-                XmlElement xelPresetName = doc.CreateElement("preset_name");
-                xelPresetName.InnerText = historyMessage.Preset_name;
-                xelMessage.AppendChild(xelPresetName);
-
-                XmlElement xelNewIf = doc.CreateElement("new_if");
-                xelNewIf.InnerText = true.ToString();
-                xelMessage.AppendChild(xelNewIf);
+                XmlElement xelPresetNotes = doc.CreateElement("preset_notes");
+                xelPresetNotes.InnerText = historyMessage.Preset_notes;
+                xelMessage.AppendChild(xelPresetNotes);
 
                 XmlElement xelVideoPath = doc.CreateElement("video_path");
                 xelVideoPath.InnerText = sVideoFileName;
@@ -2478,64 +2856,7 @@ namespace WpfApp1
         }
 
 
-        private void initSpeed(object sender, EventArgs e)
-        {
-            if (MainWindow.sbmc == "")
-            {
-                Growl.SuccessGlobal("请先登录");
-                return;
-            }
 
-            if (!NET_DVR_PTZPreset(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, (uint)SET_PRESET, 5))
-                Growl.SuccessGlobal("5，err=" + NET_DVR_GetLastError());
-            Thread.Sleep(500);
-
-            if (!NET_DVR_PTZPreset(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, (uint)SET_PRESET, 10))
-                Growl.SuccessGlobal("10，err=" + NET_DVR_GetLastError());
-            Thread.Sleep(500);
-
-            if (!NET_DVR_PTZPreset(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, (uint)SET_PRESET, 15))
-                Growl.SuccessGlobal("15，err=" + NET_DVR_GetLastError());
-            Thread.Sleep(500);
-
-            if (!NET_DVR_PTZPreset(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, (uint)SET_PRESET, 20))
-                Growl.SuccessGlobal("20，err=" + NET_DVR_GetLastError());
-            Thread.Sleep(500);
-
-            if (!NET_DVR_PTZPreset(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, (uint)SET_PRESET, 25))
-                Growl.SuccessGlobal("25，err=" + NET_DVR_GetLastError());
-            Thread.Sleep(500);
-
-            if (!NET_DVR_PTZPreset(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, (uint)SET_PRESET, 30))
-                Growl.SuccessGlobal("30，err=" + NET_DVR_GetLastError());
-            Thread.Sleep(500);
-
-            if (!NET_DVR_PTZPreset(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, (uint)SET_PRESET, 35))
-                Growl.SuccessGlobal("35，err=" + NET_DVR_GetLastError());
-            Thread.Sleep(500);
-
-            if (!NET_DVR_PTZPreset(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, (uint)SET_PRESET, 40))
-                Growl.SuccessGlobal("40，err=" + NET_DVR_GetLastError());
-            Thread.Sleep(500);
-
-            if (!NET_DVR_PTZPreset(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, (uint)SET_PRESET, 65))
-                Growl.SuccessGlobal("65，err=" + NET_DVR_GetLastError());
-            Thread.Sleep(500);
-
-            if (!NET_DVR_PTZPreset(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, (uint)SET_PRESET, 23))
-                Growl.SuccessGlobal("23，err=" + NET_DVR_GetLastError());
-            Thread.Sleep(500);
-
-            if (!NET_DVR_PTZPreset(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, (uint)SET_PRESET, 24))
-                Growl.SuccessGlobal("24，err=" + NET_DVR_GetLastError());
-            Thread.Sleep(500);
-
-            if (!NET_DVR_PTZPreset(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, (uint)SET_PRESET, 92))
-                Growl.SuccessGlobal("92，err=" + NET_DVR_GetLastError());
-            Thread.Sleep(500);
-
-            Growl.SuccessGlobal("初始化成功");
-        }
 
 
         private void Reset(object sender, EventArgs e)

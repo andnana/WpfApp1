@@ -19,7 +19,7 @@
     <Window.Resources>
         <Style x:Key="DataGridTextCenterColumnStyle" TargetType="DataGridRow">
             <Setter Property="HorizontalContentAlignment" Value="Center" />
-            <Setter Property="Background" Value="#55554b" />
+            <Setter Property="Background" Value="#5a5a58" />
             <Setter Property="Foreground" Value="White" />
         </Style>
     </Window.Resources>
@@ -40,7 +40,7 @@
                 Name="TitleBar"
                 Grid.Row="0"
                 Grid.Column="0"
-                Background="#55554b">
+                Background="#5a5a58">
                 <!--  窗体边框  -->
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -61,8 +61,8 @@
                 </Grid>
                 <Border
                     Grid.Column="2"
-                    Background="#55554b"
-                    BorderBrush="#55554b"
+                    Background="#5a5a58"
+                    BorderBrush="#5a5a58"
                     BorderThickness="0">
 
                     <!--  内容区域  -->
@@ -71,7 +71,7 @@
                         <Border
                             Height="40"
                             Padding="0"
-                            Background="#55554b"
+                            Background="#5a5a58"
                             CornerRadius="0,0,0,0">
                             <DockPanel>
                                 <DockPanel LastChildFill="False">
@@ -121,7 +121,7 @@
         </Grid>
         <StackPanel
             Grid.Row="1"
-            Background="#55554b"
+            Background="#5a5a58"
             Orientation="Horizontal">
             <StackPanel Orientation="Horizontal">
                 <Label
@@ -129,7 +129,7 @@
                     Margin="10"
                     VerticalAlignment="Center"
                     HorizontalContentAlignment="Right"
-                    Background="#55554b"
+                    Background="#5a5a58"
                     BorderThickness="0"
                     Content="备注："
                     Foreground="White" />
@@ -140,7 +140,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     HorizontalContentAlignment="Left"
-                    Background="#55554b"
+                    Background="#5a5a58"
                     BorderThickness="0"
                     Content="dafdfdfs"
                     Foreground="White" />
@@ -151,18 +151,18 @@
                     Margin="10"
                     VerticalAlignment="Center"
                     HorizontalContentAlignment="Right"
-                    Background="#55554b"
+                    Background="#5a5a58"
                     BorderThickness="0"
                     Content="保存时间："
                     Foreground="White" />
                 <Label
                     Name="SaveTimeLabel"
-                    Width="100"
+                    Width="140"
                     Margin="10"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     HorizontalContentAlignment="Left"
-                    Background="#55554b"
+                    Background="#5a5a58"
                     BorderThickness="0"
                     Content="fgfgjkfdjk"
                     Foreground="White" />
@@ -170,7 +170,7 @@
         </StackPanel>
         <StackPanel
             Grid.Row="2"
-            Background="#55554b"
+            Background="#5a5a58"
             Orientation="Vertical">
             <Grid>
                 <Grid.RowDefinitions>
@@ -185,7 +185,7 @@
                     Padding="10,6"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Background="#55554b"
+                    Background="#5a5a58"
                     Foreground="White"
                     Header="预置点">
                     <StackPanel Orientation="Horizontal">
@@ -195,7 +195,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             HorizontalContentAlignment="Right"
-                            Background="#55554b"
+                            Background="#5a5a58"
                             BorderThickness="0"
                             Content="选择预置点："
                             Foreground="White" />
@@ -220,7 +220,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             HorizontalContentAlignment="Right"
-                            Background="#55554b"
+                            Background="#5a5a58"
                             BorderThickness="0"
                             Content="时间："
                             Foreground="White" />
@@ -247,7 +247,7 @@
                     <Button
                         Width="100"
                         Height="60"
-                        Background="#55554b"
+                        Background="#5a5a58"
                         BorderThickness="0"
                         Click="AddPreset"
                         Content="添加"
@@ -293,7 +293,7 @@
                 Name="PresetsDataGrid"
                 Height="240"
                 AutoGenerateColumns="False"
-                Background="#55554b"
+                Background="#5a5a58"
                 BorderThickness="0"
                 Foreground="White"
                 HeadersVisibility="Column"

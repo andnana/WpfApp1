@@ -7,7 +7,7 @@
     xmlns:local="clr-namespace:WpfApp1"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="巡航"
-    Width="400"
+    Width="420"
     Height="360"
     Background="Black"
     BorderBrush="White"
@@ -19,7 +19,7 @@
     <Window.Resources>
         <Style x:Key="DataGridTextCenterColumnStyle" TargetType="DataGridRow">
             <Setter Property="HorizontalContentAlignment" Value="Center" />
-            <Setter Property="Background" Value="#55554b" />
+            <Setter Property="Background" Value="#5a5a58" />
             <Setter Property="Foreground" Value="White" />
         </Style>
     </Window.Resources>
@@ -39,7 +39,7 @@
                 Name="TitleBar"
                 Grid.Row="0"
                 Grid.Column="0"
-                Background="#55554b">
+                Background="#5a5a58">
                 <!--  窗体边框  -->
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -60,8 +60,8 @@
                 </Grid>
                 <Border
                     Grid.Column="2"
-                    Background="#55554b"
-                    BorderBrush="#55554b"
+                    Background="#5a5a58"
+                    BorderBrush="#5a5a58"
                     BorderThickness="0">
 
                     <!--  内容区域  -->
@@ -70,7 +70,7 @@
                         <Border
                             Height="40"
                             Padding="0"
-                            Background="#55554b"
+                            Background="#5a5a58"
                             CornerRadius="0,0,0,0">
                             <DockPanel>
                                 <DockPanel LastChildFill="False">
@@ -120,7 +120,7 @@
         </Grid>
         <StackPanel
             Grid.Row="1"
-            Background="#55554b"
+            Background="#5a5a58"
             Orientation="Vertical">
             <Grid>
                 <Grid.RowDefinitions>
@@ -135,7 +135,7 @@
                     Padding="10,6"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Background="#55554b"
+                    Background="#5a5a58"
                     Foreground="White"
                     Header="菜单">
                     <StackPanel Orientation="Horizontal">
@@ -144,7 +144,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             HorizontalContentAlignment="Right"
-                            Background="#55554b"
+                            Background="#5a5a58"
                             BorderThickness="0"
                             Content="备注："
                             Foreground="White" />
@@ -161,7 +161,7 @@
                     <Button
                         Width="100"
                         Height="60"
-                        Background="#55554b"
+                        Background="#5a5a58"
                         BorderThickness="0"
                         Click="AddCruise"
                         Content="添加"
@@ -207,7 +207,7 @@
                 Name="CruisesDataGrid"
                 Height="240"
                 AutoGenerateColumns="False"
-                Background="#55554b"
+                Background="#5a5a58"
                 BorderThickness="0"
                 Foreground="White"
                 HeadersVisibility="Column"

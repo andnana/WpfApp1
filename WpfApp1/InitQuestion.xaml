@@ -1,13 +1,14 @@
 ﻿<Window
-    x:Class="WpfApp1.Prompt"
+    x:Class="WpfApp1.InitQuestion"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
     xmlns:local="clr-namespace:WpfApp1"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="确认删除"
+    Title="提示信息"
     Width="400"
-    Height="160"
+    Height="100"
     Background="Black"
     BorderBrush="White"
     BorderThickness="1"
@@ -31,7 +32,7 @@
                 Name="TitleBar"
                 Grid.Row="0"
                 Grid.Column="0"
-                Background="#55554b">
+                Background="#5a5a58">
                 <!--  窗体边框  -->
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -41,19 +42,10 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
-                    <Image
-                        Width="120"
-                        Height="23"
-                        Margin="0,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Source="/WpfApp1;component/Resources/logout_text.png" />
-                </Grid>
                 <Border
                     Grid.Column="2"
-                    Background="#55554b"
-                    BorderBrush="#55554b"
+                    Background="#5a5a58"
+                    BorderBrush="#5a5a58"
                     BorderThickness="0">
 
                     <!--  内容区域  -->
@@ -62,11 +54,17 @@
                         <Border
                             Height="40"
                             Padding="0"
-                            Background="#55554b"
+                            Background="#5a5a58"
                             CornerRadius="0,0,0,0">
                             <DockPanel>
                                 <DockPanel LastChildFill="False">
                                     <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+
+                                        <!--       <Button  Margin="6"  Name="BtMax" Width="16" Height="16"  Padding="0" BorderThickness="0" Background="Transparent">
+                <Button.Content>
+                    <Image Source="/WpfApp1;component/Resources/Maximize.png" Width="16" Height="16"/>
+                </Button.Content>
+            </Button>-->
                                         <Button
                                             Name="BtClose"
                                             Width="16"
@@ -90,61 +88,28 @@
                 </Border>
             </Grid>
         </Grid>
-        <Grid Grid.Row="1" Background="#55554b">
+        <Grid Grid.Row="1" Background="#5a5a58">
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="40" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="9*" />
                 </Grid.ColumnDefinitions>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="9*" />
-                    </Grid.ColumnDefinitions>
-                    <Image
-                        Width="30"
-                        Height="30"
-                        Margin="4"
-                        VerticalAlignment="Center"
-                        Source="/WpfApp1;component/Resources/question.png" />
-                    <TextBlock
-                        Grid.Column="1"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="14"
-                        Foreground="White"
-                        Text="确认删除？" />
-                </Grid>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Button
-                        Width="70"
-                        Margin="12"
-                        HorizontalAlignment="Right"
-                        Background="#326cf3"
-                        BorderThickness="0"
-                        Click="Yes"
-                        Content="是"
-                        Foreground="White" />
-                    <Button
-                        Grid.Column="1"
-                        Width="70"
-                        Margin="12"
-                        HorizontalAlignment="Left"
-                        Background="White"
-                        BorderThickness="0"
-                        Click="No"
-                        Content="否"
-                        Foreground="Black" />
-                </Grid>
+                <Image
+                    Width="30"
+                    Height="30"
+                    Margin="4"
+                    VerticalAlignment="Center"
+                    Source="/WpfApp1;component/Resources/question.png" />
+                <TextBlock
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    Foreground="White"
+                    Text="第一次设置速度之前请先初始化。" />
             </Grid>
-
         </Grid>
+
     </Grid>
+
 </Window>

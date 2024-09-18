@@ -212,7 +212,8 @@ namespace WpfApp1
             //MessageBoxWindow.real_PlayPOJOs.Add(new Real_PlayPOJO { deviceNum = "60134" });
             MainWindow.real_PlayPOJOs.Add(new Real_PlayPOJO { deviceNum = deviceNumStr });
             MainWindow.sbmc =  info.Ip; //deviceNameTextBox.Text.Trim().Equals("") ? info.Ip : deviceNameTextBox.Text.Trim();
-            MainWindow.In_Main_Form.SetLoginInfo(info, MainWindow.real_PlayPOJOs.Count - 1, true);
+           
+            MainWindow.In_Main_Form.SetLoginInfo(info, MainWindow.real_PlayPOJOs.Count - 1, HighDefinitionToggle.IsChecked.GetValueOrDefault());
             Once_login_info = new LoginPOJO
             {
                 Ip = ip,

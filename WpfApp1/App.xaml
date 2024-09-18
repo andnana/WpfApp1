@@ -1,19 +1,20 @@
-﻿<Application x:Class="WpfApp1.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:hc="https://handyorg.github.io/handycontrol"
-             xmlns:local="clr-namespace:WpfApp1"
-             StartupUri="MainWindow.xaml">
+﻿<Application
+    x:Class="WpfApp1.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
+    xmlns:local="clr-namespace:WpfApp1"
+    StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <SolidColorBrush x:Key="WindowTitleBrush" Color="#55554b"/>
-            <!-- 标题栏前景色 -->
-            <SolidColorBrush x:Key="WindowTitleBackgroundBrush" Color="#55554b"/>
-            <!-- 标题栏背景色 -->
+            <SolidColorBrush x:Key="WindowTitleBrush" Color="#5a5a58" />
+            <!--  标题栏前景色  -->
+            <SolidColorBrush x:Key="WindowTitleBackgroundBrush" Color="#5a5a58" />
+            <!--  标题栏背景色  -->
         </ResourceDictionary>
     </Application.Resources>
 </Application>

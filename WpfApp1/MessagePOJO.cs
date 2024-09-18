@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WpfApp1
 {
-    internal class MessagePOJO
+    public class MessagePOJO
     {
         /// <summary>
         /// 前导和结束数据*

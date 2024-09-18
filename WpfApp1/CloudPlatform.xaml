@@ -31,7 +31,7 @@
                 Name="TitleBar"
                 Grid.Row="0"
                 Grid.Column="0"
-                Background="#55554b">
+                Background="#5a5a58">
                 <!--  窗体边框  -->
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -52,8 +52,8 @@
                 </Grid>
                 <Border
                     Grid.Column="2"
-                    Background="#55554b"
-                    BorderBrush="#55554b"
+                    Background="#5a5a58"
+                    BorderBrush="#5a5a58"
                     BorderThickness="0">
 
                     <!--  内容区域  -->
@@ -62,7 +62,7 @@
                         <Border
                             Height="40"
                             Padding="0"
-                            Background="#55554b"
+                            Background="#5a5a58"
                             CornerRadius="0,0,0,0">
                             <DockPanel>
                                 <DockPanel LastChildFill="False">
@@ -113,7 +113,7 @@
         <Grid
             Grid.Row="1"
             Grid.Column="0"
-            Background="#55554b">
+            Background="#5a5a58">
             <Grid.RowDefinitions>
                 <RowDefinition />
             </Grid.RowDefinitions>
@@ -131,23 +131,32 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         HorizontalContentAlignment="Right"
-                        Background="#55554b"
+                        Background="#5a5a58"
                         BorderThickness="0"
-                        Content="选择设备："
+                        Content="设备IP："
                         Foreground="White" />
-                    <hc:ComboBox
+                    <Label
+                        Name="deviceIPLabel"
+                        Width="100"
+                        Margin="10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        HorizontalContentAlignment="Left"
+                        Background="#5a5a58"
+                        BorderThickness="0"
+                        Foreground="White" />
+                    <!--  <hc:ComboBox
                         Name="DeviceIPCombobox"
                         Width="116"
                         Height="26"
                         Margin="4"
                         Foreground="Black"
                         SelectedIndex="0">
-                        <!--    <ComboBoxItem
+                        <ComboBoxItem
                             Content="全部"
                             Foreground="Black"
-                            IsSelected="True" />-->
-                    </hc:ComboBox>
-
+                            IsSelected="True" />
+                    </hc:ComboBox>-->
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label
@@ -156,7 +165,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         HorizontalContentAlignment="Right"
-                        Background="#55554b"
+                        Background="#5a5a58"
                         BorderThickness="0"
                         Content="高报阈值："
                         Foreground="White" />
@@ -174,7 +183,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         HorizontalContentAlignment="Right"
-                        Background="#55554b"
+                        Background="#5a5a58"
                         BorderThickness="0"
                         Content="低报阈值："
                         Foreground="White" />
@@ -195,35 +204,7 @@
                     Click="setAlarmValue"
                     Content="设置"
                     Foreground="White" />
-                <StackPanel Orientation="Horizontal">
-                    <Label
-                        Width="80"
-                        Margin="10"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        HorizontalContentAlignment="Right"
-                        Background="#55554b"
-                        BorderThickness="0"
-                        Content="移动速度："
-                        Foreground="White" />
-                    <hc:NumericUpDown
-                        Name="speedNumericUpDown"
-                        Grid.Column="1"
-                        Width="60"
-                        Height="30"
-                        Increment="2"
-                        Maximum="15"
-                        Minimum="1"
-                        Value="1" />
-                    <Button
-                        Margin="12,12,16,12"
-                        HorizontalAlignment="Right"
-                        Background="#326cf3"
-                        BorderThickness="0"
-                        Click="speedSetup"
-                        Content="设置"
-                        Foreground="White" />
-                </StackPanel>
+
             </StackPanel>
             <StackPanel
                 Grid.Row="0"
@@ -260,7 +241,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         HorizontalContentAlignment="Right"
-                        Background="#55554b"
+                        Background="#5a5a58"
                         BorderThickness="0"
                         Content="预置点："
                         Foreground="White" />
@@ -301,7 +282,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         HorizontalContentAlignment="Right"
-                        Background="#55554b"
+                        Background="#5a5a58"
                         BorderThickness="0"
                         Content="备注："
                         Foreground="White" />
@@ -349,7 +330,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         HorizontalContentAlignment="Right"
-                        Background="#55554b"
+                        Background="#5a5a58"
                         BorderThickness="0"
                         Content="巡航路径："
                         Foreground="White" />
@@ -404,8 +385,79 @@
                         Foreground="White" />-->
 
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label
+                        Width="80"
+                        Margin="10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        HorizontalContentAlignment="Right"
+                        Background="#5a5a58"
+                        BorderThickness="0"
+                        Content="移动速度："
+                        Foreground="White" />
+                    <hc:NumericUpDown
+                        Name="speedNumericUpDown"
+                        Grid.Column="1"
+                        Width="60"
+                        Height="30"
+                        Increment="2"
+                        Maximum="15"
+                        Minimum="1"
+                        Value="1" />
+                    <Button
+                        Margin="12,12,16,12"
+                        HorizontalAlignment="Right"
+                        Background="#326cf3"
+                        BorderThickness="0"
+                        Click="speedSetup"
+                        Content="设置"
+                        Foreground="White" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
 
-
+                    <Button
+                        Margin="20,10,10,10"
+                        Background="#326cf3"
+                        BorderThickness="0"
+                        Click="initSpeed"
+                        Content="初始化"
+                        Foreground="White" />
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Margin="4"
+                        Padding="0"
+                        VerticalAlignment="Top"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Click="initQuestion">
+                        <hc:Poptip.Instance>
+                            <hc:Poptip
+                                Content="第一次设置速度之前请先初始化。"
+                                HitMode="Hover"
+                                PlacementType="TopRight" />
+                        </hc:Poptip.Instance>
+                        <Button.Content>
+                            <Image
+                                Width="20"
+                                Height="20"
+                                Source="/WpfApp1;component/Resources/question_icon.png" />
+                        </Button.Content>
+                    </Button>
+                    <hc:LoadingCircle
+                        Name="loading"
+                        Width="20"
+                        Height="20"
+                        Margin="10"
+                        Foreground="White"
+                        Visibility="Hidden" />
+                    <TextBlock
+                        Name="loadingTips"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        Foreground="White" />
+                </StackPanel>
             </StackPanel>
 
         </Grid>
