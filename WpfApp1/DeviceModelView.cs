@@ -26,7 +26,7 @@ namespace WpfApp1
         }
         private void ValueCommandAction(object obj)
         {
-            MessageBox.Show("成功123" + obj, "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("成功" + obj, "提示", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         public DeviceModelView()

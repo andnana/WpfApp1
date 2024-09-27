@@ -50,13 +50,12 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="1">
-                    <Image
-                        Width="120"
-                        Height="23"
-                        Margin="0,0"
+                    <TextBlock
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Source="/WpfApp1;component/Resources/alarm_history_text.png" />
+                        FontSize="20"
+                        Foreground="White"
+                        Text="{DynamicResource alarm_history}" />
                 </Grid>
                 <Border
                     Grid.Column="2"
@@ -137,16 +136,16 @@
                     VerticalAlignment="Center"
                     Background="#5a5a58"
                     Foreground="White"
-                    Header="菜单">
+                    Header="{DynamicResource menu}">
 
 
                     <Button
-                        Width="100"
+                        Width="120"
                         Height="60"
                         Background="#5a5a58"
                         BorderThickness="0"
                         Click="copyVideoPath"
-                        Content="复制视频保存目录"
+                        Content="{DynamicResource copy_vedio_path}"
                         Foreground="White">
                         <Button.ContentTemplate>
                             <DataTemplate>
@@ -159,18 +158,18 @@
                                     <TextBlock
                                         VerticalAlignment="Center"
                                         FontSize="10"
-                                        Text="复制视频保存目录" />
+                                        Text="{DynamicResource copy_vedio_path}" />
                                 </StackPanel>
                             </DataTemplate>
                         </Button.ContentTemplate>
                     </Button>
                     <Button
-                        Width="100"
+                        Width="120"
                         Height="60"
                         Background="#5a5a58"
                         BorderThickness="0"
                         Click="copyExcelFilePath"
-                        Content="复制表格保存目录"
+                        Content="{DynamicResource copy_data_path}"
                         Foreground="White">
                         <Button.ContentTemplate>
                             <DataTemplate>
@@ -183,18 +182,18 @@
                                     <TextBlock
                                         VerticalAlignment="Center"
                                         FontSize="10"
-                                        Text="复制表格保存目录" />
+                                        Text="{DynamicResource copy_data_path}" />
                                 </StackPanel>
                             </DataTemplate>
                         </Button.ContentTemplate>
                     </Button>
                     <Button
-                        Width="60"
+                        Width="80"
                         Height="60"
                         Background="#5a5a58"
                         BorderThickness="0"
                         Click="saveExcel"
-                        Content="保存表格"
+                        Content="{DynamicResource save_data}"
                         Foreground="White">
                         <Button.ContentTemplate>
                             <DataTemplate>
@@ -207,7 +206,7 @@
                                     <TextBlock
                                         VerticalAlignment="Center"
                                         FontSize="10"
-                                        Text="保存表格" />
+                                        Text="{DynamicResource save_data}" />
                                 </StackPanel>
                             </DataTemplate>
                         </Button.ContentTemplate>
@@ -246,7 +245,7 @@
                         Background="#326cf3"
                         BorderThickness="0"
                         Click="refreshData"
-                        Content="刷新"
+                        Content="{DynamicResource refresh}"
                         Foreground="White" />
                 </Grid>
             </Grid>
@@ -264,44 +263,71 @@
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding device_IP}"
-                        Foreground="Green"
-                        Header="设备IP" />
+                        Foreground="Green">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource device_ip}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding device_name}"
-                        Foreground="White"
-                        Header="设备名称" />
+                        Foreground="White">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource device_name}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
                     <DataGridTextColumn
                         Width="168"
                         Binding="{Binding save_time}"
-                        Foreground="White"
-                        Header="时间" />
+                        Foreground="White">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource time}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
                     <DataGridTextColumn
                         Width="80"
                         Binding="{Binding concentration}"
-                        Foreground="White"
-                        Header="浓度" />
+                        Foreground="White">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource concentration}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
                     <DataGridTextColumn
                         Width="80"
                         Binding="{Binding Horiz}"
-                        Foreground="White"
-                        Header="水平角度" />
+                        Foreground="White">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource horizontal}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
                     <DataGridTextColumn
                         Width="80"
                         Binding="{Binding Vert}"
-                        Foreground="White"
-                        Header="垂直角度" />
+                        Foreground="White">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource vertical}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
                     <DataGridTextColumn
                         Width="60"
                         Binding="{Binding Preset_num}"
-                        Foreground="White"
-                        Header="预置点" />
+                        Foreground="White">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource preset_point}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
                     <DataGridTextColumn
                         Width="160"
                         Binding="{Binding Preset_notes}"
-                        Foreground="White"
-                        Header="预置点备注" />
-                    <DataGridTemplateColumn Header="操作">
+                        Foreground="White">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource preset_notes}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.Header>
+                            <TextBlock Text="{DynamicResource operation}" />
+                        </DataGridTemplateColumn.Header>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -312,7 +338,7 @@
                                         Click="invokePreset"
                                         Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
                                         CommandParameter="{Binding DeviceIP}"
-                                        Content="前往"
+                                        Content="{DynamicResource goto}"
                                         Foreground="White" />
                                     <Button
                                         Margin="2"
@@ -321,7 +347,7 @@
                                         Click="seeVideo"
                                         Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
                                         CommandParameter="{Binding DeviceIP}"
-                                        Content="播放视频"
+                                        Content="{DynamicResource play_vedio}"
                                         Foreground="White" />
 
                                     <Button
@@ -331,7 +357,7 @@
                                         Click="remove"
                                         Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
                                         CommandParameter="{Binding DeviceIP}"
-                                        Content="删除"
+                                        Content="{DynamicResource delete}"
                                         Foreground="White" />
                                 </StackPanel>
 

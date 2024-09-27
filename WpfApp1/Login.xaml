@@ -7,7 +7,7 @@
     xmlns:local="clr-namespace:WpfApp1"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="登录"
-    Width="500"
+    Width="560"
     Height="380"
     Background="Black"
     BorderBrush="White"
@@ -44,13 +44,12 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="1">
-                    <Image
-                        Width="120"
-                        Height="23"
-                        Margin="0,0"
+                    <TextBlock
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Source="/WpfApp1;component/Resources/device_login_text.png" />
+                        FontSize="20"
+                        Foreground="White"
+                        Text="{DynamicResource device_login}" />
                 </Grid>
                 <Border
                     Grid.Column="2"
@@ -120,14 +119,14 @@
                 VerticalAlignment="Center"
                 Background="#5a5a58"
                 Foreground="White"
-                Header="菜单">
+                Header="{DynamicResource menu}">
                 <Button
-                    Width="100"
+                    Width="120"
                     Height="60"
                     Background="#5a5a58"
                     BorderThickness="0"
                     Click="delete_login_info"
-                    Content="删除当前预设数据"
+                    Content="{DynamicResource delete_preset_data}"
                     Foreground="White">
                     <Button.ContentTemplate>
                         <DataTemplate>
@@ -141,7 +140,7 @@
                                     VerticalAlignment="Center"
                                     FontSize="10"
                                     Foreground="White"
-                                    Text="删除当前预设数据" />
+                                    Text="{DynamicResource delete_preset_data}" />
                             </StackPanel>
                         </DataTemplate>
                     </Button.ContentTemplate>
@@ -158,60 +157,43 @@
                 <StackPanel
                     Grid.Row="1"
                     Grid.Column="0"
-                    Margin="20,0,0,0"
+                    Margin="0,0,0,0"
                     Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
                         <Label
-                            Width="80"
+                            Width="108"
                             Margin="10"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             HorizontalContentAlignment="Right"
                             Background="#5a5a58"
                             BorderThickness="0"
-                            Content="预设："
+                            Content="{DynamicResource device_name}"
                             Foreground="White" />
                         <hc:ComboBox
-                            Name="deviceComboBox"
+                            Name="deviceNameComboBox"
                             Width="116"
                             Height="26"
                             Margin="4"
                             Foreground="Black"
                             SelectedIndex="0"
-                            SelectionChanged="deviceComboBoxChanged">
+                            SelectionChanged="deviceNameComboBoxChanged">
                             <!--           <ComboBoxItem  Foreground="Black" Content="12.52.12.135" IsSelected="True"></ComboBoxItem>
                             <ComboBoxItem  Foreground="Black" Content="def"></ComboBoxItem>
                             <ComboBoxItem  Foreground="Black" Content="ghi"></ComboBoxItem>-->
                         </hc:ComboBox>
 
                     </StackPanel>
+
                     <StackPanel Orientation="Horizontal">
                         <Label
-                            Width="80"
+                            Width="108"
                             Margin="10"
                             VerticalAlignment="Center"
                             HorizontalContentAlignment="Right"
                             Background="#5a5a58"
                             BorderThickness="0"
-                            Content="IP："
-                            Foreground="White" />
-                        <TextBox
-                            Name="IPText"
-                            Width="116"
-                            Margin="4"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource TextBoxExtend}"
-                            Text="12.52.12.135" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label
-                            Width="80"
-                            Margin="10"
-                            VerticalAlignment="Center"
-                            HorizontalContentAlignment="Right"
-                            Background="#5a5a58"
-                            BorderThickness="0"
-                            Content="设备名称："
+                            Content=""
                             Foreground="White" />
                         <TextBox
                             Name="deviceNameTextBox"
@@ -220,16 +202,61 @@
                             VerticalAlignment="Center"
                             Style="{StaticResource TextBoxExtend}"
                             Text="" />
+
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label
-                            Width="80"
+                            Width="108"
+                            Margin="10"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Right"
+                            Background="#5a5a58"
+                            BorderThickness="0"
+                            Content="{DynamicResource ip}"
+                            Foreground="White" />
+                        <hc:ComboBox
+                            Name="ipComboBox"
+                            Width="116"
+                            Height="26"
+                            Margin="4"
+                            Foreground="Black"
+                            SelectedIndex="0"
+                            SelectionChanged="ipComboBoxChanged">
+                            <!--           <ComboBoxItem  Foreground="Black" Content="12.52.12.135" IsSelected="True"></ComboBoxItem>
+        <ComboBoxItem  Foreground="Black" Content="def"></ComboBoxItem>
+        <ComboBoxItem  Foreground="Black" Content="ghi"></ComboBoxItem>-->
+                        </hc:ComboBox>
+
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Width="108"
                             Margin="10"
                             VerticalAlignment="Center"
                             HorizontalContentAlignment="Right"
                             Background="#5a5a58"
                             BorderThickness="0"
-                            Content="端口："
+                            Content=""
+                            Foreground="White" />
+                        <TextBox
+                            Name="IPText"
+                            Width="116"
+                            Margin="4"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource TextBoxExtend}"
+                            Text="" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Width="108"
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Right"
+                            Background="#5a5a58"
+                            BorderThickness="0"
+                            Content="{DynamicResource port}"
                             Foreground="White" />
                         <TextBox
                             Name="PortText"
@@ -239,40 +266,21 @@
                             Style="{StaticResource TextBoxExtend}"
                             Text="8000" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label
-                            Width="80"
-                            Margin="10"
-                            VerticalAlignment="Center"
-                            HorizontalContentAlignment="Right"
-                            Background="#5a5a58"
-                            BorderThickness="0"
-                            Content="高清："
-                            Foreground="White" />
-                        <ToggleButton
-                            Name="HighDefinitionToggle"
-                            Height="20"
-                            Margin="4"
-                            VerticalAlignment="Center"
-                            HorizontalContentAlignment="Right"
-                            Background="#b9b6b6"
-                            Style="{StaticResource ToggleButtonSwitch}" />
-                    </StackPanel>
                 </StackPanel>
                 <StackPanel
                     Grid.Row="1"
                     Grid.Column="1"
-                    Margin="20,0,0,0"
+                    Margin="0,0,0,0"
                     Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
                         <Label
-                            Width="80"
+                            Width="108"
                             Margin="10"
                             VerticalAlignment="Center"
                             HorizontalContentAlignment="Right"
                             Background="#5a5a58"
                             BorderThickness="0"
-                            Content="设备编号："
+                            Content="{DynamicResource device_num}"
                             Foreground="White" />
                         <TextBox
                             Name="deviceNum"
@@ -284,13 +292,13 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label
-                            Width="80"
+                            Width="108"
                             Margin="10"
                             VerticalAlignment="Center"
                             HorizontalContentAlignment="Right"
                             Background="#5a5a58"
                             BorderThickness="0"
-                            Content="帐号："
+                            Content="{DynamicResource account}"
                             Foreground="White" />
                         <TextBox
                             Name="Username"
@@ -302,13 +310,13 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label
-                            Width="80"
+                            Width="108"
                             Margin="10"
                             VerticalAlignment="Center"
                             HorizontalContentAlignment="Right"
                             Background="#5a5a58"
                             BorderThickness="0"
-                            Content="密码："
+                            Content="{DynamicResource password}"
                             Foreground="White" />
                         <PasswordBox
                             Name="Password"
@@ -317,7 +325,25 @@
                             Password="1234qwer"
                             PasswordChar="*" />
                     </StackPanel>
-
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Width="108"
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Right"
+                            Background="#5a5a58"
+                            BorderThickness="0"
+                            Content="{DynamicResource high_difination}"
+                            Foreground="White" />
+                        <ToggleButton
+                            Name="HighDefinitionToggle"
+                            Height="20"
+                            Margin="4"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Right"
+                            Background="#b9b6b6"
+                            Style="{StaticResource ToggleButtonSwitch}" />
+                    </StackPanel>
                     <StackPanel
                         Grid.Row="1"
                         Grid.Column="0"
@@ -329,14 +355,14 @@
                             Background="#326cf3"
                             BorderThickness="0"
                             Click="LoginAction"
-                            Content="登录"
+                            Content="{DynamicResource login}"
                             Foreground="White" />
                         <Button
                             Margin="12"
                             Background="#326cf3"
                             BorderThickness="0"
                             Click="cancel"
-                            Content="取消"
+                            Content="{DynamicResource cancel}"
                             Foreground="White" />
 
                     </StackPanel>

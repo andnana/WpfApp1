@@ -5,28 +5,38 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp1", "WpfApp1\WpfApp1.csproj", "{84BCB4DC-CC38-4482-9F17-1D8FBD6E6A0F}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "云台", "云台\云台.vdproj", "{1867FF90-69A5-415A-9116-E28A2373585F}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "云台控制", "云台\云台.vdproj", "{1867FF90-69A5-415A-9116-E28A2373585F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM64 = Debug|ARM64
+		Debug|x64 = Debug|x64
 		Release|Any CPU = Release|Any CPU
 		Release|ARM64 = Release|ARM64
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{84BCB4DC-CC38-4482-9F17-1D8FBD6E6A0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{84BCB4DC-CC38-4482-9F17-1D8FBD6E6A0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84BCB4DC-CC38-4482-9F17-1D8FBD6E6A0F}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{84BCB4DC-CC38-4482-9F17-1D8FBD6E6A0F}.Debug|x64.ActiveCfg = Debug|x64
+		{84BCB4DC-CC38-4482-9F17-1D8FBD6E6A0F}.Debug|x64.Build.0 = Debug|x64
 		{84BCB4DC-CC38-4482-9F17-1D8FBD6E6A0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84BCB4DC-CC38-4482-9F17-1D8FBD6E6A0F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{84BCB4DC-CC38-4482-9F17-1D8FBD6E6A0F}.Release|ARM64.ActiveCfg = Release|ARM64
+		{84BCB4DC-CC38-4482-9F17-1D8FBD6E6A0F}.Release|x64.ActiveCfg = Release|x64
+		{84BCB4DC-CC38-4482-9F17-1D8FBD6E6A0F}.Release|x64.Build.0 = Release|x64
 		{1867FF90-69A5-415A-9116-E28A2373585F}.Debug|Any CPU.ActiveCfg = Debug
 		{1867FF90-69A5-415A-9116-E28A2373585F}.Debug|ARM64.ActiveCfg = Debug
 		{1867FF90-69A5-415A-9116-E28A2373585F}.Debug|ARM64.Build.0 = Debug
+		{1867FF90-69A5-415A-9116-E28A2373585F}.Debug|x64.ActiveCfg = Debug
+		{1867FF90-69A5-415A-9116-E28A2373585F}.Debug|x64.Build.0 = Debug
 		{1867FF90-69A5-415A-9116-E28A2373585F}.Release|Any CPU.ActiveCfg = Release
 		{1867FF90-69A5-415A-9116-E28A2373585F}.Release|ARM64.ActiveCfg = Release
 		{1867FF90-69A5-415A-9116-E28A2373585F}.Release|ARM64.Build.0 = Release
+		{1867FF90-69A5-415A-9116-E28A2373585F}.Release|x64.ActiveCfg = Release
+		{1867FF90-69A5-415A-9116-E28A2373585F}.Release|x64.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

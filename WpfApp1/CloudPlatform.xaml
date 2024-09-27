@@ -42,13 +42,19 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="1">
-                    <Image
+                    <!--<Image
                         Width="120"
                         Height="23"
                         Margin="0,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Source="/WpfApp1;component/Resources/test_set.png" />
+                        Source="/WpfApp1;component/Resources/test_set.png" />-->
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="White"
+                        Text="{DynamicResource test_setup}" />
                 </Grid>
                 <Border
                     Grid.Column="2"
@@ -133,7 +139,7 @@
                         HorizontalContentAlignment="Right"
                         Background="#5a5a58"
                         BorderThickness="0"
-                        Content="设备IP："
+                        Content="{DynamicResource device_ip}"
                         Foreground="White" />
                     <Label
                         Name="deviceIPLabel"
@@ -167,7 +173,7 @@
                         HorizontalContentAlignment="Right"
                         Background="#5a5a58"
                         BorderThickness="0"
-                        Content="高报阈值："
+                        Content="{DynamicResource high_alarm}"
                         Foreground="White" />
                     <TextBox
                         Name="HigherAlarmTextBox"
@@ -185,7 +191,7 @@
                         HorizontalContentAlignment="Right"
                         Background="#5a5a58"
                         BorderThickness="0"
-                        Content="低报阈值："
+                        Content="{DynamicResource lower_alarm}"
                         Foreground="White" />
                     <TextBox
                         Name="LowerAlarmTextBox"
@@ -202,7 +208,7 @@
                     Background="#326cf3"
                     BorderThickness="0"
                     Click="setAlarmValue"
-                    Content="设置"
+                    Content="{DynamicResource setup}"
                     Foreground="White" />
 
             </StackPanel>
@@ -222,14 +228,14 @@
                         Background="#326cf3"
                         BorderThickness="0"
                         Click="presets"
-                        Content="预置点"
+                        Content="{DynamicResource preset_point}"
                         Foreground="White" />
                     <Button
                         Margin="12"
                         Background="#326cf3"
                         BorderThickness="0"
                         Click="ToCruises"
-                        Content="巡航"
+                        Content="{DynamicResource cruise}"
                         Foreground="White" />
                 </StackPanel>
 
@@ -325,14 +331,14 @@
                 </StackPanel>-->
                 <StackPanel Orientation="Horizontal">
                     <Label
-                        Width="80"
+                        Width="84"
                         Margin="10"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         HorizontalContentAlignment="Right"
                         Background="#5a5a58"
                         BorderThickness="0"
-                        Content="巡航路径："
+                        Content="{DynamicResource cruise_path}"
                         Foreground="White" />
                     <hc:ComboBox
                         Name="Cruise_comBox"
@@ -367,14 +373,14 @@
                         Background="#326cf3"
                         BorderThickness="0"
                         Click="Start_Button_Click"
-                        Content="开始"
+                        Content="{DynamicResource start}"
                         Foreground="White" />
                     <Button
                         Margin="12"
                         Background="#326cf3"
                         BorderThickness="0"
                         Click="cruiseStop"
-                        Content="停止"
+                        Content="{DynamicResource stop}"
                         Foreground="White" />
                     <!--  <Button
                         Margin="12"
@@ -387,19 +393,19 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label
-                        Width="80"
+                        Width="90"
                         Margin="10"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         HorizontalContentAlignment="Right"
                         Background="#5a5a58"
                         BorderThickness="0"
-                        Content="移动速度："
+                        Content="{DynamicResource move_speed}"
                         Foreground="White" />
                     <hc:NumericUpDown
                         Name="speedNumericUpDown"
                         Grid.Column="1"
-                        Width="60"
+                        Width="56"
                         Height="30"
                         Increment="2"
                         Maximum="15"
@@ -411,7 +417,7 @@
                         Background="#326cf3"
                         BorderThickness="0"
                         Click="speedSetup"
-                        Content="设置"
+                        Content="{DynamicResource setup}"
                         Foreground="White" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
@@ -421,7 +427,7 @@
                         Background="#326cf3"
                         BorderThickness="0"
                         Click="initSpeed"
-                        Content="初始化"
+                        Content="{DynamicResource init}"
                         Foreground="White" />
                     <Button
                         Width="20"
@@ -431,13 +437,13 @@
                         VerticalAlignment="Top"
                         Background="Transparent"
                         BorderThickness="0"
-                        Click="initQuestion">
-                        <hc:Poptip.Instance>
+                        Click="question">
+                        <!--  <hc:Poptip.Instance>
                             <hc:Poptip
-                                Content="第一次设置速度之前请先初始化。"
+                                Content="{DynamicResource init_tips}"
                                 HitMode="Hover"
                                 PlacementType="TopRight" />
-                        </hc:Poptip.Instance>
+                        </hc:Poptip.Instance>-->
                         <Button.Content>
                             <Image
                                 Width="20"

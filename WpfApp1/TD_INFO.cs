@@ -8,5 +8,6 @@
         public string Pw { get; internal set; }
         public string TDid { get; internal set; }
         public int Chan_num { get; internal set; }
+        public string deviceName { get; internal set; }
     }
 }

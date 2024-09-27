@@ -10,6 +10,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml" />
+                <ResourceDictionary x:Name="EnglishDictionary" Source="pack://application:,,,/Language/English.xaml" />
+                <ResourceDictionary x:Name="ChineseDictionary" Source="pack://application:,,,/Language/Chinese.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <SolidColorBrush x:Key="WindowTitleBrush" Color="#5a5a58" />
             <!--  标题栏前景色  -->

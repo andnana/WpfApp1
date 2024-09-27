@@ -71,11 +71,10 @@ namespace WpfApp1
                 xmlDoc.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + MainWindow.deviceInfoList[MainWindow.Chosen_device_num].ip + "_cruises.xml");
 
                 int removeIndex = cruises.FindIndex(item => item.timeStr.ToString().Equals(rowView.timeStr.ToString()));
-                Console.WriteLine("----------");
                 Console.WriteLine(removeIndex.ToString());
                 cruises.RemoveAt(removeIndex);
                 CruisesDataGrid.Items.Refresh();
-                Growl.SuccessGlobal("删除成功！");
+                new TipsWindow("删除成功", 3, TipsEnum.OK).Show();
             }
         }
 
@@ -117,7 +116,7 @@ namespace WpfApp1
                 root.AppendChild(xelCruise);
 
                 doc.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + MainWindow.deviceInfoList[MainWindow.Chosen_device_num].ip + "_cruises.xml");
-                Growl.SuccessGlobal("巡航信息保存成功！");
+                new TipsWindow("巡航信息保存成功", 3, TipsEnum.OK).Show();
                 cruises.Add(cruise);
                 CruisesDataGrid.Items.Refresh();
 

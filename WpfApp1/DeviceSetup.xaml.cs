@@ -1,6 +1,7 @@
 ﻿using HandyControl.Controls;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -23,6 +24,7 @@ namespace WpfApp1
     public partial class DeviceSetup : System.Windows.Window
     {
         public static DeviceSetup DeviceSetupObj;
+        
         public DeviceSetup()
         {
             InitializeComponent();
@@ -50,6 +52,29 @@ namespace WpfApp1
             deviceNameLabel.Content = MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].Device_name;
             IPLabel.Content = MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].IP;
             deviceNumLabel.Content = MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].deviceNum;
+
+
+            ResourceDictionary resourceDictionary;
+            string languageStr = ConfigurationManager.AppSettings["Language"];
+            if (languageStr.Equals("english"))
+            {
+                string english = "pack://application:,,,/Language/English.xaml";
+                resourceDictionary = new ResourceDictionary { Source = new Uri(english, UriKind.RelativeOrAbsolute) };
+
+            }
+            else
+            {
+                string chinese = "pack://application:,,,/Language/Chinese.xaml";
+                resourceDictionary = new ResourceDictionary { Source = new Uri(chinese, UriKind.RelativeOrAbsolute) };
+
+
+            }
+
+
+            // 将当前的资源字典从应用程序资源中移除
+            Resources.MergedDictionaries.Remove(resourceDictionary);
+            // 将新的资源字典添加到应用程序资源中
+            Resources.MergedDictionaries.Add(resourceDictionary);
         }
 
         /// <summary>
@@ -112,7 +137,7 @@ namespace WpfApp1
             }
             else
             {
-                Growl.SuccessGlobal("密码错误。");
+                new TipsWindow("密码错误", 3, TipsEnum.FAIL).Show();
             }
         }
     }

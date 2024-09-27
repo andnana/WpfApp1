@@ -1,6 +1,7 @@
 ﻿using HandyControl.Controls;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Globalization;
 using System.IO;
@@ -19,6 +20,7 @@ using System.Windows.Shapes;
 using System.Xml;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 using static WpfApp1.CHCNetSDK;
+using MessageBox = System.Windows.MessageBox;
 namespace WpfApp1
 {
     /// <summary>
@@ -27,6 +29,7 @@ namespace WpfApp1
     public partial class AlarmHistory : System.Windows.Window
     {
         public static string videoPath = "";
+        
         public AlarmHistory()
         {
             InitializeComponent();
@@ -54,13 +57,35 @@ namespace WpfApp1
             };
 
 
+            ResourceDictionary resourceDictionary;
+            string languageStr = ConfigurationManager.AppSettings["Language"];
+            if (languageStr.Equals("english"))
+            {
+                string english = "pack://application:,,,/Language/English.xaml";
+                resourceDictionary = new ResourceDictionary { Source = new Uri(english, UriKind.RelativeOrAbsolute) };
+
+            }
+            else
+            {
+                string chinese = "pack://application:,,,/Language/Chinese.xaml";
+                resourceDictionary = new ResourceDictionary { Source = new Uri(chinese, UriKind.RelativeOrAbsolute) };
+
+
+            }
+
+
+            // 将当前的资源字典从应用程序资源中移除
+            Resources.MergedDictionaries.Remove(resourceDictionary);
+            // 将新的资源字典添加到应用程序资源中
+            Resources.MergedDictionaries.Add(resourceDictionary);
+
         }
 
         private void seeVideo(object sender, RoutedEventArgs e)
         {
             History_Message rowView = (History_Message)((Button)e.Source).DataContext;
             videoPath = rowView.video_path + ".wmv";
-            new Video().Show();
+            new Video(videoPath).Show();
         }
 
         /// <summary>
@@ -72,7 +97,7 @@ namespace WpfApp1
         {
             if (MainWindow.sbmc == "")
             {
-                Growl.SuccessGlobal("请先登录");
+                new TipsWindow("请先登录", 3,  TipsEnum.FAIL).Show();
                 return;
             }
             History_Message rowView = (History_Message)((Button)e.Source).DataContext;
@@ -97,7 +122,7 @@ namespace WpfApp1
                 int removeIndex = MainWindow.historyMessages.FindIndex(item => item.save_time.ToString("yyyy-MM-dd HH:mm:ss").Equals(rowView.save_time.ToString("yyyy-MM-dd HH:mm:ss")));
                 MainWindow.historyMessages.RemoveAt(removeIndex);
                 AlarmHistoryDataGrid.Items.Refresh();
-                Growl.SuccessGlobal("删除成功！");
+                new TipsWindow("删除成功", 3, TipsEnum.OK).Show();
             }
         }
 
@@ -118,13 +143,13 @@ namespace WpfApp1
         {
             string folderPath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Record";
             Clipboard.SetDataObject(folderPath, true);
-            Growl.SuccessGlobal("已将视频保存目录\"" + folderPath + "\"复制到剪切板");
+            MessageBox.Show("已将视频保存目录\"" + folderPath + "\"复制到剪切板");
         }
         private void copyExcelFilePath(object sender, RoutedEventArgs e)
         {
             string folderPath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "History";
             Clipboard.SetDataObject(folderPath, true);
-            Growl.SuccessGlobal("已将Excel保存目录\"" + folderPath + "\"复制到剪切板");
+            MessageBox.Show("已将Excel保存目录\"" + folderPath + "\"复制到剪切板");
         }
 
         private void refreshData(object sender, RoutedEventArgs e)

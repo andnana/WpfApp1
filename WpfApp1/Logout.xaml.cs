@@ -47,5 +47,25 @@ namespace WpfApp1
         {
             this.Close();
         }
+
+        private void tipsWindowClosed(object sender, EventArgs e)
+        {
+            TipsWindow tipsWindow = sender as TipsWindow;
+            if (tipsWindow != null)
+            {
+                if (tipsWindow.Result == 1)
+                {
+                    Console.WriteLine("ok");
+                    MainWindow.In_Main_Form.Close();
+                    this.Close();
+                }
+                else
+                {
+                    Console.WriteLine("cancel");
+                    this.Close();
+                }
+            }
+        }
+
     }
 }

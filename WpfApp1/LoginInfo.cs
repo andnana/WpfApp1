@@ -36,5 +36,6 @@ namespace WpfApp1
             get { return deviceNum; }
             set { deviceNum = value; }
         }
+
     }
 }

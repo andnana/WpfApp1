@@ -11,8 +11,8 @@
     xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"
     xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
     Title="激光甲烷气体遥测云台"
-    Width="1240"
-    Height="780"
+    Width="Auto"
+    Height="Auto"
     Background="Black"
     BorderBrush="Black"
     BorderThickness="1"
@@ -20,8 +20,10 @@
     Icon="ch4test.ico"
     ResizeMode="CanMinimize"
     WindowStartupLocation="CenterScreen"
+    WindowState="Maximized"
     WindowStyle="None"
     mc:Ignorable="d">
+
     <Window.Resources>
         <Style x:Key="DataGridTextCenterColumnStyle" TargetType="DataGridRow">
             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -83,20 +85,20 @@
     </UniformGrid>
     -->
 
-    <Grid Width="1240" Height="780">
+    <Grid Width="Auto" Height="Auto">
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition Height="60" />
             <RowDefinition Height="40" />
-            <RowDefinition Height="430" />
+            <RowDefinition Height="430*" />
             <RowDefinition Height="210" />
-
+            <RowDefinition Height="80" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
-            <ColumnDefinition Width="400" />
-            <ColumnDefinition Width="350" />
-            <ColumnDefinition Width="290" />
+            <ColumnDefinition Width="360" />
+            <ColumnDefinition Width="400*" />
+            <ColumnDefinition Width="350*" />
+            <ColumnDefinition Width="290*" />
         </Grid.ColumnDefinitions>
 
         <Grid
@@ -119,8 +121,8 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Orientation="Horizontal">
                 <Image
-                    Width="30"
-                    Height="30"
+                    Width="20"
+                    Height="20"
                     Margin="4,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
@@ -129,26 +131,33 @@
                     Name="username"
                     Margin="20,0,0,0"
                     VerticalAlignment="Center"
-                    FontSize="20"
+                    FontSize="12"
                     Foreground="White"
                     Text="admin" />
                 <TextBlock
                     Name="Time"
                     Margin="20,0,0,0"
                     VerticalAlignment="Center"
-                    FontSize="20"
+                    FontSize="12"
                     FontWeight="Bold"
                     Foreground="White"
                     Text="" />
             </StackPanel>
             <Grid Grid.Column="1">
-                <Image
-                    Width="239"
-                    Height="23"
+                <!--   <Image
+                    Width="143"
+                    Height="14"
                     Margin="0,0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Source="/WpfApp1;component/Resources/software_name.png" />
+                    Source="/WpfApp1;component/Resources/software_name.png" />-->
+                <TextBlock
+                    Margin="0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="20"
+                    Foreground="White"
+                    Text="{DynamicResource software_name}" />
             </Grid>
             <Border
                 Grid.Column="2"
@@ -182,11 +191,21 @@
                                                 Source="/WpfApp1;component/Resources/Minimize.png" />
                                         </Button.Content>
                                     </Button>
-                                    <!--       <Button  Margin="6"  Name="BtMax" Width="16" Height="16"  Padding="0" BorderThickness="0" Background="Transparent">
+                                    <Button
+                                        Name="BtMax"
+                                        Width="16"
+                                        Height="16"
+                                        Margin="6"
+                                        Padding="0"
+                                        Background="Transparent"
+                                        BorderThickness="0">
                                         <Button.Content>
-                                            <Image Source="/WpfApp1;component/Resources/Maximize.png" Width="16" Height="16"/>
+                                            <Image
+                                                Width="16"
+                                                Height="16"
+                                                Source="/WpfApp1;component/Resources/Maximize.png" />
                                         </Button.Content>
-                                    </Button>-->
+                                    </Button>
                                     <Button
                                         Name="BtClose"
                                         Width="16"
@@ -228,14 +247,14 @@
                 VerticalAlignment="Center"
                 Background="#5a5a58"
                 Foreground="White"
-                Header="菜单">
+                Header="{DynamicResource menu}">
                 <Button
                     Width="60"
                     Height="60"
                     Background="#5a5a58"
                     BorderThickness="0"
                     Click="CloudPlatform"
-                    Content="检测设置"
+                    Content="{DynamicResource test}"
                     Foreground="White">
                     <Button.ContentTemplate>
                         <DataTemplate>
@@ -248,7 +267,7 @@
                                 <TextBlock
                                     VerticalAlignment="Center"
                                     FontSize="10"
-                                    Text="检测设置" />
+                                    Text="{DynamicResource test}" />
                             </StackPanel>
                         </DataTemplate>
                     </Button.ContentTemplate>
@@ -260,7 +279,7 @@
                     Background="#5a5a58"
                     BorderThickness="0"
                     Click="DeviceSetup"
-                    Content="设备设置"
+                    Content="{DynamicResource device}"
                     Foreground="White">
                     <Button.ContentTemplate>
                         <DataTemplate>
@@ -273,7 +292,7 @@
                                 <TextBlock
                                     VerticalAlignment="Center"
                                     FontSize="10"
-                                    Text="设备设置" />
+                                    Text="{DynamicResource device}" />
                             </StackPanel>
                         </DataTemplate>
                     </Button.ContentTemplate>
@@ -308,7 +327,7 @@
                     Background="#5a5a58"
                     BorderThickness="0"
                     Click="AlarmHistory"
-                    Content="报警历史"
+                    Content="{DynamicResource alarm}"
                     Foreground="White">
                     <Button.ContentTemplate>
                         <DataTemplate>
@@ -321,7 +340,7 @@
                                 <TextBlock
                                     VerticalAlignment="Center"
                                     FontSize="10"
-                                    Text="报警历史" />
+                                    Text="{DynamicResource alarm}" />
                             </StackPanel>
                         </DataTemplate>
                     </Button.ContentTemplate>
@@ -332,7 +351,7 @@
                     Background="#5a5a58"
                     BorderThickness="0"
                     Click="Login"
-                    Content="设备登录"
+                    Content="{DynamicResource login}"
                     Foreground="White">
                     <Button.ContentTemplate>
                         <DataTemplate>
@@ -345,7 +364,7 @@
                                 <TextBlock
                                     VerticalAlignment="Center"
                                     FontSize="10"
-                                    Text="设备登录" />
+                                    Text="{DynamicResource login}" />
                             </StackPanel>
                         </DataTemplate>
                     </Button.ContentTemplate>
@@ -357,7 +376,7 @@
                     Background="#5a5a58"
                     BorderThickness="0"
                     Click="Logout"
-                    Content="退出系统"
+                    Content="{DynamicResource logout}"
                     Foreground="White">
                     <Button.ContentTemplate>
                         <DataTemplate>
@@ -370,7 +389,32 @@
                                 <TextBlock
                                     VerticalAlignment="Center"
                                     FontSize="10"
-                                    Text="退出系统" />
+                                    Text="{DynamicResource logout}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </Button.ContentTemplate>
+                </Button>
+
+                <Button
+                    Width="60"
+                    Height="60"
+                    Background="#5a5a58"
+                    BorderThickness="0"
+                    Click="backup"
+                    Content="{DynamicResource backup}"
+                    Foreground="White">
+                    <Button.ContentTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <Image
+                                    Width="20"
+                                    Height="20"
+                                    Margin="4"
+                                    Source="/WpfApp1;component/Resources/import_export.png" />
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontSize="10"
+                                    Text="{DynamicResource backup}" />
                             </StackPanel>
                         </DataTemplate>
                     </Button.ContentTemplate>
@@ -381,7 +425,7 @@
                     Background="#5a5a58"
                     BorderThickness="0"
                     Click="About"
-                    Content="关于软件"
+                    Content="{DynamicResource about}"
                     Foreground="White">
                     <Button.ContentTemplate>
                         <DataTemplate>
@@ -394,7 +438,7 @@
                                 <TextBlock
                                     VerticalAlignment="Center"
                                     FontSize="10"
-                                    Text="关于软件" />
+                                    Text="{DynamicResource about}" />
                             </StackPanel>
                         </DataTemplate>
                     </Button.ContentTemplate>
@@ -403,7 +447,30 @@
             <Grid
                 Grid.Row="0"
                 Grid.Column="1"
-                Background="#5a5a58" />
+                HorizontalAlignment="Left"
+                Background="#5a5a58">
+                <StackPanel
+                    Margin="4"
+                    VerticalAlignment="Center"
+                    Orientation="Vertical">
+                    <Image
+                        Name="langImg"
+                        Width="20"
+                        Height="20"
+                        Source="/WpfApp1;component/Resources/english-filled.png" />
+                    <Button
+                        Width="80"
+                        Height="20"
+                        Margin="0"
+                        Padding="0"
+                        Background="#5a5a58"
+                        BorderThickness="0"
+                        Click="SwitchLanguage"
+                        Content="{DynamicResource language}"
+                        Foreground="White" />
+                </StackPanel>
+
+            </Grid>
         </Grid>
         <Grid
             Grid.Row="1"
@@ -417,9 +484,12 @@
             Grid.ColumnSpan="2"
             Margin="0,0,0,0">
             <wfi:WindowsFormsHost
+                xmlns:winForms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
                 Name="pictureBoxHost0"
                 Panel.ZIndex="0"
-                ToolTip="" />
+                ToolTip="">
+                <winForms:PictureBox x:Name="pictureBoxMain" />
+            </wfi:WindowsFormsHost>
 
         </Grid>
 
@@ -432,13 +502,22 @@
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Image
+            <!--  <Image
                 Name="hd_image0"
-                Width="40"
-                Height="40"
+                Width="30"
+                Height="19"
                 Margin="0,0"
                 Source="/WpfApp1;component/Resources/hd.png"
-                Visibility="Visible" />
+                Visibility="Visible" />-->
+            <Label
+                Name="hdLabel"
+                Width="50"
+                Height="20"
+                Padding="0"
+                Background="Black"
+                BorderThickness="0"
+                Content="{DynamicResource high_difinition}"
+                Foreground="#5a5a58" />
             <!--   <Label
                 Name="OnlineText"
 
@@ -449,36 +528,50 @@
                 Content="离线"
                 FontFamily="Arial"
                 Foreground="Black" />-->
-            <Image
+            <!--  <Image
                 Name="onlineImage"
                 Grid.Column="1"
-                Width="40"
-                Height="40"
+                Width="30"
+                Height="19"
                 Margin="0,0"
                 Source="/WpfApp1;component/Resources/online.png"
-                Visibility="Visible" />
+                Visibility="Visible" />-->
+            <Label
+                Name="onlineLable"
+                Grid.Column="1"
+                Width="50"
+                Height="20"
+                Padding="0"
+                Background="Black"
+                BorderThickness="0"
+                Content="{DynamicResource online}"
+                Foreground="#5a5a58" />
 
             <Image
                 Grid.Column="2"
                 Width="40"
-                Height="40"
+                Height="19"
                 Margin="0,0"
                 Source="/WpfApp1;component/Resources/ppm.png"
                 Visibility="Visible" />
 
         </Grid>
-        <StackPanel
+        <Grid
             Grid.Row="3"
             Grid.RowSpan="2"
             Grid.Column="0"
-            Width="200"
-            HorizontalAlignment="Left"
-            Background="#5a5a58"
-            Orientation="Vertical">
-            <Grid Margin="10,0,0,10">
+            Background="#5a5a58">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="3*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="7*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="8*" />
                 </Grid.ColumnDefinitions>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -489,29 +582,31 @@
                         Name="lightIntensityImg"
                         Width="8"
                         Height="64"
-                        Source="/WpfApp1;component/Resources/line3.png" />
+                        VerticalAlignment="Bottom"
+                        Source="/WpfApp1;component/Resources/line0.png" />
                     <TextBlock
                         Name="lightIntensityPercent"
                         Grid.Column="1"
                         VerticalAlignment="Bottom"
                         Foreground="White"
-                        Text="100%" />
+                        Text="0%" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock
+                        Name="NDText"
+                        Margin="0"
+                        Padding="0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        FontFamily="Arial"
+                        FontSize="104"
+                        FontWeight="Bold"
+                        Foreground="White"
+                        Text="" />
                 </Grid>
 
-                <TextBlock
-                    Name="NDText"
-                    Grid.Column="1"
-                    Width="80"
-                    Margin="10"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    FontFamily="Arial"
-                    FontSize="28"
-                    FontWeight="Bold"
-                    Foreground="White"
-                    Text="0" />
             </Grid>
-            <Grid>
+            <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="6*" />
                     <ColumnDefinition Width="4*" />
@@ -519,118 +614,135 @@
                 <TextBlock
                     Name="MaxNDText"
                     Width="100"
-                    Margin="10"
+                    Margin="0"
+                    Padding="4"
                     HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
                     FontSize="26"
                     FontWeight="Bold"
                     Foreground="White"
-                    Text="" />
+                    Text="0" />
                 <Button
                     Grid.Column="1"
-                    Margin="10,0,16,0"
+                    Margin="10"
                     HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
                     Background="Gray"
                     BorderThickness="0"
                     Click="ResetAlarmValue"
-                    Content="复位"
+                    Content="{DynamicResource reset}"
                     Foreground="White" />
             </Grid>
-            <Grid>
-                <lvc:CartesianChart
-                    Width="180"
-                    Height="180"
-                    Margin="10"
-                    DisableAnimations="True"
-                    Series="{Binding SeriesCollection}">
-                    <lvc:CartesianChart.AxisX>
-                        <lvc:Axis
-                            Title=""
-                            MinValue="0"
-                            Visibility="Hidden">
-                            <lvc:Axis.Separator>
-                                <lvc:Separator Stroke="Silver" StrokeThickness="0" />
-                            </lvc:Axis.Separator>
-                        </lvc:Axis>
-                    </lvc:CartesianChart.AxisX>
-                    <lvc:CartesianChart.AxisY>
-                        <lvc:Axis
-                            Title=""
-                            MaxValue="6000"
-                            MinValue="0"
-                            Visibility="Hidden">
-                            <lvc:Axis.Separator>
-                                <lvc:Separator Stroke="Silver" StrokeThickness="0" />
-                            </lvc:Axis.Separator>
-                        </lvc:Axis>
-                    </lvc:CartesianChart.AxisY>
-                </lvc:CartesianChart>
-                <Image
-                    Name="LeftBottom"
-                    Width="200"
-                    Height="200"
-                    VerticalAlignment="Center"
-                    Source="/WpfApp1;component/Resources/LeftBottom.png" />
-                <StackPanel
-                    Name="HightAlarmStackPanel"
-                    Height="14"
-                    Margin="20,0,0,86.7453"
-                    VerticalAlignment="Bottom"
-                    Orientation="Horizontal">
-                    <TextBlock
-                        Name="HighAlarmNum"
-                        Width="40"
-                        Height="14"
+            <Grid Grid.Row="2">
+                <Grid Width="300" Height="200">
+                    <lvc:CartesianChart
+                        Width="180"
+                        Height="180"
+                        Margin="10"
+                        HorizontalAlignment="Left"
+                        DisableAnimations="True"
+                        Series="{Binding SeriesCollection}">
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis
+                                Title=""
+                                MinValue="0"
+                                Visibility="Hidden">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Stroke="Silver" StrokeThickness="0" />
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis
+                                Title=""
+                                MaxValue="6000"
+                                MinValue="0"
+                                Visibility="Hidden">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Stroke="Silver" StrokeThickness="0" />
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisY>
+                    </lvc:CartesianChart>
+                    <Image
+                        Name="LeftBottom"
+                        Width="200"
+                        Height="200"
+                        Margin="0,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Background="White"
-                        Text="3000" />
-
-                    <Image
-                        Name="HighAlarmLine"
-                        Width="126"
-                        Height="4"
-                        VerticalAlignment="Center"
-                        Source="/WpfApp1;component/Resources/HighAlarmLine.png" />
-                </StackPanel>
-                <StackPanel
-                    Name="LowerAlarmStackPanel"
-                    Height="14"
-                    Margin="20,0,0,24"
-                    VerticalAlignment="Bottom"
-                    Orientation="Horizontal">
-                    <TextBlock
-                        Name="LowerAlarmNum"
-                        Width="40"
+                        Source="/WpfApp1;component/Resources/LeftBottom.png" />
+                    <StackPanel
+                        Name="HightAlarmStackPanel"
                         Height="14"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Background="White"
-                        Text="0" />
+                        Margin="20,0,0,128"
+                        VerticalAlignment="Bottom"
+                        Orientation="Horizontal">
+                        <TextBlock
+                            Name="HighAlarmNum"
+                            Width="40"
+                            Height="14"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Background="White"
+                            Text="3000" />
 
-                    <Image
-                        Name="LowerAlarmLine"
-                        Width="126"
-                        Height="4"
-                        VerticalAlignment="Center"
-                        Source="/WpfApp1;component/Resources/LowAlarmLine.png" />
-                </StackPanel>
-                <StackPanel
-                    Height="14"
-                    Margin="60,0,0,24"
-                    VerticalAlignment="Bottom"
-                    Orientation="Horizontal">
+                        <Image
+                            Name="HighAlarmLine"
+                            Width="140"
+                            Height="4"
+                            VerticalAlignment="Center"
+                            Source="/WpfApp1;component/Resources/HighAlarmLine.png" />
+                    </StackPanel>
+                    <StackPanel
+                        Name="LowerAlarmStackPanel"
+                        Height="14"
+                        Margin="20,0,0,24"
+                        VerticalAlignment="Bottom"
+                        Orientation="Horizontal">
+                        <TextBlock
+                            Name="LowerAlarmNum"
+                            Width="40"
+                            Height="14"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Background="White"
+                            Text="0" />
 
-                    <Image
-                        Width="126"
-                        Height="4"
-                        VerticalAlignment="Center"
-                        Source="/WpfApp1;component/Resources/AlarmLine0.png" />
-                </StackPanel>
+                        <Image
+                            Name="LowerAlarmLine"
+                            Width="140"
+                            Height="4"
+                            VerticalAlignment="Center"
+                            Source="/WpfApp1;component/Resources/LowAlarmLine.png" />
+                    </StackPanel>
+                    <StackPanel
+                        Height="14"
+                        Margin="22,0,0,24"
+                        VerticalAlignment="Bottom"
+                        Panel.ZIndex="-1"
+                        Orientation="Horizontal">
+
+                        <Image
+                            Width="178"
+                            Height="4"
+                            VerticalAlignment="Center"
+                            Source="/WpfApp1;component/Resources/AlarmLine0.png" />
+                    </StackPanel>
+                </Grid>
+
 
             </Grid>
 
-            <StackPanel Orientation="Horizontal">
-                <StackPanel Orientation="Vertical">
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="6*" />
+                    <ColumnDefinition Width="5*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Orientation="Vertical">
                     <StackPanel
                         Margin="0"
                         HorizontalAlignment="Center"
@@ -699,20 +811,20 @@
                     <Grid
                         Grid.Row="0"
                         Grid.Column="0"
-                        Height="80"
+                        Height="100"
                         Margin="4"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
                         <Image
-                            Width="80"
-                            Height="80"
+                            Width="100"
+                            Height="100"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Source="/WpfApp1;component/Resources/buttonPanel.png" />
                         <Button
                             Width="20"
                             Height="20"
-                            Margin="0,0,50,0"
+                            Margin="0,0,60,0"
                             Padding="0"
                             Background="Transparent"
                             BorderThickness="0"
@@ -744,7 +856,7 @@
                         <Button
                             Width="20"
                             Height="20"
-                            Margin="0,0,0,50"
+                            Margin="0,0,0,60"
                             Padding="0"
                             Background="Transparent"
                             BorderThickness="0"
@@ -776,7 +888,7 @@
                         <Button
                             Width="20"
                             Height="20"
-                            Margin="50,0,0,0"
+                            Margin="60,0,0,0"
                             Padding="0"
                             Background="Transparent"
                             BorderThickness="0"
@@ -808,7 +920,7 @@
                         <Button
                             Width="20"
                             Height="20"
-                            Margin="0,50,0,0"
+                            Margin="0,60,0,0"
                             Padding="0"
                             Background="Transparent"
                             BorderThickness="0"
@@ -863,30 +975,37 @@
          </lvc:CartesianChart.AxisY>
      </lvc:CartesianChart>-->
                 </StackPanel>
-                <StackPanel Orientation="Vertical">
+                <StackPanel
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Orientation="Vertical">
                     <hc:Shield
                         Name="speedText"
-                        Margin="0,10,0,0"
+                        Margin="0,0,0,0"
+                        FontSize="10"
                         Status="0°/s"
-                        Subject="速度"
+                        Subject="{DynamicResource speed}"
                         Color="#5a5a58" />
                     <hc:Shield
                         Name="temprature"
                         Margin="0,10,0,0"
+                        FontSize="10"
                         Status="0℃"
-                        Subject="温度"
+                        Subject="{DynamicResource temprature}"
                         Color="#5a5a58" />
                     <hc:Shield
                         Name="horizontalAngle"
                         Margin="0,10,0,0"
+                        FontSize="10"
                         Status="0°"
-                        Subject="水平角度"
+                        Subject="{DynamicResource horizontal}"
                         Color="#5a5a58" />
                     <hc:Shield
                         Name="verticalAngle"
                         Margin="0,10,0,0"
+                        FontSize="10"
                         Status="0°"
-                        Subject="垂直角度"
+                        Subject="{DynamicResource vertical}"
                         Color="#5a5a58" />
                     <!--   <hc:Shield
                         Name="lightIntensity"
@@ -896,69 +1015,102 @@
                         Subject="光强"
                         Color="#5a5a58" />-->
                 </StackPanel>
-            </StackPanel>
+            </Grid>
 
-        </StackPanel>
+        </Grid>
 
         <Grid
             Grid.Row="1"
-            Grid.RowSpan="4"
+            Grid.RowSpan="5"
             Grid.Column="3"
             Margin="1,0,0,0"
             Background="#5a5a58">
 
-            <StackPanel Orientation="Vertical">
-
-                <Grid
-                    Grid.Row="2"
-                    Grid.RowSpan="2"
-                    Grid.Column="1"
-                    Grid.ColumnSpan="2"
-                    Height="200"
-                    Margin="0,0,0,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <Grid Margin="0,0,0,0">
 
                     <WindowsFormsHost Name="pictureBoxHost1" ToolTip="" />
-                    <WindowsFormsHost HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                    <WindowsFormsHost VerticalAlignment="Top">
                         <ElementHost>
-                            <Grid
-                                Width="72"
-                                Height="20"
-                                Margin="4">
+                            <Grid Height="20" Margin="4,0,4,0">
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4*" />
                                     <ColumnDefinition Width="2*" />
                                     <ColumnDefinition Width="2*" />
-                                    <ColumnDefinition Width="6*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="2*" />
                                 </Grid.ColumnDefinitions>
-                                <Image
-                                    Name="hd_image1"
-                                    Grid.Column="0"
-                                    Width="4"
-                                    Height="4"
-                                    Margin="0"
-                                    VerticalAlignment="Center"
-                                    Source="/WpfApp1;component/Resources/inactive_dot.png"
-                                    Visibility="Visible" />
-
-                                <Image
-                                    Name="online_image1"
-                                    Grid.Column="1"
-                                    Width="4"
-                                    Height="4"
-                                    Margin="0"
-                                    VerticalAlignment="Center"
-                                    Source="/WpfApp1;component/Resources/inactive_dot.png"
-                                    Visibility="Visible" />
-
                                 <TextBlock
-                                    Name="concentrationText1"
-                                    Grid.Column="2"
+                                    Name="deviceName1"
+                                    Grid.Column="0"
                                     Margin="6,0,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     FontSize="12"
                                     FontWeight="Bold"
-                                    Foreground="Pink" />
+                                    Foreground="Black"
+                                    Text="" />
+                                <TextBlock
+                                    Name="concentrationText1"
+                                    Grid.Column="1"
+                                    Margin="6,0,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="20"
+                                    FontWeight="Bold"
+                                    Foreground="Pink"
+                                    Text="0" />
+                                <!--    <Image
+                                    Name="hd_image1"
+                                    Grid.Column="2"
+                                    Width="30"
+                                    Height="19"
+                                    Margin="0,0"
+                                    Source="/WpfApp1;component/Resources/hd.png"
+                                    Visibility="Visible" />
+                                <Image
+                                    Name="onlineImage1"
+                                    Grid.Column="3"
+                                    Width="30"
+                                    Height="19"
+                                    Margin="0,0"
+                                    Source="/WpfApp1;component/Resources/online.png"
+                                    Visibility="Visible" />-->
+                                <Label
+                                    Name="hdLabel1"
+                                    Grid.Column="2"
+                                    Width="50"
+                                    Height="20"
+                                    Padding="0"
+                                    Background="Black"
+                                    BorderThickness="0"
+                                    Content="{DynamicResource high_difinition}"
+                                    Foreground="#5a5a58" />
 
+                                <Label
+                                    Name="onlineLable1"
+                                    Grid.Column="3"
+                                    Width="50"
+                                    Height="20"
+                                    Padding="0"
+                                    Background="Black"
+                                    BorderThickness="0"
+                                    Content="{DynamicResource online}"
+                                    Foreground="#5a5a58" />
+
+                                <Image
+                                    Grid.Column="4"
+                                    Width="40"
+                                    Height="19"
+                                    Margin="0,0"
+                                    Source="/WpfApp1;component/Resources/ppm.png"
+                                    Visibility="Visible" />
 
                             </Grid>
 
@@ -967,42 +1119,92 @@
 
                 </Grid>
 
+                <Grid Grid.Row="1" Margin="0,0,0,0">
+                    <WindowsFormsHost Name="pictureBoxHost2" ToolTip="" />
+                    <WindowsFormsHost VerticalAlignment="Top">
+                        <ElementHost>
+                            <Grid Height="20" Margin="4,0,4,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    Name="deviceName2"
+                                    Grid.Column="0"
+                                    Margin="6,0,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="12"
+                                    FontWeight="Bold"
+                                    Foreground="Black"
+                                    Text="" />
+                                <TextBlock
+                                    Name="concentrationText2"
+                                    Grid.Column="1"
+                                    Margin="6,0,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="20"
+                                    FontWeight="Bold"
+                                    Foreground="Pink"
+                                    Text="0" />
+                                <!--   <Image
+                                    Name="hd_image2"
+                                    Grid.Column="2"
+                                    Width="30"
+                                    Height="19"
+                                    Margin="0,0"
+                                    Source="/WpfApp1;component/Resources/hd.png"
+                                    Visibility="Visible" />
+                                <Image
+                                    Name="onlineImage2"
+                                    Grid.Column="3"
+                                    Width="30"
+                                    Height="19"
+                                    Margin="0,0"
+                                    Source="/WpfApp1;component/Resources/online.png"
+                                    Visibility="Visible" />-->
+                                <Label
+                                    Name="hdLabel2"
+                                    Grid.Column="2"
+                                    Width="50"
+                                    Height="20"
+                                    Padding="0"
+                                    Background="Black"
+                                    BorderThickness="0"
+                                    Content="{DynamicResource high_difinition}"
+                                    Foreground="#5a5a58" />
 
+                                <Label
+                                    Name="onlineLable2"
+                                    Grid.Column="3"
+                                    Width="50"
+                                    Height="20"
+                                    Padding="0"
+                                    Background="Black"
+                                    BorderThickness="0"
+                                    Content="{DynamicResource online}"
+                                    Foreground="#5a5a58" />
 
-                <Grid
-                    Grid.Row="2"
-                    Grid.RowSpan="2"
-                    Grid.Column="1"
-                    Grid.ColumnSpan="2"
-                    Height="200"
-                    Margin="0,0,0,0">
-                    <wfi:WindowsFormsHost
-                        Name="pictureBoxHost2"
-                        Panel.ZIndex="0"
-                        ToolTip="">
-                        <wfi:ElementHost />
+                                <Image
+                                    Grid.Column="4"
+                                    Width="40"
+                                    Height="19"
+                                    Margin="0,0"
+                                    Source="/WpfApp1;component/Resources/ppm.png"
+                                    Visibility="Visible" />
 
-                    </wfi:WindowsFormsHost>
+                            </Grid>
+
+                        </ElementHost>
+                    </WindowsFormsHost>
+
                 </Grid>
-                <TextBlock
-                    Name="concentrationText2"
-                    Width="200"
-                    Height="30"
-                    Margin="10"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    FontSize="20"
-                    FontWeight="Bold"
-                    Foreground="Pink"
-                    Text="0" />
 
-                <Grid
-                    Grid.Row="2"
-                    Grid.RowSpan="2"
-                    Grid.Column="1"
-                    Grid.ColumnSpan="2"
-                    Height="200"
-                    Margin="0,0,0,0">
+                <Grid Grid.Row="2" Margin="0,0,0,0">
                     <wfi:WindowsFormsHost
                         Name="pictureBoxHost3"
                         Panel.ZIndex="0"
@@ -1018,9 +1220,15 @@
                     FontSize="20"
                     FontWeight="Bold"
                     Foreground="Pink"
-                    Text="0" />
-
-            </StackPanel>
+                    Text=""
+                    Visibility="Hidden" />
+                <Grid Grid.Row="3" Margin="0,0,0,0">
+                    <wfi:WindowsFormsHost
+                        Name="pictureBoxHost4"
+                        Panel.ZIndex="0"
+                        ToolTip="" />
+                </Grid>
+            </Grid>
         </Grid>
 
         <Grid
@@ -1044,6 +1252,7 @@
 
                 <DataGrid
                     Name="Presets"
+                    Height="200"
                     AutoGenerateColumns="False"
                     Background="#5a5a58"
                     BorderThickness="0"
@@ -1086,11 +1295,377 @@
                 Grid.Row="0"
                 Grid.Column="1"
                 Margin="1,0,0,0"
-                Background="#5a5a58" />
+                Background="#5a5a58">
+
+
+                <DataGrid
+                    Name="AlarmHistoryDataGrid"
+                    Height="200"
+                    AutoGenerateColumns="False"
+                    Background="#5a5a58"
+                    BorderThickness="0"
+                    Foreground="White"
+                    HeadersVisibility="Column"
+                    RowHeight="30"
+                    RowStyle="{StaticResource DataGridTextCenterColumnStyle}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Width="120"
+                            Binding="{Binding device_IP}"
+                            Foreground="Green">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{DynamicResource device_ip}" />
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn
+                            Width="120"
+                            Binding="{Binding device_name}"
+                            Foreground="White">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{DynamicResource device_name}" />
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn
+                            Width="120"
+                            Binding="{Binding concentration}"
+                            Foreground="White">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{DynamicResource concentration}" />
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.Header>
+                                <TextBlock Text="{DynamicResource operation}" />
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button
+                                            Margin="2"
+                                            Background="#326cf3"
+                                            BorderThickness="0"
+                                            Click="AlarmHistoryDetailWindow"
+                                            Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding DeviceIP}"
+                                            Content="{DynamicResource detail}"
+                                            Foreground="White" />
+
+                                    </StackPanel>
+
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </Grid>
 
 
         </Grid>
+        <Grid Grid.Row="5" Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid Background="White">
 
+                <Image
+                    Name="algorithmaImg"
+                    Width="74"
+                    Height="32"
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Source="/WpfApp1;component/Resources/off.png" />
+                <TextBlock
+                    Margin="10"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Text="{DynamicResource algorithma}" />
+                <Button
+                    Height="80"
+                    Margin="0,0,0,0"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="algorithmaSetup">
+
+                    <Button.Content>
+                        <TextBlock Text="" />
+                    </Button.Content>
+
+                </Button>
+            </Grid>
+            <Grid
+                Grid.Column="1"
+                Margin="1,0,0,0"
+                Background="White">
+                <!--   <Button
+                    Width="104"
+                    Height="78"
+                    Margin="0,0,0,0"
+                    Padding="0"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="Reset">
+                    <Button.Content>
+                        <Image
+                            Name="Button2Img"
+                            Width="104"
+                            Height="78"
+                            Source="/WpfApp1;component/Resources/button2.png" />
+                    </Button.Content>
+                </Button>-->
+                <Image
+                    Width="20"
+                    Height="20"
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Source="/WpfApp1;component/Resources/button_icon.png" />
+                <TextBlock
+                    Margin="10"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="{DynamicResource platformreset}" />
+                <Button
+                    Height="80"
+                    Margin="0,0,0,0"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="Reset">
+
+                    <Button.Content>
+                        <TextBlock Text="" />
+                    </Button.Content>
+
+                </Button>
+            </Grid>
+            <Grid
+                Grid.Column="2"
+                Margin="1,0,0,0"
+                Background="White">
+
+                <!--    <Button
+                    Width="104"
+                    Height="78"
+                    Margin="0,0,0,0"
+                    Padding="0"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="SetupIndicatingLaser">
+                    <Button.Content>
+                        <Image
+                            Name="Button3Img"
+                            Width="104"
+                            Height="78"
+                            Source="/WpfApp1;component/Resources/button3.png" />
+                    </Button.Content>
+                </Button>-->
+                <Image
+                    Name="indicatingLaserImg"
+                    Width="74"
+                    Height="32"
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Source="/WpfApp1;component/Resources/on.png" />
+                <TextBlock
+                    Margin="10"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Text="{DynamicResource indicatingLaser}" />
+                <Button
+                    Height="80"
+                    Margin="0,0,0,0"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="SetupIndicatingLaser">
+
+                    <Button.Content>
+                        <TextBlock Text="" />
+                    </Button.Content>
+
+                </Button>
+            </Grid>
+            <Grid
+                Grid.Column="3"
+                Margin="1,0,0,0"
+                Background="White">
+
+                <!--   <Button
+                    Width="104"
+                    Height="78"
+                    Margin="0,0,0,0"
+                    Padding="0"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="openWindowWiper">
+                    <Button.Content>
+                        <Image
+                            Width="104"
+                            Height="78"
+                            Source="/WpfApp1;component/Resources/button4.png" />
+                    </Button.Content>
+                </Button>-->
+                <Image
+                    Width="20"
+                    Height="20"
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Source="/WpfApp1;component/Resources/button_icon.png" />
+                <TextBlock
+                    Margin="10"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="{DynamicResource openWindowWiper}" />
+                <Button
+                    Height="80"
+                    Margin="0,0,0,0"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="openWindowWiper">
+
+                    <Button.Content>
+                        <TextBlock Text="" />
+                    </Button.Content>
+
+                </Button>
+            </Grid>
+            <Grid
+                Grid.Column="4"
+                Margin="1,0,0,0"
+                Background="White">
+
+
+                <!--   <Button
+                    Width="104"
+                    Height="78"
+                    Margin="0,0,0,0"
+                    Padding="0"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="closeWindowWiper">
+                    <Button.Content>
+                        <Image
+                            Width="104"
+                            Height="78"
+                            Source="/WpfApp1;component/Resources/button5.png" />
+                    </Button.Content>
+                </Button>-->
+                <Image
+                    Width="20"
+                    Height="20"
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Source="/WpfApp1;component/Resources/button_icon.png" />
+                <TextBlock
+                    Margin="10"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="{DynamicResource closeWindowWiper}" />
+                <Button
+                    Height="80"
+                    Margin="0,0,0,0"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="closeWindowWiper">
+
+                    <Button.Content>
+                        <TextBlock Text="" />
+                    </Button.Content>
+
+                </Button>
+            </Grid>
+            <!--  <Grid
+                Grid.Column="5"
+                Margin="1,0,0,0"
+                Background="White">
+                <Image
+                    Width="20"
+                    Height="20"
+                    Margin="8,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Source="/WpfApp1;component/Resources/button_icon.png" />
+                <TextBlock
+                    Margin="8"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Text="巡航路径同步" />
+            </Grid>
+            <Grid
+                Grid.Column="6"
+                Margin="1,0,0,0"
+                Background="White">
+                <Image
+                    Width="20"
+                    Height="20"
+                    Margin="8,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Source="/WpfApp1;component/Resources/button_icon.png" />
+                <TextBlock
+                    Margin="8"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Text="路径备份/恢复" />
+            </Grid>
+            <Grid
+                Grid.Column="7"
+                Margin="1,0,0,0"
+                Background="White">
+                <Image
+                    Width="20"
+                    Height="20"
+                    Margin="8,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Source="/WpfApp1;component/Resources/button_icon.png" />
+                <TextBlock
+                    Margin="8"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="当日记录" />
+            </Grid>
+            <Grid
+                Grid.Column="8"
+                Margin="1,0,0,0"
+                Background="White">
+                <Image
+                    Width="20"
+                    Height="20"
+                    Margin="8,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Source="/WpfApp1;component/Resources/button_icon.png" />
+                <TextBlock
+                    Margin="8"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="导出记录" />
+            </Grid>-->
+
+        </Grid>
     </Grid>
 
 </Window>

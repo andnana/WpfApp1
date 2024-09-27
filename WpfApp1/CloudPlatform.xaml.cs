@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ using System.Windows.Threading;
 using System.Xml;
 using HandyControl.Controls;
 using static WpfApp1.CHCNetSDK;
+using static WpfApp1.MainWindow;
 namespace WpfApp1
 {
     /// <summary>
@@ -25,16 +27,39 @@ namespace WpfApp1
     /// </summary>
     public partial class CloudPlatform : System.Windows.Window
     {
-
+        string languageStr = "";
         DispatcherTimer disapearSuccessTipsTimer;
         internal static List<CruisePOJO> cruises2 = new List<CruisePOJO>();
         public static bool stopCruiseWhenWarningIsChecked = false;
         public static CloudPlatform In_CloudPlat_Form;
         ObservableCollection<string> device_ip_str_list = new ObservableCollection<string>();
+
         public CloudPlatform()
         {
             InitializeComponent();
 
+
+            ResourceDictionary resourceDictionary;
+            languageStr = ConfigurationManager.AppSettings["Language"];
+            if (languageStr.Equals("english"))
+            {
+                string english = "pack://application:,,,/Language/English.xaml";
+                resourceDictionary = new ResourceDictionary { Source = new Uri(english, UriKind.RelativeOrAbsolute) };
+
+            }
+            else
+            {
+                string chinese = "pack://application:,,,/Language/Chinese.xaml";
+                resourceDictionary = new ResourceDictionary { Source = new Uri(chinese, UriKind.RelativeOrAbsolute) };
+
+
+            }
+
+
+            // 将当前的资源字典从应用程序资源中移除
+            Resources.MergedDictionaries.Remove(resourceDictionary);
+            // 将新的资源字典添加到应用程序资源中
+            Resources.MergedDictionaries.Add(resourceDictionary);
 
             disapearSuccessTipsTimer = new DispatcherTimer();
             In_CloudPlat_Form = this;
@@ -44,7 +69,7 @@ namespace WpfApp1
                    }*/
 
             //DeviceIPCombobox.Items.Add("全部");
-            deviceIPLabel.Content = MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].Device_name;
+            deviceIPLabel.Content = MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].IP;
 
             HigherAlarmTextBox.Text = MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_gbyz.ToString();
             LowerAlarmTextBox.Text = MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_dbyz.ToString();
@@ -263,9 +288,21 @@ namespace WpfApp1
             Thread thread1 = new Thread(threadStart);
             thread1.Start();
         }
-        private void initQuestion(object sender, EventArgs e)
+
+        private void question(object sender, EventArgs e)
         {
-            new InitQuestion().Show();
+
+            if (languageStr.Equals("english"))
+            {
+                ConfirmWindow confirmWindow = new ConfirmWindow("before setup speed first time please init first", TipsEnum.CANCEL);
+                confirmWindow.Show();
+            }
+            else
+            {
+                ConfirmWindow confirmWindow = new ConfirmWindow("第一次设置速度之前请先初始化", TipsEnum.CANCEL);
+                confirmWindow.Show();
+            }
+
         }
         /// <summary>
         /// 设置报警阈值
@@ -289,9 +326,26 @@ namespace WpfApp1
                             MainWindow.real_PlayPOJOs[device_num].I_dbyz = Convert.ToInt32(LowerAlarmTextBox.Text);
                         }*/
             int device_num = MainWindow.real_PlayPOJOs.FindIndex(item => item.IP.Equals(deviceIPLabel.Content));
-            MainWindow.real_PlayPOJOs[device_num].I_gbyz = Convert.ToInt32(HigherAlarmTextBox.Text);
-            MainWindow.real_PlayPOJOs[device_num].I_dbyz = Convert.ToInt32(LowerAlarmTextBox.Text);
-            Growl.SuccessGlobal("设置成功");
+            int higherAlarmValueInt = Convert.ToInt32(HigherAlarmTextBox.Text);
+            int lowerAlarmValueInt = Convert.ToInt32(LowerAlarmTextBox.Text);
+            if (higherAlarmValueInt > 6000)
+            {
+                new TipsWindow("高报阈值不能大于6000", 3, TipsEnum.FAIL).Show();
+                return;
+            }
+            else if (lowerAlarmValueInt > 6000)
+            {
+                new TipsWindow("低报阈值不能大于6000", 3, TipsEnum.FAIL).Show();
+                return;
+            }
+            else if (lowerAlarmValueInt >= higherAlarmValueInt)
+            {
+                new TipsWindow("低报阈值不能大于等于高报阈值", 3, TipsEnum.FAIL).Show();
+                return;
+            }
+            MainWindow.real_PlayPOJOs[device_num].I_gbyz = higherAlarmValueInt;
+            MainWindow.real_PlayPOJOs[device_num].I_dbyz = lowerAlarmValueInt;
+            new TipsWindow("设置成功", 3, TipsEnum.OK).Show();
         }
 
 

@@ -45,6 +45,9 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Xml.Linq;
 using NPOI.SS.Formula.Functions;
 using ScottPlot.Palettes;
+using static WpfApp1.MainWindow;
+using System.ComponentModel;
+using System.Configuration;
 
 namespace WpfApp1
 {
@@ -54,8 +57,10 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : System.Windows.Window
     {
+        bool IndicatingLaserBool = true;
+        bool AlgorithmABool = false;
         DispatcherTimer disapearSuccessTipsTimer;
-
+        DispatcherTimer disapearTipsTimer;
         DeviceSetup deviceSetup = null;
 
         public static List<DeviceInfo> deviceInfoList = new List<DeviceInfo>();
@@ -484,6 +489,112 @@ namespace WpfApp1
             e.Graphics.DrawImage(bmp, ulPoint);
             //m_toolTip.Show("222", this);
         }
+        public static void SaveLanguage(string language)
+        {
+            //打开可执行的配置文件的 *.exe.config
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            //删除配置节
+            config.AppSettings.Settings.Remove("Language");
+            //添加新的配置节
+            config.AppSettings.Settings.Add("Language", language);
+            //保存对配置文件所作的修改
+            config.Save(ConfigurationSaveMode.Modified);
+            //强制重载已更改部分
+            ConfigurationManager.RefreshSection("appSettings");
+
+        }
+        /// <summary>
+        /// 语言选项
+        /// </summary>
+        public enum Language
+        {
+            Chinese,
+            English
+        }
+
+        public new Language language { get; set; }
+
+        /// <summary>
+        /// 切换语言
+        /// </summary>
+        private void SwitchLanguage(object sender, RoutedEventArgs e)
+        {
+
+            switchLanguage2();
+        }
+
+        public void switchLanguage2()
+        {
+            /*      try
+                             {
+                                 if (language == Language.Chinese)
+                                 {
+                                     language = Language.English;
+
+                               ResourceDictionary englishRes = new ResourceDictionary();
+                                     englishRes.Source = new Uri(@"pack://application:,,,/Language/English.xaml", UriKind.Absolute);
+                                     Resources[2] = englishRes;
+
+
+                                 }
+                                 else
+                                 {
+                                     language = Language.Chinese;
+                                     string chinese = "pack://application:,,,/Language/Chinese.xaml";
+                                     this.Resources.MergedDictionaries[2].Source = new Uri(chinese, UriKind.RelativeOrAbsolute);
+                                 }
+                             }
+                             catch (Exception e2)
+                             {
+                                 //错误处理
+                                 Console.WriteLine("e2" + e2.Message);
+                             }*/
+
+            ResourceDictionary resourceDictionary;
+            if (language == Language.Chinese)
+            {
+                language = Language.English;
+                SaveLanguage("english");
+                string english = "pack://application:,,,/Language/English.xaml";
+                resourceDictionary = new ResourceDictionary { Source = new Uri(english, UriKind.RelativeOrAbsolute) };
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                //bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/online_active_dot.png", UriKind.Relative);
+                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/english-filled.png", UriKind.Relative);
+                bitmapImage.EndInit();
+                langImg.Source = bitmapImage;
+                hdLabel1.Content = "hd";
+                hdLabel2.Content = "hd";
+                onlineLable1.Content = "online";
+                onlineLable2.Content = "online";
+
+            }
+            else
+            {
+                language = Language.Chinese;
+                SaveLanguage("chinese");
+                string chinese = "pack://application:,,,/Language/Chinese.xaml";
+                resourceDictionary = new ResourceDictionary { Source = new Uri(chinese, UriKind.RelativeOrAbsolute) };
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                //bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/online_active_dot.png", UriKind.Relative);
+                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/chinese-filled.png", UriKind.Relative);
+                bitmapImage.EndInit();
+                langImg.Source = bitmapImage;
+                hdLabel1.Content = "高清";
+                hdLabel2.Content = "高清";
+                onlineLable1.Content = "在线";
+                onlineLable2.Content = "在线";
+
+
+            }
+
+            // 将当前的资源字典从应用程序资源中移除
+            Resources.MergedDictionaries.Remove(resourceDictionary);
+            // 将新的资源字典添加到应用程序资源中
+            Resources.MergedDictionaries.Add(resourceDictionary);
+
+        }
         /// <summary>
         /// 登录信息
         /// </summary>
@@ -539,11 +650,19 @@ namespace WpfApp1
 
                 //登录设备 Login the device
                 real_PlayPOJOs[device_num].I_lUserID = NET_DVR_Login_V40(ref struLogInfo, ref DeviceInfo);
-                real_PlayPOJOs[device_num].Device_name = sbmc;
+                real_PlayPOJOs[device_num].Device_name = info.deviceName;
                 if (real_PlayPOJOs[device_num].I_lUserID < 0)
                 {
                     real_PlayPOJOs.RemoveAt(device_num);
-                    Growl.WarningGlobal("登录失败,err:" + NET_DVR_GetLastError());
+                    //Growl.WarningGlobal("登录失败,err:" + NET_DVR_GetLastError());
+                    if (language == Language.Chinese)
+                    {
+                        new TipsWindow("登录失败", 3, TipsEnum.OK).Show();
+                    }
+                    else
+                    {
+                        new TipsWindow("login failure", 3, TipsEnum.OK).Show();
+                    }
                     return;
                 }
                 else
@@ -559,7 +678,17 @@ namespace WpfApp1
 
                     real_PlayPOJOs[device_num].I_gbyz = 3000;
                     real_PlayPOJOs[device_num].I_dbyz = 1000;
-                    Growl.SuccessGlobal("登录成功");
+
+                    if (language == Language.Chinese)
+                    {
+                        new TipsWindow("登录成功", 3, TipsEnum.OK).Show();
+                    }
+                    else
+                    {
+                        new TipsWindow("login successfully", 3, TipsEnum.OK).Show();
+                    }
+
+
                     //Usual_historys.Add(new List<int>());
                     //OnlineText.Content = "在线";
                     //OnlineText.Background = (Brush)new BrushConverter().ConvertFrom("#afe484");
@@ -665,7 +794,7 @@ namespace WpfApp1
             real_PlayPOJOs[device_num].messageList[5] = speed + "";
 
             deviceInfoList[MainWindow.Chosen_device_num].speed = int.Parse(speed);
-            Growl.SuccessGlobal("速度设置成功");
+            new TipsWindow("速度设置成功", 3, TipsEnum.OK).Show();
 
 
         }
@@ -1140,11 +1269,66 @@ namespace WpfApp1
 
             reloadCruiseData();
         }
+
+
+        private void AlarmHistoryDetailWindow(object sender, RoutedEventArgs e)
+        {
+            History_Message rowView = (History_Message)((Button)e.Source).DataContext;
+            int index = MainWindow.historyMessages.FindIndex(item => item.save_time.ToString("yyyy-MM-dd HH:mm:ss").Equals(rowView.save_time.ToString("yyyy-MM-dd HH:mm:ss")));
+            new AlarmHistoryDetail(index).Show();
+        }
+
+
         public MainWindow()
         {
             InitializeComponent();
 
+            ResourceDictionary resourceDictionary;
+            string languageStr = ConfigurationManager.AppSettings["Language"];
+            if (languageStr.Equals("english"))
+            {
+                language = Language.English;
+
+                string english = "pack://application:,,,/Language/English.xaml";
+                resourceDictionary = new ResourceDictionary { Source = new Uri(english, UriKind.RelativeOrAbsolute) };
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                //bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/online_active_dot.png", UriKind.Relative);
+                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/english-filled.png", UriKind.Relative);
+                bitmapImage.EndInit();
+                langImg.Source = bitmapImage;
+                hdLabel1.Content = "hd";
+                hdLabel2.Content = "hd";
+                onlineLable1.Content = "online";
+                onlineLable2.Content = "online";
+            }
+            else
+            {
+                language = Language.Chinese;
+
+                string chinese = "pack://application:,,,/Language/Chinese.xaml";
+                resourceDictionary = new ResourceDictionary { Source = new Uri(chinese, UriKind.RelativeOrAbsolute) };
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                //bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/online_active_dot.png", UriKind.Relative);
+                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/chinese-filled.png", UriKind.Relative);
+                bitmapImage.EndInit();
+                langImg.Source = bitmapImage;
+                hdLabel1.Content = "高清";
+                hdLabel2.Content = "高清";
+                onlineLable1.Content = "在线";
+                onlineLable2.Content = "在线";
+            }
+
+
+            // 将当前的资源字典从应用程序资源中移除
+            Resources.MergedDictionaries.Remove(resourceDictionary);
+            // 将新的资源字典添加到应用程序资源中
+            Resources.MergedDictionaries.Add(resourceDictionary);
+
+
             disapearSuccessTipsTimer = new DispatcherTimer();
+            disapearTipsTimer = new DispatcherTimer();
             Status status0 = new Status();
             status0.color = "nomal";
             status0.index = 0;
@@ -1170,6 +1354,9 @@ namespace WpfApp1
             status3.hd = false;
             map1.Add("3", status3);
             LoadHistoryMessageFile();
+
+            AlarmHistoryDataGrid.ItemsSource = historyMessages;
+
 
             /*       //初始化历史数据
 
@@ -1214,13 +1401,15 @@ namespace WpfApp1
                 WindowState = WindowState.Minimized;
             };
 
-            //BtMax.Click += (s, e) =>
-            //{
-            //    WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
-            //};
+            BtMax.Click += (s, e) =>
+            {
+                WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+            };
 
             BtClose.Click += (s, e) =>
             {
+                Thread.CurrentThread.IsBackground = true;
+                Environment.Exit(0);
                 Close();
             };
 
@@ -1310,6 +1499,7 @@ namespace WpfApp1
 
             m_pictureBox3 = new System.Windows.Forms.PictureBox();
             m_pictureBox3.Name = "m_pictureBox3";
+
 
             cameras = new List<PictureBox> { m_pictureBox0, m_pictureBox1, m_pictureBox2, m_pictureBox3 };
 
@@ -1579,7 +1769,11 @@ namespace WpfApp1
             deviceSetup.loadingTips.Text = "";
         }
 
+        private void disapearTips(object sender, EventArgs e)
+        {
+            disapearTipsTimer.Stop();
 
+        }
         /// <summary>
         /// 委托
         /// </summary>
@@ -1589,7 +1783,35 @@ namespace WpfApp1
         private string[] strArray;
         private string[] exStrArray = { "start", "stop", "beginjz", "wait", "failure", "okay", };
         private string strstart = "@start@";
+        private void algorithmaSetup(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.sbmc == "")
+            {
+                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
+                return;
+            }
+            AlgorithmABool = !AlgorithmABool;
+            if (AlgorithmABool)
+            {
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/on.png", UriKind.Relative);
+                bitmapImage.EndInit();
+                algorithmaImg.Source = bitmapImage;
+            }
+            else
+            {
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/off.png", UriKind.Relative);
+                bitmapImage.EndInit();
+                algorithmaImg.Source = bitmapImage;
+            }
 
+
+
+
+        }
         private void R232Text(string text, Socket socket)
         {
 
@@ -1629,7 +1851,15 @@ namespace WpfApp1
                          */
                         case 2:
                             //Growl.InfoGlobal("开始校准，请稍后。" + exStrArray[i]);
-                            deviceSetup.loadingTips.Text = "开始校准，请稍后。" + exStrArray[i];
+                            if (language == Language.Chinese)
+                            {
+                                deviceSetup.loadingTips.Text = "开始校准，请稍后。";
+                            }
+                            else
+                            {
+                                deviceSetup.loadingTips.Text = "please wait a moment";
+                            }
+
                             break;
                         /*
 
@@ -1644,7 +1874,15 @@ namespace WpfApp1
 
                         case 5:
                             //Growl.SuccessGlobal("校准成功。");
-                            deviceSetup.loadingTips.Text = "校准成功。";
+                            if (language == Language.Chinese)
+                            {
+                                deviceSetup.loadingTips.Text = "校准成功。";
+                            }
+                            else
+                            {
+                                deviceSetup.loadingTips.Text = "operation successfully";
+                            }
+
                             disapearSuccessTipsTimer.Interval = TimeSpan.FromSeconds(5);
                             disapearSuccessTipsTimer.Tick += disapearSuccessTips;
                             disapearSuccessTipsTimer.Start();
@@ -1683,10 +1921,12 @@ namespace WpfApp1
                 //mnd = int.Parse(strArray[0]);
 
                 //如果勾选最大值
-                /*       if (AlgorithmToggle.IsChecked.GetValueOrDefault())
-                       {
-                           ndStr = strArray[0];
-                       }*/
+                if (AlgorithmABool)
+                {
+                    ndStr = strArray[0];
+
+                }
+
 
 
                 if (ndTimesShowLength % 1 == 0)
@@ -1847,6 +2087,7 @@ namespace WpfApp1
                 map1[device_num.ToString()].online = true;
             }
 
+
             foreach (KeyValuePair<string, Status> kvp in map1)
             {
                 if (kvp.Value.index == device_num)
@@ -1855,52 +2096,93 @@ namespace WpfApp1
                     {
                         if (map1["2"].online == true)
                         {
-
+                            /*          BitmapImage bitmapImage = new BitmapImage();
+                                      bitmapImage.BeginInit();
+                                      //bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/online_active_dot.png", UriKind.Relative);
+                                      bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/online_active.png", UriKind.Relative);
+                                      bitmapImage.EndInit();
+                                      onlineImage2.Source = bitmapImage;*/
+                            onlineLable2.Background = Brushes.Green;
 
                         }
                         concentrationText2.Text = real_PlayPOJOs[device_num].messageList[0];
-
-                        if (map1["2"].hd == true)
+                        if (language == Language.Chinese)
                         {
-
+                            hdLabel2.Content = "高清";
+                            onlineLable2.Content = "在线";
                         }
                         else
                         {
-
+                            hdLabel2.Content = "hd";
+                            onlineLable2.Content = "online";
                         }
 
+                        if (map1["2"].hd == true)
+                        {
+                            /*    BitmapImage bitmapImage = new BitmapImage();
+                                bitmapImage.BeginInit();
+                                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/hd_active.png", UriKind.Relative);
+                                bitmapImage.EndInit();
+                                hd_image2.Source = bitmapImage;*/
+                            hdLabel2.Background = Brushes.SkyBlue;
+                        }
+                        else
+                        {
+                            /*    BitmapImage bitmapImage = new BitmapImage();
+                                bitmapImage.BeginInit();
+                                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/hd.png", UriKind.Relative);
+                                bitmapImage.EndInit();
+                                hd_image2.Source = bitmapImage;*/
+                            hdLabel2.Background = Brushes.Black;
+                        }
+                        deviceName2.Text = real_PlayPOJOs[device_num].Device_name;
                         break;
                     }
                     if (kvp.Key.Equals("1"))
                     {
                         if (map1["1"].online == true)
                         {
-                            BitmapImage bitmapImage = new BitmapImage();
-                            bitmapImage.BeginInit();
-                            bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/online_active_dot.png", UriKind.Relative);
-                            bitmapImage.EndInit();
-                            online_image1.Source = bitmapImage;
+                            /*       BitmapImage bitmapImage = new BitmapImage();
+                                   bitmapImage.BeginInit();
+                                   //bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/online_active_dot.png", UriKind.Relative);
+                                   bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/online_active.png", UriKind.Relative);
+                                   bitmapImage.EndInit();
+                                   onlineImage1.Source = bitmapImage;*/
+                            onlineLable1.Background = Brushes.Green;
                         }
                         concentrationText1.Text = real_PlayPOJOs[device_num].messageList[0];
 
-
-                        if (map1["1"].hd == true)
+                        if (language == Language.Chinese)
                         {
-                            BitmapImage bitmapImage = new BitmapImage();
-                            bitmapImage.BeginInit();
-                            bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/hd_active_dot.png", UriKind.Relative);
-                            bitmapImage.EndInit();
-                            hd_image1.Source = bitmapImage;
+                            hdLabel1.Content = "高清";
+                            onlineLable1.Content = "在线";
                         }
                         else
                         {
-                            BitmapImage bitmapImage = new BitmapImage();
-                            bitmapImage.BeginInit();
-                            bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/inactive_dot.png", UriKind.Relative);
-                            bitmapImage.EndInit();
-                            hd_image1.Source = bitmapImage;
+                            hdLabel1.Content = "hd";
+                            onlineLable1.Content = "online";
                         }
+                        if (map1["1"].hd == true)
+                        {
+                            /*BitmapImage bitmapImage = new BitmapImage();
+                            bitmapImage.BeginInit();
+                            bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/hd_active.png", UriKind.Relative);
+                            bitmapImage.EndInit();
+                            hd_image1.Source = bitmapImage;*/
+                            hdLabel1.Background = Brushes.SkyBlue;
 
+                        }
+                        else
+                        {
+                            /*    BitmapImage bitmapImage = new BitmapImage();
+                                bitmapImage.BeginInit();
+                                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/hd.png", UriKind.Relative);
+                                bitmapImage.EndInit();
+                                hd_image1.Source = bitmapImage;*/
+                            hdLabel1.Background = Brushes.Black;
+
+                        }
+                        deviceName1.Text = real_PlayPOJOs[device_num].Device_name;
                         break;
                     }
                     else if (kvp.Key.Equals("0"))
@@ -1909,30 +2191,34 @@ namespace WpfApp1
 
                         if (map1["0"].hd == true)
                         {
-                            BitmapImage bitmapImage = new BitmapImage();
-                            bitmapImage.BeginInit();
-                            bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/hd_active.png", UriKind.Relative);
-                            bitmapImage.EndInit();
-                            hd_image0.Source = bitmapImage;
+                            /*   BitmapImage bitmapImage = new BitmapImage();
+                               bitmapImage.BeginInit();
+                               bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/hd_active.png", UriKind.Relative);
+                               bitmapImage.EndInit();
+                               hd_image0.Source = bitmapImage;*/
+                            hdLabel.Background = Brushes.SkyBlue;
                         }
                         else
                         {
-                            BitmapImage bitmapImage = new BitmapImage();
-                            bitmapImage.BeginInit();
-                            bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/hd.png", UriKind.Relative);
-                            bitmapImage.EndInit();
-                            hd_image0.Source = bitmapImage;
+                            /*     BitmapImage bitmapImage = new BitmapImage();
+                                 bitmapImage.BeginInit();
+                                 bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/hd.png", UriKind.Relative);
+                                 bitmapImage.EndInit();
+                                 hd_image0.Source = bitmapImage;*/
+                            hdLabel.Background = Brushes.Black;
                         }
 
                         if (map1["0"].online == true)
                         {
                             /* OnlineText.Content = "在线";
                              OnlineText.Background = (Brush)new BrushConverter().ConvertFrom("#afe484");*/
-                            BitmapImage bitmapImage = new BitmapImage();
-                            bitmapImage.BeginInit();
-                            bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/online_active.png", UriKind.Relative);
-                            bitmapImage.EndInit();
-                            onlineImage.Source = bitmapImage;
+                            /*     BitmapImage bitmapImage = new BitmapImage();
+                                 bitmapImage.BeginInit();
+                                 bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/online_active.png", UriKind.Relative);
+                                 bitmapImage.EndInit();
+                                 onlineImage.Source = bitmapImage;*/
+                            onlineLable.Background = Brushes.Green;
+
                         }
 
                         //lightIntensity.Status = real_PlayPOJOs[device_num].messageList[8]; //光强
@@ -2005,7 +2291,7 @@ namespace WpfApp1
                                 bitmapImage8.EndInit();
                                 lightIntensityImg.Source = bitmapImage8;
                                 break;
-                            
+
                         }
                         MaxNDText.Text = real_PlayPOJOs[device_num].messageList[9];
                         NDText.Text = real_PlayPOJOs[device_num].messageList[0];
@@ -2107,17 +2393,17 @@ namespace WpfApp1
                 return;
             }
             double HighAlarmDouble = double.Parse(real_PlayPOJOs[MainWindow.Chosen_device_num].I_gbyz.ToString());
-            double bottomDoubleHigh = (172 - 24) / 6000.0 * HighAlarmDouble;
-            Console.WriteLine("bottomDoubleHigh: " + ((172 - 24) / 6000.0 * 24 + bottomDoubleHigh));
-            HightAlarmStackPanel.Margin = new Thickness(20, 0, 0, (172 - 24) / 6000.0 * 24 + bottomDoubleHigh + 24);
+            double bottomDoubleHigh = (176 - 24) / 6000.0 * HighAlarmDouble;
+            Console.WriteLine("bottomDoubleHigh: " + ((176 - 24) / 6000.0 * 24 + bottomDoubleHigh));
+            HightAlarmStackPanel.Margin = new Thickness(20, 0, 0, (176 - 24) / 6000.0 * 24 + bottomDoubleHigh + 24);
             HighAlarmNum.Text = HighAlarmDouble.ToString();
 
             double LowerAlarmDouble = double.Parse(real_PlayPOJOs[MainWindow.Chosen_device_num].I_dbyz.ToString());
-            double bottomDoubleLower = (172 - 24) / 6000.0 * LowerAlarmDouble;
-            Console.WriteLine("bottomDoubleLower: " + (172 / 6000.0 * 24 + bottomDoubleLower));
-            LowerAlarmStackPanel.Margin = new Thickness(20, 0, 0, (172 - 24) / 6000.0 * 24 + bottomDoubleLower + 24);
+            double bottomDoubleLower = (176 - 24) / 6000.0 * LowerAlarmDouble;
+            Console.WriteLine("bottomDoubleLower: " + (176 / 6000.0 * 24 + bottomDoubleLower));
+            LowerAlarmStackPanel.Margin = new Thickness(20, 0, 0, (176 - 24) / 6000.0 * 24 + bottomDoubleLower + 24);
             LowerAlarmNum.Text = LowerAlarmDouble.ToString();
-            
+
 
             if (real_PlayPOJOs[device_num].Save_if)
             {
@@ -2373,7 +2659,7 @@ namespace WpfApp1
             {
                 if (messageShowToggleIsChecked)
                 {
-                    Growl.SuccessGlobal("图像录制错误");
+                    new TipsWindow("图像录制错误", 3, TipsEnum.FAIL).Show();
                 }
                 return;
             }
@@ -2390,7 +2676,7 @@ namespace WpfApp1
             {
                 if (messageShowToggleIsChecked)
                 {
-                    Growl.SuccessGlobal("停止录像错误");
+                    new TipsWindow("停止录像错误", 3, TipsEnum.FAIL).Show();
                 }
 
                 return;
@@ -2399,7 +2685,8 @@ namespace WpfApp1
             {
                 if (messageShowToggleIsChecked)
                 {
-                    Growl.SuccessGlobal("录像保存成功，文件名为:" + sVideoFileName);
+                    MessageBox.Show("录像保存成功，文件名为:" + sVideoFileName);
+
                 }
                 real_PlayPOJOs[device_num].B_bRecord = false;
                 real_PlayPOJOs[device_num].Save_if = false;
@@ -2418,6 +2705,8 @@ namespace WpfApp1
 
             return;
         }
+
+
 
         private void ResetAlarmValue(object sender, RoutedEventArgs e)
         {
@@ -2629,8 +2918,10 @@ namespace WpfApp1
                 root.AppendChild(xelMessage);
 
                 doc.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "HistoryMessages.xml");
-                Growl.SuccessGlobal("报警信息插入成功！");
+                new TipsWindow("报警信息插入成功", 3, TipsEnum.OK).Show();
                 historyMessages.Add(historyMessage);
+                //AlarmHistoryDataGrid.ItemsSource = historyMessages;
+                AlarmHistoryDataGrid.Items.Refresh();
 
             }
             catch (Exception e)
@@ -2770,16 +3061,17 @@ namespace WpfApp1
         {
             if (MainWindow.sbmc == "")
             {
-                Growl.SuccessGlobal("请先登录");
+                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
                 return;
             }
+
             new CloudPlatform().Show();
         }
         private void DeviceSetup(object sender, RoutedEventArgs e)
         {
             if (MainWindow.sbmc == "")
             {
-                Growl.SuccessGlobal("请先登录");
+                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
                 return;
             }
             deviceSetup = new DeviceSetup();
@@ -2802,8 +3094,15 @@ namespace WpfApp1
         {
             new Login().Show();
         }
+        private void backup(object sender, RoutedEventArgs e)
+        {
+            new Backup().Show();
+        }
         private void Logout(object sender, RoutedEventArgs e)
         {
+            ConfirmWindow confirm = new ConfirmWindow("确认退出？", TipsEnum.BOTH);
+            confirm.Closed += Confirm_Closed;
+            confirm.Show();
             /*    if (MessageBox.Show("退出系统后将无法实施接收云台数据，确认退出？", "退出系统", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     Debug.WriteLine("退出成功");
@@ -2815,12 +3114,12 @@ namespace WpfApp1
                 }*/
 
             //new Logout().Show();
-            MessageBoxResult result = System.Windows.MessageBox.Show("确认退出？", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+            /*   MessageBoxResult result = System.Windows.MessageBox.Show("确认退出？", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Information);
 
-            if (result == MessageBoxResult.OK)
-            {
-                Close();
-            }
+               if (result == MessageBoxResult.OK)
+               {
+                   Close();
+               }*/
 
             /*       Growl.AskGlobal(null, isConfirmed =>
                    {
@@ -2833,14 +3132,29 @@ namespace WpfApp1
 
         }
 
-
-
+        private void Confirm_Closed(object sender, EventArgs e)
+        {
+            ConfirmWindow confirmWindow = sender as ConfirmWindow;
+            if (confirmWindow != null)
+            {
+                if (confirmWindow.Result == 1)
+                {
+                    Console.WriteLine("ok");
+                    MainWindow.In_Main_Form.Close();
+                    this.Close();
+                }
+                else
+                {
+                    Console.WriteLine("cancel");
+                }
+            }
+        }
 
         private void openWindowWiper(object sender, EventArgs e)
         {
             if (MainWindow.sbmc == "")
             {
-                Growl.SuccessGlobal("请先登录");
+                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
                 return;
             }
             CHCNetSDK.NET_DVR_PTZControl(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, CHCNetSDK.WIPER_PWRON, 0);
@@ -2849,22 +3163,80 @@ namespace WpfApp1
         {
             if (MainWindow.sbmc == "")
             {
-                Growl.SuccessGlobal("请先登录");
+                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
                 return;
             }
             CHCNetSDK.NET_DVR_PTZControl(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, CHCNetSDK.WIPER_PWRON, 1);
         }
 
 
+        /// <summary>
+        /// 发送事件
+        /// </summary>
+        /// <param name="s">发送内容</param>
+        private void Send(string s)
+        {
+            /*            if (!CHCNetSDK.NET_DVR_SerialSend(Main_Form.real_PlayPOJOs[Main_Form.Chosen_device_num].ISerialHandle, 1, s, (uint)s.Length))
+                        {
+                            MessageBox.Show("发送失败" + CHCNetSDK.NET_DVR_GetLastError());
+                        }
+            */
+
+            MainWindow.In_Main_Form.Tcp_Send(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].deviceNum, Encoding.Default.GetBytes(s));
+            Thread.Sleep(3);
+            MainWindow.In_Main_Form.Tcp_Send(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].deviceNum, Encoding.Default.GetBytes(s));
+            Thread.Sleep(4);
+            MainWindow.In_Main_Form.Tcp_Send(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].deviceNum, Encoding.Default.GetBytes(s));
+            Thread.Sleep(3);
+            MainWindow.In_Main_Form.Tcp_Send(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].deviceNum, Encoding.Default.GetBytes(s));
+            Thread.Sleep(4);
+            MainWindow.In_Main_Form.Tcp_Send(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].deviceNum, Encoding.Default.GetBytes(s));
+        }
+
+        private void SetupIndicatingLaser(object sender, EventArgs e)
+        {
+            if (MainWindow.sbmc == "")
+            {
+                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
+                return;
+            }
+            IndicatingLaserBool = !IndicatingLaserBool;
+            if (IndicatingLaserBool)
+            {
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/on.png", UriKind.Relative);
+                bitmapImage.EndInit();
+                indicatingLaserImg.Source = bitmapImage;
+                openIndicatingLaser();
+            }
+            else
+            {
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/off.png", UriKind.Relative);
+                bitmapImage.EndInit();
+                indicatingLaserImg.Source = bitmapImage;
+                closeIndicatingLaser();
+            }
+        }
+        private void openIndicatingLaser()
+        {
+            Send("@lgk@");
+        }
 
 
 
+        private void closeIndicatingLaser()
+        {
+            Send("@lgg@");
+        }
         private void Reset(object sender, EventArgs e)
         {
 
             if (MainWindow.sbmc == "")
             {
-                Growl.SuccessGlobal("请先登录");
+                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
                 return;
             }
             Console.WriteLine("65");
@@ -2900,7 +3272,7 @@ namespace WpfApp1
         {
             if (MainWindow.sbmc == "")
             {
-                Growl.SuccessGlobal("请先登录");
+                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
                 return;
             }
             SavePicture(true, Chosen_device_num);
@@ -2939,11 +3311,12 @@ namespace WpfApp1
             {
                 if (isShowMB)
                 {
+                    Tool.GetPicThumbnail(sBmpPicFileName + ".bmp", sBmpPicFileName + ".jpg", 1080, 1920, 65, ndsj, device_num);
                     str = "图片路径:" + sBmpPicFileName;
                     //DialogResult res = System.Windows.Forms.MessageBox.Show(str, "截图成功");
-                    Growl.SuccessGlobal("截图成功:" + str);
-                    Thread.Sleep(500);
-                    Tool.GetPicThumbnail(sBmpPicFileName + ".bmp", sBmpPicFileName + ".jpg", 1080, 1920, 65, ndsj, device_num);
+                    MessageBox.Show("截图成功:" + str);
+
+
 
                     /*if (res == System.Windows.Forms.DialogResult.OK)
                     {

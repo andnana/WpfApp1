@@ -191,7 +191,7 @@ namespace WpfApp1
                 int removeIndex = cruisesPresets.FindIndex(item => item.preset_num.ToString().Equals(rowView.preset_num.ToString()));
                 cruisesPresets.RemoveAt(removeIndex);
                 PresetsDataGrid.Items.Refresh();
-                Growl.SuccessGlobal("删除成功！");
+                new TipsWindow("删除成功", 3, TipsEnum.OK).Show();
             }
         }
 

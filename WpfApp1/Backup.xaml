@@ -1,13 +1,13 @@
 ﻿<Window
-    x:Class="WpfApp1.About"
+    x:Class="WpfApp1.Backup"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:hc="https://handyorg.github.io/handycontrol"
     xmlns:local="clr-namespace:WpfApp1"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="关于软件"
-    Width="300"
+    xmlns:microsoft_win32="clr-namespace:Microsoft.Win32;assembly=PresentationFramework"
+    Title="备份"
+    Width="400"
     Height="200"
     Background="Black"
     BorderBrush="White"
@@ -61,10 +61,10 @@
                                     <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
 
                                         <!--       <Button  Margin="6"  Name="BtMax" Width="16" Height="16"  Padding="0" BorderThickness="0" Background="Transparent">
-                   <Button.Content>
-                       <Image Source="/WpfApp1;component/Resources/Maximize.png" Width="16" Height="16"/>
-                   </Button.Content>
-               </Button>-->
+                <Button.Content>
+                    <Image Source="/WpfApp1;component/Resources/Maximize.png" Width="16" Height="16"/>
+                </Button.Content>
+            </Button>-->
                                         <Button
                                             Name="BtClose"
                                             Width="16"
@@ -89,25 +89,45 @@
             </Grid>
         </Grid>
         <Grid Grid.Row="1" Background="#5a5a58">
-            <StackPanel
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"
-                Orientation="Vertical">
-                <Image
-                    Width="80"
-                    Height="80"
-                    Margin="10,10"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Source="/WpfApp1;component/Resources/ch4test.png" />
-                <TextBlock
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid Margin="20,0,20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="7*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+                <TextBox
+                    Name="dirPath"
                     Grid.Row="0"
-                    Grid.Column="0"
-                    Foreground="White"
-                    Text="{DynamicResource software_name}" />
-            </StackPanel>
+                    Width="200"
+                    Height="20"
+                    Margin="0"
+                    Foreground="Black"
+                    Text=""
+                    TextWrapping="Wrap" />
+                <Button
+                    Grid.Column="1"
+                    Click="chooseDirectory"
+                    Content="{DynamicResource choose}" />
+
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Button Click="import" Content="{DynamicResource import}" />
+                <Button
+                    Grid.Column="1"
+                    Click="export"
+                    Content="{DynamicResource export}" />
+
+            </Grid>
+
         </Grid>
 
     </Grid>
-
 </Window>

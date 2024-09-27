@@ -88,7 +88,7 @@ namespace WpfApp1
                 int removeIndex = presets.FindIndex(item => item.preset_num.ToString().Equals(rowView.preset_num.ToString()));
                 presets.RemoveAt(removeIndex);
                 PresetsDataGrid.Items.Refresh();
-                Growl.SuccessGlobal("删除成功！");
+                new TipsWindow("删除成功", 3, TipsEnum.OK).Show();
             }
         }
 
@@ -162,7 +162,7 @@ namespace WpfApp1
         {
             if (MainWindow.sbmc == "")
             {
-                Growl.SuccessGlobal("请先登录");
+                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
                 return;
             }
             Preset rowView = (Preset)((Button)e.Source).DataContext;
@@ -215,11 +215,11 @@ namespace WpfApp1
             bool isOK = NET_DVR_PTZPreset(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_lRealHandle, (uint)CHCNetSDK.SET_PRESET, (uint)preset);
             if (!isOK)
             {
-                Growl.SuccessGlobal("预置点增加失败");
+                new TipsWindow("预置点增加失败", 3, TipsEnum.FAIL).Show();
             }
             else
             {
-                Growl.SuccessGlobal("预置点增加成功");
+                new TipsWindow("预置点增加成功", 3, TipsEnum.OK).Show();
                 //MainWindow.presetPOJOList[MainWindow.Chosen_device_num].Presets[preset - 1] = "1";//PresetCommentTextBox.Text;
                 //Tool.SaveInstanceToFile(MainWindow.presetPOJOList[MainWindow.Chosen_device_num], MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].IP);
 

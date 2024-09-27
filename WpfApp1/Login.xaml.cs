@@ -20,6 +20,7 @@ using MessageBox = HandyControl.Controls.MessageBox;
 using System.Xml;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using System.Configuration;
 namespace WpfApp1
 {
     /// <summary>
@@ -51,6 +52,7 @@ namespace WpfApp1
         private static bool Save_if;
 
 
+        ObservableCollection<string> device_name_str_list = new ObservableCollection<string>();
         ObservableCollection<string> device_ip_str_list = new ObservableCollection<string>();
         public Login()
         {
@@ -58,28 +60,48 @@ namespace WpfApp1
 
 
 
+            ResourceDictionary resourceDictionary;
+            string languageStr = ConfigurationManager.AppSettings["Language"];
+            if (languageStr.Equals("english"))
+            {
+                string english = "pack://application:,,,/Language/English.xaml";
+                resourceDictionary = new ResourceDictionary { Source = new Uri(english, UriKind.RelativeOrAbsolute) };
+
+            }
+            else
+            {
+                string chinese = "pack://application:,,,/Language/Chinese.xaml";
+                resourceDictionary = new ResourceDictionary { Source = new Uri(chinese, UriKind.RelativeOrAbsolute) };
+
+
+            }
+
+
+            // 将当前的资源字典从应用程序资源中移除
+            Resources.MergedDictionaries.Remove(resourceDictionary);
+            // 将新的资源字典添加到应用程序资源中
+            Resources.MergedDictionaries.Add(resourceDictionary);
 
 
             loginInfoList.Clear();
 
 
 
-
-
-
-
-
-
             //LoadFileToInstance("Login_info");
             LoadLoginFile();
+            if (loginInfoList.Count > 0) {
+                for (int i = 0; i < loginInfoList.Count; i++)
+                {
+                    device_name_str_list.Add(loginInfoList[i].Name);
+                    device_ip_str_list.Add(loginInfoList[i].Ip);
+                }
 
-            for (int i = 0; i < loginInfoList.Count; i++)
-            {
-                device_ip_str_list.Add(loginInfoList[i].Ip);
+                deviceNameComboBox.ItemsSource = device_name_str_list;
+                deviceNameComboBox.SelectedIndex = 0;
+                ipComboBox.ItemsSource = device_ip_str_list;
+                ipComboBox.SelectedIndex = 0;
             }
-
-            deviceComboBox.ItemsSource = device_ip_str_list;
-            deviceComboBox.SelectedIndex = 0;
+    
             TitleBar.MouseMove += (s, e) =>
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
@@ -134,7 +156,7 @@ namespace WpfApp1
             root.AppendChild(xelKey);
 
             doc.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "LoginInfo.xml");
-            Growl.SuccessGlobal("插入成功！");
+            new TipsWindow("插入成功", 3, TipsEnum.OK).Show();
 
 
         }
@@ -151,7 +173,7 @@ namespace WpfApp1
                 {
                     if (ip == MainWindow.real_PlayPOJOs[i].IP)
                     {
-                        Growl.Warning("该设备已登录");
+                        new TipsWindow("该设备已登录", 3, TipsEnum.FAIL).Show();
                         return;
                     }
                 }
@@ -159,7 +181,7 @@ namespace WpfApp1
 
             if (ip == "")
             {
-                Growl.Warning("ip地址不可为空");
+                new TipsWindow("ip地址不可为空", 3, TipsEnum.FAIL).Show();
                 return;
             }
             else
@@ -170,7 +192,7 @@ namespace WpfApp1
             string prot = PortText.Text.ToString();
             if (prot == "")
             {
-                Growl.Warning("端口地址不可为空");
+                new TipsWindow("端口不可为空", 3, TipsEnum.FAIL).Show();
                 return;
             }
             else
@@ -181,7 +203,7 @@ namespace WpfApp1
             string name = Username.Text.ToString();
             if (name == "")
             {
-                Growl.Warning("用户名不可为空");
+                new TipsWindow("用户名不可为空", 3, TipsEnum.FAIL).Show();
                 return;
             }
             else
@@ -191,7 +213,7 @@ namespace WpfApp1
             string pw = Password.Password.Trim().ToString();
             if (pw == "")
             {
-                Growl.Warning("密码不可为空");
+                new TipsWindow("密码不可为空", 3, TipsEnum.FAIL).Show();
                 return;
             }
             else
@@ -200,7 +222,7 @@ namespace WpfApp1
                 info.Pw = pw;
             }
             string deviceNameStr = deviceNameTextBox.Text;
-
+            info.deviceName = deviceNameStr;
             string deviceNumStr = deviceNum.Text.ToString();
             info.TDid = "1";
             //info.Ip = "12.52.12.135";
@@ -288,9 +310,10 @@ namespace WpfApp1
    
         public static void LoadLoginFile()
         {
-
-            // 创建XmlDDocument对象，并装入xml文件
-            XmlDocument xmlDoc = new XmlDocument();
+            try
+            {
+                // 创建XmlDDocument对象，并装入xml文件
+                XmlDocument xmlDoc = new XmlDocument();
 
             XmlReaderSettings settings = new XmlReaderSettings();
             settings.IgnoreComments = true;//忽略文档里面的注释
@@ -327,6 +350,24 @@ namespace WpfApp1
                 loginInfoList.Add(loginInfo);
             }
             reader.Close();
+            }
+            catch (FileNotFoundException e)
+            {
+                //创建一个空的XML
+                XmlDocument document = new XmlDocument();
+                //声明头部
+                XmlDeclaration dec = document.CreateXmlDeclaration("1.0", "utf-8", "yes");
+                document.AppendChild(dec);
+
+                //创建根节点
+                XmlElement root = document.CreateElement("logininfo");
+                document.AppendChild(root);
+
+
+                //保存文档
+                document.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "LoginInfo.xml");
+                Console.WriteLine(e.Message);
+            }
         }
 
         /// <summary>
@@ -370,11 +411,11 @@ namespace WpfApp1
 
         public void deviceComboBoxChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(deviceComboBox.SelectedIndex == -1)
+            if(deviceNameComboBox.SelectedIndex == -1)
             {
-                deviceComboBox.SelectedIndex = 0;
+                deviceNameComboBox.SelectedIndex = 0;
             }
-            Console.WriteLine(loginInfoList[deviceComboBox.SelectedIndex].Ip);
+            Console.WriteLine(loginInfoList[deviceNameComboBox.SelectedIndex].Ip);
             if (loginInfoList.Count == 1)
             {
                
@@ -385,10 +426,10 @@ namespace WpfApp1
             }
             else if(loginInfoList.Count > 0)
             {
-                IPText.Text = loginInfoList[deviceComboBox.SelectedIndex].Ip;
-                deviceNameTextBox.Text = loginInfoList[deviceComboBox.SelectedIndex].Name;
-                PortText.Text = loginInfoList[deviceComboBox.SelectedIndex].Port;
-                deviceNum.Text = loginInfoList[deviceComboBox.SelectedIndex].DeviceNum;
+                IPText.Text = loginInfoList[deviceNameComboBox.SelectedIndex].Ip;
+                deviceNameTextBox.Text = loginInfoList[deviceNameComboBox.SelectedIndex].Name;
+                PortText.Text = loginInfoList[deviceNameComboBox.SelectedIndex].Port;
+                deviceNum.Text = loginInfoList[deviceNameComboBox.SelectedIndex].DeviceNum;
             }
             else
             {
@@ -399,7 +440,72 @@ namespace WpfApp1
             }
             
         }
+                    
+        public void deviceNameComboBoxChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (deviceNameComboBox.SelectedIndex == -1)
+            {
+                deviceNameComboBox.SelectedIndex = 0;
+            }
+            Console.WriteLine(loginInfoList[deviceNameComboBox.SelectedIndex].Ip);
+            if (loginInfoList.Count == 1)
+            {
 
+                IPText.Text = loginInfoList[0].Ip;
+                deviceNameTextBox.Text = loginInfoList[0].Name;
+                PortText.Text = loginInfoList[0].Port;
+                deviceNum.Text = loginInfoList[0].DeviceNum;
+            }
+            else if (loginInfoList.Count > 0)
+            {
+                IPText.Text = loginInfoList[deviceNameComboBox.SelectedIndex].Ip;
+                deviceNameTextBox.Text = loginInfoList[deviceNameComboBox.SelectedIndex].Name;
+                PortText.Text = loginInfoList[deviceNameComboBox.SelectedIndex].Port;
+                deviceNum.Text = loginInfoList[deviceNameComboBox.SelectedIndex].DeviceNum;
+                ipComboBox.SelectedIndex = deviceNameComboBox.SelectedIndex;
+            }
+            else
+            {
+                IPText.Text = "";
+                deviceNameTextBox.Text = "";
+                PortText.Text = "";
+                deviceNum.Text = "";
+            }
+
+        }
+        public void ipComboBoxChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ipComboBox.SelectedIndex == -1)
+            {
+                ipComboBox.SelectedIndex = 0;
+            }
+            Console.WriteLine(loginInfoList[ipComboBox.SelectedIndex].Ip);
+            if (loginInfoList.Count == 1)
+            {
+
+                IPText.Text = loginInfoList[0].Ip;
+                deviceNameTextBox.Text = loginInfoList[0].Name;
+                PortText.Text = loginInfoList[0].Port;
+                deviceNum.Text = loginInfoList[0].DeviceNum;
+            }
+            else if (loginInfoList.Count > 0)
+            {
+                IPText.Text = loginInfoList[ipComboBox.SelectedIndex].Ip;
+                deviceNameTextBox.Text = loginInfoList[ipComboBox.SelectedIndex].Name;
+                PortText.Text = loginInfoList[ipComboBox.SelectedIndex].Port;
+                deviceNum.Text = loginInfoList[ipComboBox.SelectedIndex].DeviceNum;
+                deviceNameComboBox.SelectedIndex = ipComboBox.SelectedIndex;
+            }
+            else
+            {
+                IPText.Text = "";
+                deviceNameTextBox.Text = "";
+                PortText.Text = "";
+                deviceNum.Text = "";
+            }
+
+        }
+        
         private void delete_login_info(object sender, RoutedEventArgs e)
         {
            
@@ -407,14 +513,14 @@ namespace WpfApp1
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "LoginInfo.xml");
             XmlElement xe = xmlDoc.DocumentElement; // DocumentElement 获取xml文档对象的根XmlElement.
-            string strPath = string.Format("/logininfo/info[@ip=\"{0}\"]", loginInfoList[deviceComboBox.SelectedIndex].Ip);
+            string strPath = string.Format("/logininfo/info[@ip=\"{0}\"]", loginInfoList[deviceNameComboBox.SelectedIndex].Ip);
             XmlElement selectXe = (XmlElement)xe.SelectSingleNode(strPath);  //selectSingleNode 根据XPath表达式,获得符合条件的第一个节点.
             selectXe.ParentNode.RemoveChild(selectXe);
             xmlDoc.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "LoginInfo.xml");
 
-            device_ip_str_list.RemoveAt(deviceComboBox.SelectedIndex);
-            deviceComboBox.SelectedIndex = 0;
-            Growl.SuccessGlobal("删除成功！");
+            device_name_str_list.RemoveAt(deviceNameComboBox.SelectedIndex);
+            deviceNameComboBox.SelectedIndex = 0;
+            new TipsWindow("删除成功", 3, TipsEnum.FAIL).Show();
         }
     }
 }

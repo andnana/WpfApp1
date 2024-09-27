@@ -23,8 +23,10 @@ namespace WpfApp1
     /// </summary>
     public partial class Video : Window
     {
-        public Video()
+        string videoPath = "";
+        public Video(string videoPath)
         {
+            this.videoPath = videoPath;
             InitializeComponent();
 
             TitleBar.MouseMove += (s, e) =>
@@ -41,7 +43,7 @@ namespace WpfApp1
             var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
             var libDirectory = new DirectoryInfo(System.IO.Path.Combine(currentDirectory, "libvlc", "win-x64"));
             this.vlcPlayer.SourceProvider.CreatePlayer(libDirectory);
-            vlcPlayer.SourceProvider.MediaPlayer.Play(new Uri(AlarmHistory.videoPath));
+            vlcPlayer.SourceProvider.MediaPlayer.Play(new Uri(videoPath));
 
 
        

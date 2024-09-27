@@ -14,6 +14,7 @@ using System.Windows.Forms;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using HandyControl.Controls;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace WpfApp1
 {
@@ -443,12 +444,12 @@ namespace WpfApp1
                     fs.Write(bytes, 0, bytes.Length);
                     fs.Flush();
                 }
-                Growl.SuccessGlobal("保存成功。文件路径为：" + savepath);
+                MessageBox.Show("保存成功。文件路径为：" + savepath);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                Growl.SuccessGlobal("保存失败");
+                new TipsWindow("保存失败", 3, TipsEnum.FAIL).Show();
             }
         }
 

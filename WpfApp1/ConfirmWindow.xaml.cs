@@ -16,23 +16,25 @@ using System.Windows.Shapes;
 namespace WpfApp1
 {
     /// <summary>
-    /// About.xaml 的交互逻辑
+    /// ConfirmWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class About : Window
+    public partial class ConfirmWindow : Window
     {
-        public About()
+        TipsEnum tipEnum;
+        string msg = "";
+       
+        public int Result { get; private set; }
+        public ConfirmWindow(string msg, TipsEnum tipsEnum)
         {
+            this.tipEnum = tipsEnum;
             InitializeComponent();
-            TitleBar.MouseMove += (s, e) =>
+            this.msg = msg;
+            messageTextBlock.Text = msg;
+            if (tipsEnum == TipsEnum.CANCEL)
             {
-                if (e.LeftButton == MouseButtonState.Pressed)
-                    DragMove();
-            };
+                OKBtn.Visibility = Visibility.Hidden;
+            }
 
-            BtClose.Click += (s, e) =>
-            {
-                Close();
-            };
             ResourceDictionary resourceDictionary;
             string languageStr = ConfigurationManager.AppSettings["Language"];
             if (languageStr.Equals("english"))
@@ -54,6 +56,18 @@ namespace WpfApp1
             Resources.MergedDictionaries.Remove(resourceDictionary);
             // 将新的资源字典添加到应用程序资源中
             Resources.MergedDictionaries.Add(resourceDictionary);
+
+
+        }
+        private void OK(object sender, EventArgs e)
+        {
+            Result = 1;
+            this.Close(); // 关闭窗口
+        }
+        private void Cancel(object sender, EventArgs e)
+        {
+            Result = 0;
+            this.Close(); // 关闭窗口
         }
     }
 }
