@@ -48,6 +48,14 @@ namespace WpfApp1
                 bitmapImage.EndInit();
                 TipsIcon.Source = bitmapImage;
             }
+            else if (icon == TipsEnum.INFO)
+            {
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/info.png", UriKind.Relative);
+                bitmapImage.EndInit();
+                TipsIcon.Source = bitmapImage;
+            }
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
             timer.Interval = TimeSpan.FromSeconds(interval); // 设置时间为5秒

@@ -68,7 +68,7 @@ namespace WpfApp1
         Dictionary<string, Status> map1 = new Dictionary<string, Status>();
 
         int presetInt = 0;
-        string presetName = "";
+        string presetNotes = "";
         int maxPid = 0;
 
         public static List<History_Message> historyMessages = new List<History_Message>();
@@ -217,7 +217,7 @@ namespace WpfApp1
                             NET_DVR_PTZPreset(real_PlayPOJOs[i].I_lRealHandle, 39,
                                 (uint)real_PlayPOJOs[i].cruise_num_list[real_PlayPOJOs[i].I_cruise_num_now]);
                             presetInt = real_PlayPOJOs[i].cruise_num_list[real_PlayPOJOs[i].I_cruise_num_now];
-                            presetName = real_PlayPOJOs[MainWindow.Chosen_device_num].cruisesPresets[real_PlayPOJOs[Chosen_device_num].I_cruise_num_now].notes;
+                            presetNotes = real_PlayPOJOs[MainWindow.Chosen_device_num].cruisesPresets[real_PlayPOJOs[Chosen_device_num].I_cruise_num_now].notes;
                             Console.WriteLine();
                             // Console.WriteLine("设备" + i + "正在前往预置点" + real_PlayPOJOs[i].I_cruise_num_now);
                             Console.WriteLine("设备" + i + "正在前往预置点" + "cruise" + i + "_" + real_PlayPOJOs[i].cruise_num_list[real_PlayPOJOs[i].I_cruise_num_now]);
@@ -283,10 +283,20 @@ namespace WpfApp1
 
         private void Zoom_in_MouseDown(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.sbmc == "")
+            {
+                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
+                return;
+            }
             NET_DVR_PTZControl(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, CHCNetSDK.ZOOM_IN, 0);
         }
         private void Zoom_out_MouseDown(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.sbmc == "")
+            {
+                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
+                return;
+            }
             NET_DVR_PTZControl(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, CHCNetSDK.ZOOM_OUT, 0);
         }
         /// <summary>
@@ -401,6 +411,11 @@ namespace WpfApp1
         // 当鼠标按下按钮时触发（可以看作是开始点击）  
         private void Button_MouseDown_TILT_UP(object sender, MouseButtonEventArgs e)
         {
+            if (MainWindow.sbmc == "")
+            {
+                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
+                return;
+            }
             //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
             // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
             real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
@@ -411,7 +426,11 @@ namespace WpfApp1
         private void Button_MouseDown_PAN_LEFT(object sender, MouseButtonEventArgs e)
         {
 
-
+            if (MainWindow.sbmc == "")
+            {
+                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
+                return;
+            }
             //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
             // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
             real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
@@ -421,6 +440,11 @@ namespace WpfApp1
         // 当鼠标按下按钮时触发（可以看作是开始点击）  
         private void Button_MouseDown_PAN_RIGHT(object sender, MouseButtonEventArgs e)
         {
+            if (MainWindow.sbmc == "")
+            {
+                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
+                return;
+            }
             //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
             // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
             real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
@@ -466,6 +490,11 @@ namespace WpfApp1
         // 当鼠标按下按钮时触发（可以看作是开始点击）  
         private void Button_MouseDown_TILT_DOWN(object sender, MouseButtonEventArgs e)
         {
+            if (MainWindow.sbmc == "")
+            {
+                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
+                return;
+            }
             //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
             // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
             real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
@@ -969,6 +998,38 @@ namespace WpfApp1
         {
             return $"pack://application:,,,/Resources/{resourceName}";
         }
+
+        private void initLoginInfoFile()
+        {
+            try
+            {
+                // 创建XmlDDocument对象，并装入xml文件
+                XmlDocument xmlDoc = new XmlDocument();
+
+                XmlReaderSettings settings = new XmlReaderSettings();
+                settings.IgnoreComments = true;//忽略文档里面的注释
+                XmlReader reader = XmlReader.Create(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "LoginInfo.xml", settings);
+                //xmlDoc.Load(reader);
+                reader.Close();
+            }
+            catch (FileNotFoundException e)
+            {
+                //创建一个空的XML
+                XmlDocument document = new XmlDocument();
+                //声明头部
+                XmlDeclaration dec = document.CreateXmlDeclaration("1.0", "utf-8", "yes");
+                document.AppendChild(dec);
+
+                //创建根节点
+                XmlElement root = document.CreateElement("logininfo");
+                document.AppendChild(root);
+
+
+                //保存文档
+                document.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "LoginInfo.xml");
+                Console.WriteLine(e.Message);
+            }
+        }
         public void LoadHistoryMessageFile()
         {
             try
@@ -1014,9 +1075,35 @@ namespace WpfApp1
                     historyMessage.Preset_num = int.Parse(xnl0.Item(7).InnerText);
                     historyMessage.Preset_notes = xnl0.Item(8).InnerText;
                     historyMessage.video_path = xnl0.Item(9).InnerText;
+
+                    if (bool.Parse(xnl0.Item(10).InnerText))
+                    {
+                        historyMessage.isManul = true;
+                        if (language.Equals(Language.Chinese))
+                        {
+                            historyMessage.isManulStr = "手动";
+                        }
+                        else { historyMessage.isManulStr = "manul"; }
+
+                    }
+                    else
+                    {
+                        historyMessage.isManul = false;
+                        if (language.Equals(Language.Chinese))
+                        {
+                            historyMessage.isManulStr = "巡航";
+                        }
+                        else { historyMessage.isManulStr = "cruise"; }
+
+                    }
+
                     historyMessages.Add(historyMessage);
                 }
-                maxPid = historyMessages.Max(h => h.pid);
+                if (historyMessages.Count > 0)
+                {
+                    maxPid = historyMessages.Max(h => h.pid);
+                }
+
                 reader.Close();
             }
             catch (FileNotFoundException e)
@@ -1282,6 +1369,8 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
+
+            initLoginInfoFile();
 
             ResourceDictionary resourceDictionary;
             string languageStr = ConfigurationManager.AppSettings["Language"];
@@ -2375,7 +2464,7 @@ namespace WpfApp1
         /// 录像委托
         /// </summary>
         /// <param name="text"></param>
-        private delegate Task VideoSave(bool messageBox_showIf, int device_num);
+        private delegate Task VideoSave(bool messageBox_showIf, int device_num, bool isManul);
 
 
 
@@ -2411,9 +2500,10 @@ namespace WpfApp1
             }
             if (Convert.ToInt32(real_PlayPOJOs[device_num].messageList[0]) >= real_PlayPOJOs[device_num].I_gbyz)
             {
+
                 if (!real_PlayPOJOs[device_num].B_bRecord)
                 {
-                    this.Dispatcher.BeginInvoke(new VideoSave(AutoSaveRecord), true, device_num);
+                    this.Dispatcher.BeginInvoke(new VideoSave(AutoSaveAlarmInfo), true, device_num, !real_PlayPOJOs[MainWindow.Chosen_device_num].B_isAuto);
                 }
 
                 /*      if (real_PlayPOJOs[device_num].B_isAuto)
@@ -2476,7 +2566,7 @@ namespace WpfApp1
             {
                 if (!real_PlayPOJOs[device_num].B_bRecord)
                 {
-                    this.Dispatcher.BeginInvoke(new VideoSave(AutoSaveRecord), true, device_num);
+                    this.Dispatcher.BeginInvoke(new VideoSave(AutoSaveAlarmInfo), true, device_num, !real_PlayPOJOs[MainWindow.Chosen_device_num].B_isAuto);
                 }
 
                 if (real_PlayPOJOs[device_num].B_isAuto)
@@ -2622,9 +2712,10 @@ namespace WpfApp1
         /// <summary>
         /// 自动录像
         /// </summary>
-        /// <param name="messageBox_showIf"></param>
+        /// <param name="messageShowToggleIsChecked"></param>
         /// <param name="device_num"></param>
-        public async Task AutoSaveRecord(bool messageShowToggleIsChecked, int device_num)
+        /// <param name="isManul"></param>
+        public async Task AutoSaveAlarmInfo(bool messageShowToggleIsChecked, int device_num, bool isManul)
         {
             if (real_PlayPOJOs[device_num].B_bRecord)
             {
@@ -2644,66 +2735,77 @@ namespace WpfApp1
             string sVideoFileName;
             sVideoFileName = sVideoFilePath + DateTime.Now.ToString("HH-mm-ss");
 
-            if (real_PlayPOJOs[device_num].cruise_num_list.Count > 0)
+            
+              
+            if (!isManul)
             {
-                SaveHistoryMessagesToFile(device_num, sVideoFileName);
-            }
+                SaveHistoryMessagesToFile(device_num, sVideoFileName, isManul);
 
+                //强制I帧 Make a I frame
+                int lChannel = Int16.Parse("1"); //通道号 Channel number
+                                                 // CHCNetSDK.NET_DVR_MakeKeyFrame(real_PlayPOJOs[device_num].I_lUserID, lChannel);
 
-            //强制I帧 Make a I frame
-            int lChannel = Int16.Parse("1"); //通道号 Channel number
-                                             // CHCNetSDK.NET_DVR_MakeKeyFrame(real_PlayPOJOs[device_num].I_lUserID, lChannel);
-
-            //开始录像 Start recording
-            if (!CHCNetSDK.NET_DVR_SaveRealData(real_PlayPOJOs[device_num].I_lRealHandle, sVideoFileName + ".wmv"))
-            {
-                if (messageShowToggleIsChecked)
+                //开始录像 Start recording
+                if (!CHCNetSDK.NET_DVR_SaveRealData(real_PlayPOJOs[device_num].I_lRealHandle, sVideoFileName + ".wmv"))
                 {
-                    new TipsWindow("图像录制错误", 3, TipsEnum.FAIL).Show();
+                    if (messageShowToggleIsChecked)
+                    {
+                        new TipsWindow("图像录制错误", 3, TipsEnum.FAIL).Show();
+                    }
+                    return;
                 }
-                return;
+                else
+                {
+                    real_PlayPOJOs[device_num].B_bRecord = true;
+                    real_PlayPOJOs[device_num].Save_if = true;
+                }
+
+                await Task.Delay(1010 * 18);
+
+                //停止录像 Stop recording
+                if (!CHCNetSDK.NET_DVR_StopSaveRealData(real_PlayPOJOs[device_num].I_lRealHandle))
+                {
+                    if (messageShowToggleIsChecked)
+                    {
+                        new TipsWindow("停止录像错误", 3, TipsEnum.FAIL).Show();
+                    }
+
+                    return;
+                }
+                else
+                {
+                    if (messageShowToggleIsChecked)
+                    {
+                        MessageBox.Show("录像保存成功，文件名为:" + sVideoFileName);
+
+                    }
+                    real_PlayPOJOs[device_num].B_bRecord = false;
+                    real_PlayPOJOs[device_num].Save_if = false;
+
+                    //  FileStream file = new FileStream(sVideoFilePath + DateTime.Now.ToString("/HH-mm-ss"), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+                    FileStream file = new FileStream(sVideoFileName, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+                    using (var stream = new StreamWriter(file))
+                    {
+                        string str = JsonConvert.SerializeObject(real_PlayPOJOs[device_num].Save_nd);
+                        stream.Write(str);
+                        stream.Flush();
+                        stream.Close();
+                    }
+                    real_PlayPOJOs[device_num].Save_nd = new List<string>();
+                }
             }
             else
             {
-                real_PlayPOJOs[device_num].B_bRecord = true;
-                real_PlayPOJOs[device_num].Save_if = true;
+                if (ndTimesShowLength % 100 == 0)
+                {
+                    SaveHistoryMessagesToFile(device_num, sVideoFileName, isManul);
+                }
+           
+             
             }
 
-            await Task.Delay(1010 * 18);
 
-            //停止录像 Stop recording
-            if (!CHCNetSDK.NET_DVR_StopSaveRealData(real_PlayPOJOs[device_num].I_lRealHandle))
-            {
-                if (messageShowToggleIsChecked)
-                {
-                    new TipsWindow("停止录像错误", 3, TipsEnum.FAIL).Show();
-                }
 
-                return;
-            }
-            else
-            {
-                if (messageShowToggleIsChecked)
-                {
-                    MessageBox.Show("录像保存成功，文件名为:" + sVideoFileName);
-
-                }
-                real_PlayPOJOs[device_num].B_bRecord = false;
-                real_PlayPOJOs[device_num].Save_if = false;
-
-                //  FileStream file = new FileStream(sVideoFilePath + DateTime.Now.ToString("/HH-mm-ss"), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-                FileStream file = new FileStream(sVideoFileName, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-                using (var stream = new StreamWriter(file))
-                {
-                    string str = JsonConvert.SerializeObject(real_PlayPOJOs[device_num].Save_nd);
-                    stream.Write(str);
-                    stream.Flush();
-                    stream.Close();
-                }
-                real_PlayPOJOs[device_num].Save_nd = new List<string>();
-            }
-
-            return;
         }
 
 
@@ -2841,7 +2943,7 @@ namespace WpfApp1
 
 
 
-        private void SaveHistoryMessagesToFile(int device_num, string sVideoFileName)
+        private void SaveHistoryMessagesToFile(int device_num, string sVideoFileName, bool isManul)
         {
 
             History_Message historyMessage = new History_Message
@@ -2854,8 +2956,9 @@ namespace WpfApp1
                 Horiz = real_PlayPOJOs[device_num].messageList[3],
                 Vert = real_PlayPOJOs[device_num].messageList[4],
                 Preset_num = presetInt,
-                Preset_notes = presetName,
+                Preset_notes = presetNotes,
                 video_path = sVideoFileName,
+                isManul = isManul,
             };
 
             XmlDocument doc = new XmlDocument();
@@ -2915,10 +3018,37 @@ namespace WpfApp1
                 xelVideoPath.InnerText = sVideoFileName;
                 xelMessage.AppendChild(xelVideoPath);
 
+                XmlElement xelIsManul = doc.CreateElement("is_manul");
+                xelIsManul.InnerText = isManul.ToString();
+                xelMessage.AppendChild(xelIsManul);
+                historyMessage.isManul = isManul;
+
+                if (isManul)
+                {
+                    historyMessage.isManul = true;
+                    if (language.Equals(Language.Chinese))
+                    {
+                        historyMessage.isManulStr = "手动";
+                    }
+                    else { historyMessage.isManulStr = "manul"; }
+
+                }
+                else
+                {
+                    historyMessage.isManul = false;
+                    if (language.Equals(Language.Chinese))
+                    {
+                        historyMessage.isManulStr = "巡航";
+                    }
+                    else { historyMessage.isManulStr = "cruise"; }
+
+                }
+
+               
                 root.AppendChild(xelMessage);
 
                 doc.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "HistoryMessages.xml");
-                new TipsWindow("报警信息插入成功", 3, TipsEnum.OK).Show();
+                //new TipsWindow("报警信息插入成功", 3, TipsEnum.OK).Show();
                 historyMessages.Add(historyMessage);
                 //AlarmHistoryDataGrid.ItemsSource = historyMessages;
                 AlarmHistoryDataGrid.Items.Refresh();

@@ -84,8 +84,16 @@ namespace WpfApp1
         private void seeVideo(object sender, RoutedEventArgs e)
         {
             History_Message rowView = (History_Message)((Button)e.Source).DataContext;
-            videoPath = rowView.video_path + ".wmv";
-            new Video(videoPath).Show();
+            if (rowView.isManul)
+            {
+                new TipsWindow("手动检测不保存视频", 5, TipsEnum.INFO).Show();
+            }
+            else
+            {
+                videoPath = rowView.video_path + ".wmv";
+                new Video(videoPath).Show();
+            }
+            
         }
 
         /// <summary>

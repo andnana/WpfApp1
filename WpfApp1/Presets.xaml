@@ -6,7 +6,7 @@
     xmlns:hc="https://handyorg.github.io/handycontrol"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="预置点"
-    Width="360"
+    Width="400"
     Height="360"
     Background="Black"
     BorderBrush="White"
@@ -227,6 +227,15 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
+                                    <Button
+                                        Margin="2"
+                                        Background="#326cf3"
+                                        BorderThickness="0"
+                                        Click="updatePreset"
+                                        Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                        CommandParameter="{Binding DeviceIP}"
+                                        Content="修改"
+                                        Foreground="White" />
                                     <Button
                                         Margin="2"
                                         Background="#326cf3"

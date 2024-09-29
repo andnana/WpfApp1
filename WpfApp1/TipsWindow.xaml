@@ -6,8 +6,8 @@
     xmlns:local="clr-namespace:WpfApp1"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="提示"
-    Width="120"
-    Height="120"
+    Width="140"
+    Height="140"
     AllowsTransparency="True"
     Background="Transparent"
     BorderThickness="0"
@@ -20,8 +20,8 @@
     <Grid>
         <Border
             Name="top"
-            Width="120"
-            Height="120"
+            Width="140"
+            Height="140"
             Background="#858585"
             CornerRadius="10,10,10,10" />
         <StackPanel VerticalAlignment="Center">

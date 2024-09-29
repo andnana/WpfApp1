@@ -11,6 +11,7 @@ namespace WpfApp1
         OK,
         FAIL,
         CANCEL,
-        BOTH
+        BOTH,
+        INFO,
     }
 }

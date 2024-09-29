@@ -253,6 +253,8 @@
     <Compile Include="Video.xaml.cs">
       <DependentUpon>Video.xaml</DependentUpon>
     </Compile>
+    <Resource Include="Resources\info.png" />
+    <Resource Include="Resources\add_all.png" />
     <Resource Include="Resources\off.png" />
     <Resource Include="Resources\on.png" />
     <Resource Include="Resources\chinese-filled.png" />

@@ -130,9 +130,10 @@ namespace WpfApp1
 
         private void calibration(object sender, EventArgs e)
         {
-            loading.Visibility = Visibility.Visible;
+    
             if (Password.Password.Equals("check"))
             {
+                loading.Visibility = Visibility.Visible;
                 Send("@jaozheng@");
             }
             else

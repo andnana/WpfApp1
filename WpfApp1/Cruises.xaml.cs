@@ -1,6 +1,7 @@
 ﻿using HandyControl.Controls;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -173,7 +174,7 @@ namespace WpfApp1
 
                 reader.Close();
             }
-            catch(Exception e)
+            catch(FileNotFoundException e)
             {
                 //创建一个空的XML
                 XmlDocument document = new XmlDocument();
@@ -191,6 +192,7 @@ namespace WpfApp1
 
 
                 Console.WriteLine(e.Message);
+
             }
 
         }

@@ -75,5 +75,9 @@ namespace WpfApp1
         [ExcelColumn("视频路径")]
         public string video_path { get; set; }
 
+        public bool isManul {  get; set; }
+
+        public string isManulStr { get; set; }
+
     }
 }

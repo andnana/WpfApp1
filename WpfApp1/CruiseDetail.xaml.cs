@@ -1,6 +1,7 @@
 ﻿using HandyControl.Controls;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml;
+using static NPOI.XSSF.UserModel.Helpers.ColumnHelper;
 
 namespace WpfApp1
 {
@@ -28,6 +30,9 @@ namespace WpfApp1
         {
 
             InitializeComponent();
+
+            initCruisesFile();
+
             this.cruisePOJO = cruisePOJO;
             NotesLabel.Content = cruisePOJO.notes;
             SaveTimeLabel.Content = cruisePOJO.timeStr;
@@ -194,14 +199,9 @@ namespace WpfApp1
                 new TipsWindow("删除成功", 3, TipsEnum.OK).Show();
             }
         }
-
-        private void AddPreset(object sender, RoutedEventArgs e)
+        private void addAllPreset(object sender, EventArgs e)
         {
 
-            int presetIndex = PresetsCombobox.SelectedIndex;
-            Preset preset = presets[presetIndex];
-
-    
 
             XmlDocument xmlDoc = new XmlDocument();
 
@@ -213,7 +213,143 @@ namespace WpfApp1
                 XmlElement xe = xmlDoc.DocumentElement;
                 string strPath = string.Format("/cruises/cruise[@save_time=\"{0}\"]", cruisePOJO.timeStr);
                 XmlElement selectXe = (XmlElement)xe.SelectSingleNode(strPath);  //selectSingleNode 根据XPath表达式,获得符合条件的第一个节点.
-     
+
+                for(int i = 0; i < presets.Count; i++)
+                {
+
+                    XmlElement xelPreset = xmlDoc.CreateElement("preset");
+
+
+                    XmlAttribute xelPresetNumAttr = xmlDoc.CreateAttribute("preset_num");
+                    xelPresetNumAttr.InnerText = presets[i].preset_num.ToString();
+                    xelPreset.SetAttributeNode(xelPresetNumAttr);
+
+                    XmlElement xelIsCurrent = xmlDoc.CreateElement("isCurrent");
+                    xelIsCurrent.InnerText = "False";
+                    xelPreset.AppendChild(xelIsCurrent);
+
+                    XmlElement xelImagePath = xmlDoc.CreateElement("imagePath");
+                    xelImagePath.InnerText = "";
+                    xelPreset.AppendChild(xelImagePath);
+
+                    XmlElement xelPresetNum = xmlDoc.CreateElement("preset_num");
+                    xelPresetNum.InnerText = presets[i].preset_num.ToString();
+                    xelPreset.AppendChild(xelPresetNum);
+
+                    XmlElement xelTime = xmlDoc.CreateElement("time");
+                    xelTime.InnerText = (TimeCombobox.SelectedIndex + 2).ToString();
+                    xelPreset.AppendChild(xelTime);
+
+                    XmlElement xelName = xmlDoc.CreateElement("name");
+                    xelName.InnerText = "";
+                    xelPreset.AppendChild(xelName);
+
+                    XmlElement xelSpeed = xmlDoc.CreateElement("speed");
+                    xelSpeed.InnerText = presets[i].speed.ToString();
+                    xelPreset.AppendChild(xelSpeed);
+
+                    XmlElement xelTimeStr = xmlDoc.CreateElement("timeStr");
+                    xelTimeStr.InnerText = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    xelPreset.AppendChild(xelTimeStr);
+
+                    XmlElement xelSpeedStr = xmlDoc.CreateElement("speedStr");
+                    xelSpeedStr.InnerText = "";
+                    xelPreset.AppendChild(xelSpeedStr);
+
+                    XmlElement xelNotes = xmlDoc.CreateElement("notes");
+                    xelNotes.InnerText = presets[i].notes;
+                    xelPreset.AppendChild(xelNotes);
+
+                    cruisesPresets.Add(presets[i]);
+                    selectXe.AppendChild(xelPreset);
+                }
+
+
+             
+
+                xmlDoc.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + MainWindow.deviceInfoList[MainWindow.Chosen_device_num].ip + "_cruises.xml");
+                
+                PresetsDataGrid.Items.Refresh();
+
+            }
+            catch (FileNotFoundException e2)
+            {
+                //创建一个空的XML
+                XmlDocument document = new XmlDocument();
+                //声明头部
+                XmlDeclaration dec = document.CreateXmlDeclaration("1.0", "utf-8", "yes");
+                document.AppendChild(dec);
+
+                //创建根节点
+                XmlElement root = document.CreateElement("cruises");
+                document.AppendChild(root);
+
+
+                //保存文档
+                document.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + MainWindow.deviceInfoList[MainWindow.Chosen_device_num].ip + "_cruises.xml");
+
+
+                Console.WriteLine(e2.Message);
+
+            }
+            catch (Exception e3)
+            {
+                Console.WriteLine(e3.ToString());
+            }
+
+        }
+
+        private void initCruisesFile()
+        {
+            try
+            {
+                // 创建XmlDDocument对象，并装入xml文件
+                XmlDocument xmlDoc = new XmlDocument();
+
+                XmlReaderSettings settings = new XmlReaderSettings();
+                settings.IgnoreComments = true;//忽略文档里面的注释
+                XmlReader reader = XmlReader.Create(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + MainWindow.deviceInfoList[MainWindow.Chosen_device_num].ip + "_cruises.xml", settings);
+                //xmlDoc.Load(reader);
+                reader.Close();
+            }
+            catch (FileNotFoundException e)
+            {
+                //创建一个空的XML
+                XmlDocument document = new XmlDocument();
+                //声明头部
+                XmlDeclaration dec = document.CreateXmlDeclaration("1.0", "utf-8", "yes");
+                document.AppendChild(dec);
+
+                //创建根节点
+                XmlElement root = document.CreateElement("cruises");
+                document.AppendChild(root);
+
+
+                //保存文档
+                document.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + MainWindow.deviceInfoList[MainWindow.Chosen_device_num].ip + "_cruises.xml");
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        private void AddPreset(object sender, RoutedEventArgs e)
+        {
+
+            int presetIndex = PresetsCombobox.SelectedIndex;
+            Preset preset = presets[presetIndex];
+
+
+
+            XmlDocument xmlDoc = new XmlDocument();
+
+            try
+            {
+                //doc.LoadXml("<bookstore></bookstore>");//用这句话,会把以前的数据全部覆盖掉,只有你增加的数据
+                xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + MainWindow.deviceInfoList[MainWindow.Chosen_device_num].ip + "_cruises.xml");
+
+                XmlElement xe = xmlDoc.DocumentElement;
+                string strPath = string.Format("/cruises/cruise[@save_time=\"{0}\"]", cruisePOJO.timeStr);
+                XmlElement selectXe = (XmlElement)xe.SelectSingleNode(strPath);  //selectSingleNode 根据XPath表达式,获得符合条件的第一个节点.
+
 
 
                 XmlElement xelPreset = xmlDoc.CreateElement("preset");
@@ -244,7 +380,7 @@ namespace WpfApp1
                 xelPreset.AppendChild(xelName);
 
                 XmlElement xelSpeed = xmlDoc.CreateElement("speed");
-                xelSpeed.InnerText = "5";
+                xelSpeed.InnerText = preset.speed.ToString();
                 xelPreset.AppendChild(xelSpeed);
 
                 XmlElement xelTimeStr = xmlDoc.CreateElement("timeStr");
@@ -268,9 +404,29 @@ namespace WpfApp1
                 PresetsDataGrid.Items.Refresh();
 
             }
-            catch (Exception e1)
+            catch (FileNotFoundException e2)
             {
-                Console.WriteLine(e.ToString());
+                //创建一个空的XML
+                XmlDocument document = new XmlDocument();
+                //声明头部
+                XmlDeclaration dec = document.CreateXmlDeclaration("1.0", "utf-8", "yes");
+                document.AppendChild(dec);
+
+                //创建根节点
+                XmlElement root = document.CreateElement("cruises");
+                document.AppendChild(root);
+
+
+                //保存文档
+                document.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + MainWindow.deviceInfoList[MainWindow.Chosen_device_num].ip + "_cruises.xml");
+
+
+                Console.WriteLine(e2.Message);
+
+            }
+            catch (Exception e3)
+            {
+                Console.WriteLine(e3.ToString());
             }
 
 

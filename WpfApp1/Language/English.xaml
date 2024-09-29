@@ -72,4 +72,6 @@
     <s:String x:Key="choose">choose</s:String>
     <s:String x:Key="import">import</s:String>
     <s:String x:Key="export">export</s:String>
+    <s:String x:Key="add_all_preset">add all preset points</s:String>
+    <s:String x:Key="is_manul">manul</s:String>
 </ResourceDictionary>

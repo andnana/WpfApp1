@@ -89,7 +89,8 @@ namespace WpfApp1
 
             //LoadFileToInstance("Login_info");
             LoadLoginFile();
-            if (loginInfoList.Count > 0) {
+            if (loginInfoList.Count > 0)
+            {
                 for (int i = 0; i < loginInfoList.Count; i++)
                 {
                     device_name_str_list.Add(loginInfoList[i].Name);
@@ -101,7 +102,7 @@ namespace WpfApp1
                 ipComboBox.ItemsSource = device_ip_str_list;
                 ipComboBox.SelectedIndex = 0;
             }
-    
+
             TitleBar.MouseMove += (s, e) =>
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
@@ -148,7 +149,7 @@ namespace WpfApp1
 
             XmlElement xelPort = doc.CreateElement("port");
             xelPort.InnerText = Once_login_info.Port;
-            xelKey.AppendChild(xelPort); 
+            xelKey.AppendChild(xelPort);
 
             XmlElement xelDeviceNum = doc.CreateElement("deviceNum");
             xelDeviceNum.InnerText = Once_login_info.Device_num;
@@ -233,8 +234,8 @@ namespace WpfApp1
             //创建海康相机sdk返回值集合
             //MessageBoxWindow.real_PlayPOJOs.Add(new Real_PlayPOJO { deviceNum = "60134" });
             MainWindow.real_PlayPOJOs.Add(new Real_PlayPOJO { deviceNum = deviceNumStr });
-            MainWindow.sbmc =  info.Ip; //deviceNameTextBox.Text.Trim().Equals("") ? info.Ip : deviceNameTextBox.Text.Trim();
-           
+            MainWindow.sbmc = info.Ip; //deviceNameTextBox.Text.Trim().Equals("") ? info.Ip : deviceNameTextBox.Text.Trim();
+
             MainWindow.In_Main_Form.SetLoginInfo(info, MainWindow.real_PlayPOJOs.Count - 1, HighDefinitionToggle.IsChecked.GetValueOrDefault());
             Once_login_info = new LoginPOJO
             {
@@ -245,7 +246,7 @@ namespace WpfApp1
             };
             bool hasLoginInfo = false;
             //SaveInstanceToFile("Login_info");
-            for(int i = 0; i < loginInfoList.Count; i++)
+            for (int i = 0; i < loginInfoList.Count; i++)
             {
                 if (string.Equals(loginInfoList[i].Ip, ip, StringComparison.OrdinalIgnoreCase))
                 {
@@ -257,7 +258,7 @@ namespace WpfApp1
             {
                 addLoginInfo();
             }
-            
+
             Close();
 
         }
@@ -307,7 +308,7 @@ namespace WpfApp1
         }
 
 
-   
+
         public static void LoadLoginFile()
         {
             try
@@ -315,41 +316,41 @@ namespace WpfApp1
                 // 创建XmlDDocument对象，并装入xml文件
                 XmlDocument xmlDoc = new XmlDocument();
 
-            XmlReaderSettings settings = new XmlReaderSettings();
-            settings.IgnoreComments = true;//忽略文档里面的注释
-            XmlReader reader = XmlReader.Create(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "LoginInfo.xml", settings);
-            xmlDoc.Load(reader);
+                XmlReaderSettings settings = new XmlReaderSettings();
+                settings.IgnoreComments = true;//忽略文档里面的注释
+                XmlReader reader = XmlReader.Create(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "LoginInfo.xml", settings);
+                xmlDoc.Load(reader);
 
-            //xn 代表一个结点
-            //xn.Name;//这个结点的名称
-            //xn.Value;//这个结点的值
-            //xn.ChildNodes;//这个结点的所有子结点
-            //xn.ParentNode;//这个结点的父结点
+                //xn 代表一个结点
+                //xn.Name;//这个结点的名称
+                //xn.Value;//这个结点的值
+                //xn.ChildNodes;//这个结点的所有子结点
+                //xn.ParentNode;//这个结点的父结点
 
-            // 得到根节点bookstore
-            XmlNode xn = xmlDoc.SelectSingleNode("logininfo");
+                // 得到根节点bookstore
+                XmlNode xn = xmlDoc.SelectSingleNode("logininfo");
 
 
-            // 得到根节点的所有子节点
-            XmlNodeList xnl = xn.ChildNodes;
+                // 得到根节点的所有子节点
+                XmlNodeList xnl = xn.ChildNodes;
 
-            foreach (XmlNode xn1 in xnl)
-            {
-                LoginInfo loginInfo = new LoginInfo();
-                // 将节点转换为元素，便于得到节点的属性值
-                XmlElement xe = (XmlElement)xn1;
-                // 得到Type和ISBN两个属性的属性值
-                //bookModel.BookISBN = xe.GetAttribute("ISBN").ToString();
-                //bookModel.BookType = xe.GetAttribute("Type").ToString();
-                // 得到LoginInfo节点的所有子节点
-                XmlNodeList xnl0 = xe.ChildNodes;
-                loginInfo.Ip = xnl0.Item(0).InnerText;
-                loginInfo.Name = xnl0.Item(1).InnerText;
-                loginInfo.Port = xnl0.Item(2).InnerText;
-                loginInfo.DeviceNum = xnl0.Item(3).InnerText;
-                loginInfoList.Add(loginInfo);
-            }
-            reader.Close();
+                foreach (XmlNode xn1 in xnl)
+                {
+                    LoginInfo loginInfo = new LoginInfo();
+                    // 将节点转换为元素，便于得到节点的属性值
+                    XmlElement xe = (XmlElement)xn1;
+                    // 得到Type和ISBN两个属性的属性值
+                    //bookModel.BookISBN = xe.GetAttribute("ISBN").ToString();
+                    //bookModel.BookType = xe.GetAttribute("Type").ToString();
+                    // 得到LoginInfo节点的所有子节点
+                    XmlNodeList xnl0 = xe.ChildNodes;
+                    loginInfo.Ip = xnl0.Item(0).InnerText;
+                    loginInfo.Name = xnl0.Item(1).InnerText;
+                    loginInfo.Port = xnl0.Item(2).InnerText;
+                    loginInfo.DeviceNum = xnl0.Item(3).InnerText;
+                    loginInfoList.Add(loginInfo);
+                }
+                reader.Close();
             }
             catch (FileNotFoundException e)
             {
@@ -411,20 +412,20 @@ namespace WpfApp1
 
         public void deviceComboBoxChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(deviceNameComboBox.SelectedIndex == -1)
+            if (deviceNameComboBox.SelectedIndex == -1)
             {
                 deviceNameComboBox.SelectedIndex = 0;
             }
             Console.WriteLine(loginInfoList[deviceNameComboBox.SelectedIndex].Ip);
             if (loginInfoList.Count == 1)
             {
-               
+
                 IPText.Text = loginInfoList[0].Ip;
                 deviceNameTextBox.Text = loginInfoList[0].Name;
                 PortText.Text = loginInfoList[0].Port;
                 deviceNum.Text = loginInfoList[0].DeviceNum;
             }
-            else if(loginInfoList.Count > 0)
+            else if (loginInfoList.Count > 0)
             {
                 IPText.Text = loginInfoList[deviceNameComboBox.SelectedIndex].Ip;
                 deviceNameTextBox.Text = loginInfoList[deviceNameComboBox.SelectedIndex].Name;
@@ -438,9 +439,9 @@ namespace WpfApp1
                 PortText.Text = "";
                 deviceNum.Text = "";
             }
-            
+
         }
-                    
+
         public void deviceNameComboBoxChanged(object sender, SelectionChangedEventArgs e)
         {
             if (deviceNameComboBox.SelectedIndex == -1)
@@ -505,10 +506,10 @@ namespace WpfApp1
             }
 
         }
-        
+
         private void delete_login_info(object sender, RoutedEventArgs e)
         {
-           
+
 
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "LoginInfo.xml");

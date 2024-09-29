@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml;
+using static NPOI.XSSF.UserModel.Helpers.ColumnHelper;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 using static WpfApp1.CHCNetSDK;
 
@@ -23,6 +24,7 @@ namespace WpfApp1
     /// </summary>
     public partial class Presets : System.Windows.Window
     {
+        int presetNum = 0;
         public List<Preset> presets = new List<Preset>();
         private List<int> presetIntList = new List<int>();
         public Presets()
@@ -84,7 +86,7 @@ namespace WpfApp1
                 XmlElement selectXe = (XmlElement)xe.SelectSingleNode(strPath);  //selectSingleNode 根据XPath表达式,获得符合条件的第一个节点.
                 selectXe.ParentNode.RemoveChild(selectXe);
                 xmlDoc.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + MainWindow.deviceInfoList[MainWindow.Chosen_device_num].ip + "_presets.xml");
-                
+
                 int removeIndex = presets.FindIndex(item => item.preset_num.ToString().Equals(rowView.preset_num.ToString()));
                 presets.RemoveAt(removeIndex);
                 PresetsDataGrid.Items.Refresh();
@@ -94,7 +96,8 @@ namespace WpfApp1
 
         public void LoadPresetsFile()
         {
-            try {
+            try
+            {
                 XmlDocument xmlDoc = new XmlDocument();
 
                 XmlReaderSettings settings = new XmlReaderSettings();
@@ -132,7 +135,8 @@ namespace WpfApp1
 
                 reader.Close();
             }
-            catch(Exception e) {
+            catch (Exception e)
+            {
                 //创建一个空的XML
                 XmlDocument document = new XmlDocument();
                 //声明头部
@@ -143,7 +147,7 @@ namespace WpfApp1
                 XmlElement root = document.CreateElement("presets");
                 document.AppendChild(root);
 
-            
+
                 //保存文档
                 document.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + MainWindow.deviceInfoList[MainWindow.Chosen_device_num].ip + "_presets.xml");
 
@@ -151,7 +155,7 @@ namespace WpfApp1
                 Console.WriteLine(e.Message);
             }
             // 创建XmlDDocument对象，并装入xml文件
-      
+
         }
         /// <summary>
         /// 调用预置点
@@ -168,7 +172,47 @@ namespace WpfApp1
             Preset rowView = (Preset)((Button)e.Source).DataContext;
             NET_DVR_PTZPreset(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_lRealHandle, (uint)CHCNetSDK.GOTO_PRESET, (uint)rowView.preset_num);
         }
+        private void Confirm_Closed(object sender, EventArgs e)
+        {
+            ConfirmWindow confirmWindow = sender as ConfirmWindow;
+            if (confirmWindow != null)
+            {
+                if (confirmWindow.Result == 1)
+                {
+                    Console.WriteLine("ok");
+                    if (MainWindow.sbmc == "")
+                    {
+                        new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
+                        return;
+                    }
+                    bool isOK = NET_DVR_PTZPreset(MainWindow.real_PlayPOJOs[MainWindow.Chosen_device_num].I_lRealHandle, (uint)CHCNetSDK.SET_PRESET, (uint)presetNum);
+                    if (!isOK)
+                    {
+                        new TipsWindow("预置点修改失败", 3, TipsEnum.FAIL).Show();
+                    }
+                    else
+                    {
+                        new TipsWindow("预置点修改成功", 3, TipsEnum.OK).Show();
+                    }
+                    presetNum = 0;
+                }
+                else
+                {
+                    Console.WriteLine("cancel");
+                }
+            }
+        }
+        private void updatePreset(object sender, RoutedEventArgs e)
+        {
 
+            ConfirmWindow confirm = new ConfirmWindow("确认修改？", TipsEnum.BOTH);
+            Preset rowView = (Preset)((Button)e.Source).DataContext;
+            presetNum = rowView.preset_num;
+            confirm.Closed += Confirm_Closed;
+            confirm.Show();
+
+        
+        }
         private void AddPreset(object sender, RoutedEventArgs e)
         {
             int presetMax = 2;
@@ -183,7 +227,7 @@ namespace WpfApp1
                         haveVal = true;
                     }
                 }
-                if(haveVal == true)
+                if (haveVal == true)
                 {
                     haveVal = false;
                     continue;
@@ -237,7 +281,7 @@ namespace WpfApp1
                     XmlNode root = doc.SelectSingleNode("presets");
 
 
-                   
+
 
 
                     XmlElement xelPreset = doc.CreateElement("preset");
