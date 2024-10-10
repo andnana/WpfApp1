@@ -232,8 +232,6 @@
                                         Background="#326cf3"
                                         BorderThickness="0"
                                         Click="updatePreset"
-                                        Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
-                                        CommandParameter="{Binding DeviceIP}"
                                         Content="修改"
                                         Foreground="White" />
                                     <Button
@@ -241,8 +239,6 @@
                                         Background="#326cf3"
                                         BorderThickness="0"
                                         Click="invokePreset"
-                                        Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
-                                        CommandParameter="{Binding DeviceIP}"
                                         Content="前往"
                                         Foreground="White" />
                                     <Button

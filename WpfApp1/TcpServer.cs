@@ -86,20 +86,25 @@ namespace WpfApp1
         /// <returns></returns>
         private Socket CreateSocket(string ip, string port)
         {
-            /*            try
-                        {
-                        }
-                        catch (System.Net.Sockets.SocketException)
-                        {
-                            throw;
-                        }
-            */
-            Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPAddress address = IPAddress.Parse(ip);
-            IPEndPoint endPoint = new IPEndPoint(address, int.Parse(port));
-            socket.Bind(endPoint);
-            socket.Listen(50);
-            return socket;
+            try
+            {
+                Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                IPAddress address = IPAddress.Parse(ip);
+                IPEndPoint endPoint = new IPEndPoint(address, int.Parse(port));
+                socket.Bind(endPoint);
+                socket.Listen(50);
+                return socket;
+            }
+            catch (System.Net.Sockets.SocketException e)
+            {
+                Console.WriteLine("socketException2");
+                Console.WriteLine(e);
+                Console.WriteLine("ErrorCode");
+                Console.WriteLine(e.ErrorCode);
+                throw;
+            }
+
+
         }
 
         /// <summary>

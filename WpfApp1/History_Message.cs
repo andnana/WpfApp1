@@ -46,6 +46,12 @@ namespace WpfApp1
         public string concentration { get; set; }
 
         /// <summary>
+        /// 最大浓度
+        /// </summary>
+        [ExcelColumn("最大浓度")]
+        public string concentrationMax { get; set; }
+
+        /// <summary>
         /// 水平角度
         /// </summary>
         [ExcelColumn("水平角度")]

@@ -434,7 +434,7 @@ namespace WpfApp1
 
         public static string patch_path;
 
-        public static void saveExcel(List<History_Message> list, string savepath)
+        public static void saveExcel(List<History_Message> list, string savepath, bool isShowTip)
         {
             try
             {
@@ -444,7 +444,11 @@ namespace WpfApp1
                     fs.Write(bytes, 0, bytes.Length);
                     fs.Flush();
                 }
-                MessageBox.Show("保存成功。文件路径为：" + savepath);
+                if (isShowTip)
+                {
+                    MessageBox.Show("保存成功。文件路径为：" + savepath);
+                }
+                
             }
             catch (Exception ex)
             {
@@ -452,7 +456,29 @@ namespace WpfApp1
                 new TipsWindow("保存失败", 3, TipsEnum.FAIL).Show();
             }
         }
+        public static void saveExcel2(List<HistoryMessage2> list, string savepath, bool isShowTip)
+        {
+            try
+            {
+                var bytes = ToExcelBytes(list);
+                using (FileStream fs = new FileStream(savepath, FileMode.Create, FileAccess.Write))
+                {
+                    fs.Write(bytes, 0, bytes.Length);
+                    fs.Flush();
+                }
+                if (isShowTip)
+                {
+                    MessageBox.Show("保存成功。文件路径为：" + savepath);
+                }
 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("save fail");
+                Console.WriteLine(ex.Message);
+                new TipsWindow("保存失败", 3, TipsEnum.FAIL).Show();
+            }
+        }
         #endregion Excel
     }
 }

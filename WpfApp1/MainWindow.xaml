@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
     xmlns:hc="https://handyorg.github.io/handycontrol"
+    xmlns:ht="http://helix-toolkit.org/wpf"
     xmlns:local="clr-namespace:WpfApp1"
     xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -558,7 +559,7 @@
         </Grid>
         <Grid
             Grid.Row="3"
-            Grid.RowSpan="2"
+            Grid.RowSpan="3"
             Grid.Column="0"
             Background="#5a5a58">
             <Grid.RowDefinitions>
@@ -566,6 +567,7 @@
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="4*" />
                 <RowDefinition Height="3*" />
+                <RowDefinition Height="120" />
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" Margin="0,0,0,0">
@@ -1016,7 +1018,17 @@
                         Color="#5a5a58" />-->
                 </StackPanel>
             </Grid>
-
+            <Grid Grid.Row="4">
+                <Grid.Background>
+                    <ImageBrush ImageSource="/WpfApp1;component/Resources/angle.png" />
+                </Grid.Background>
+                <Canvas x:Name="canvasx">
+                    <!--  线条将会被绘制在这里  -->
+                </Canvas>
+                <Canvas x:Name="canvasy">
+                    <!--  线条将会被绘制在这里  -->
+                </Canvas>
+            </Grid>
         </Grid>
 
         <Grid
@@ -1205,28 +1217,146 @@
                 </Grid>
 
                 <Grid Grid.Row="2" Margin="0,0,0,0">
-                    <wfi:WindowsFormsHost
-                        Name="pictureBoxHost3"
-                        Panel.ZIndex="0"
-                        ToolTip="" />
+
+
+                    <WindowsFormsHost Name="pictureBoxHost3" ToolTip="" />
+                    <WindowsFormsHost VerticalAlignment="Top">
+                        <ElementHost>
+                            <Grid Height="20" Margin="4,0,4,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    Name="deviceName3"
+                                    Grid.Column="0"
+                                    Margin="6,0,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="12"
+                                    FontWeight="Bold"
+                                    Foreground="Black"
+                                    Text="" />
+                                <TextBlock
+                                    Name="concentrationText3"
+                                    Grid.Column="1"
+                                    Margin="6,0,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="20"
+                                    FontWeight="Bold"
+                                    Foreground="Pink"
+                                    Text="0" />
+
+                                <Label
+                                    Name="hdLabel3"
+                                    Grid.Column="2"
+                                    Width="50"
+                                    Height="20"
+                                    Padding="0"
+                                    Background="Black"
+                                    BorderThickness="0"
+                                    Content="{DynamicResource high_difinition}"
+                                    Foreground="#5a5a58" />
+
+                                <Label
+                                    Name="onlineLable3"
+                                    Grid.Column="3"
+                                    Width="50"
+                                    Height="20"
+                                    Padding="0"
+                                    Background="Black"
+                                    BorderThickness="0"
+                                    Content="{DynamicResource online}"
+                                    Foreground="#5a5a58" />
+
+                                <Image
+                                    Grid.Column="4"
+                                    Width="40"
+                                    Height="19"
+                                    Margin="0,0"
+                                    Source="/WpfApp1;component/Resources/ppm.png"
+                                    Visibility="Visible" />
+
+                            </Grid>
+
+                        </ElementHost>
+                    </WindowsFormsHost>
+
+
                 </Grid>
-                <TextBlock
-                    Name="concentrationText3"
-                    Width="200"
-                    Height="30"
-                    Margin="10"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    FontSize="20"
-                    FontWeight="Bold"
-                    Foreground="Pink"
-                    Text=""
-                    Visibility="Hidden" />
+
                 <Grid Grid.Row="3" Margin="0,0,0,0">
-                    <wfi:WindowsFormsHost
-                        Name="pictureBoxHost4"
-                        Panel.ZIndex="0"
-                        ToolTip="" />
+                    <WindowsFormsHost Name="pictureBoxHost4" ToolTip="" />
+                    <WindowsFormsHost VerticalAlignment="Top">
+                        <ElementHost>
+                            <Grid Height="20" Margin="4,0,4,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    Name="deviceName4"
+                                    Grid.Column="0"
+                                    Margin="6,0,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="12"
+                                    FontWeight="Bold"
+                                    Foreground="Black"
+                                    Text="" />
+                                <TextBlock
+                                    Name="concentrationText4"
+                                    Grid.Column="1"
+                                    Margin="6,0,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="20"
+                                    FontWeight="Bold"
+                                    Foreground="Pink"
+                                    Text="0" />
+
+                                <Label
+                                    Name="hdLabel4"
+                                    Grid.Column="2"
+                                    Width="50"
+                                    Height="20"
+                                    Padding="0"
+                                    Background="Black"
+                                    BorderThickness="0"
+                                    Content="{DynamicResource high_difinition}"
+                                    Foreground="#5a5a58" />
+
+                                <Label
+                                    Name="onlineLable4"
+                                    Grid.Column="3"
+                                    Width="50"
+                                    Height="20"
+                                    Padding="0"
+                                    Background="Black"
+                                    BorderThickness="0"
+                                    Content="{DynamicResource online}"
+                                    Foreground="#5a5a58" />
+
+                                <Image
+                                    Grid.Column="4"
+                                    Width="40"
+                                    Height="19"
+                                    Margin="0,0"
+                                    Source="/WpfApp1;component/Resources/ppm.png"
+                                    Visibility="Visible" />
+
+                            </Grid>
+
+                        </ElementHost>
+                    </WindowsFormsHost>
+
                 </Grid>
             </Grid>
         </Grid>
@@ -1289,6 +1419,88 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
+                <!-- <hc:TabControl
+                    Background="#5a5a58"
+                    IsAnimationEnabled="True"
+                    IsDraggable="True"
+                    IsTabFillEnabled="True"
+                    ShowCloseButton="False">
+                    <hc:TabItem Header="预置点">
+                        <DataGrid
+                            Name="Presets"
+                            Height="200"
+                            AutoGenerateColumns="False"
+                            Background="#5a5a58"
+                            BorderThickness="0"
+                            HeadersVisibility="None"
+                            ItemsSource="{Binding cruisePOJOs}"
+                            RowHeight="30"
+                            RowStyle="{StaticResource DataGridTextCenterColumnStyle}">
+
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image
+                                                Width="24"
+                                                Height="24"
+                                                VerticalAlignment="Center"
+                                                Source="{Binding imagePath}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn
+                                    Width="100"
+                                    Binding="{Binding name}"
+                                    Foreground="#afe484" />
+                                <DataGridTextColumn
+                                    Width="50"
+                                    Binding="{Binding timeStr}"
+                                    Foreground="White" />
+                                <DataGridTextColumn
+                                    Width="70"
+                                    Binding="{Binding speedStr}"
+                                    Foreground="White" />
+
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </hc:TabItem>
+                    <hc:TabItem Header="3d模型" IsSelected="True">
+                        <ht:HelixViewport3D
+                            x:Name="viewport"
+                            CoordinateSystemLabelX="y"
+                            CoordinateSystemLabelY="x"
+                            CoordinateSystemLabelZ="z"
+                            PanGesture="RightClick"
+                            RotateGesture="LeftClick"
+                            ShowCoordinateSystem="True"
+                            ShowFrameRate="True"
+                            ZoomExtentsWhenLoaded="True">
+                            <ht:GridLinesVisual3D
+                                Width="100"
+                                Fill="Green"
+                                Length="100"
+                                MajorDistance="20"
+                                MinorDistance="20"
+                                Thickness="1" />
+                            <ht:DefaultLights />
+                            <ht:HelixViewport3D.Camera>
+                                <PerspectiveCamera />
+                            </ht:HelixViewport3D.Camera>
+                            <ht:HelixViewport3D.Background>
+                                <LinearGradientBrush>
+                                    <GradientStop Offset="0" Color="#444" />
+                                    <GradientStop Offset="0" Color="#444" />
+                                </LinearGradientBrush>
+                            </ht:HelixViewport3D.Background>
+
+                        </ht:HelixViewport3D>
+                    </hc:TabItem>
+
+                </hc:TabControl>-->
+
+
+
             </Grid>
 
             <Grid
@@ -1345,8 +1557,6 @@
                                             Background="#326cf3"
                                             BorderThickness="0"
                                             Click="AlarmHistoryDetailWindow"
-                                            Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
-                                            CommandParameter="{Binding DeviceIP}"
                                             Content="{DynamicResource detail}"
                                             Foreground="White" />
 
@@ -1362,7 +1572,10 @@
 
 
         </Grid>
-        <Grid Grid.Row="5" Grid.ColumnSpan="3">
+        <Grid
+            Grid.Row="5"
+            Grid.Column="1"
+            Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />

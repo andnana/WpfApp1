@@ -144,7 +144,7 @@ namespace WpfApp1
             Directory.CreateDirectory(filePath);
             string sBmpPicFileName;
             sBmpPicFileName = filePath + DateTime.Now.ToString("HH-mm-ss") + ".xls";
-            Tool.saveExcel(MainWindow.historyMessages, sBmpPicFileName);
+            Tool.saveExcel(MainWindow.historyMessages, sBmpPicFileName, true);
         }
 
         private void copyVideoPath(object sender, RoutedEventArgs e)

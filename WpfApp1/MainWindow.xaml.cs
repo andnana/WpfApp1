@@ -48,6 +48,7 @@ using ScottPlot.Palettes;
 using static WpfApp1.MainWindow;
 using System.ComponentModel;
 using System.Configuration;
+using HelixToolkit.Wpf;
 
 namespace WpfApp1
 {
@@ -57,6 +58,17 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : System.Windows.Window
     {
+        /* float anglexTemp = 0;
+         float anglexTempaaa = 0;
+         float angleyTemp = 0;
+         Model3DGroup model3DGroup;
+
+         RotateTransform3D rotate;
+         RotateTransform3D rotate2;
+
+         GeometryModel3D geometryModel3D;
+         Transform3DGroup transform3DGroup;
+         ModelVisual3D modelVisual3D;*/
         bool IndicatingLaserBool = true;
         bool AlgorithmABool = false;
         DispatcherTimer disapearSuccessTipsTimer;
@@ -72,6 +84,11 @@ namespace WpfApp1
         int maxPid = 0;
 
         public static List<History_Message> historyMessages = new List<History_Message>();
+        public static List<HistoryMessage2> historyMessages0 = new List<HistoryMessage2>();
+        public static List<HistoryMessage2> historyMessages1 = new List<HistoryMessage2>();
+        public static List<HistoryMessage2> historyMessages2 = new List<HistoryMessage2>();
+        public static List<HistoryMessage2> historyMessages3 = new List<HistoryMessage2>();
+        public static List<HistoryMessage2> historyMessages4 = new List<HistoryMessage2>();
 
         /*  private List<List<int>> Usual_historys;
 
@@ -103,6 +120,7 @@ namespace WpfApp1
         System.Windows.Forms.PictureBox m_pictureBox1;
         System.Windows.Forms.PictureBox m_pictureBox2;
         System.Windows.Forms.PictureBox m_pictureBox3;
+        System.Windows.Forms.PictureBox m_pictureBox4;
         System.Windows.Forms.ToolTip m_toolTip;
         //ToolTip m_tp;
 
@@ -413,43 +431,67 @@ namespace WpfApp1
         {
             if (MainWindow.sbmc == "")
             {
-                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
-                return;
+
             }
-            //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
-            // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
-            real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
-            //StopYTAutoMove(false);
-            NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, TILT_UP, 0, 7);
+            else
+            {
+                //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
+                // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
+                real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
+                //StopYTAutoMove(false);
+                NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, TILT_UP, 0, 7);
+            }
+
+
+
+
+
+
+
         }
         // 当鼠标按下按钮时触发（可以看作是开始点击）  
-        private void Button_MouseDown_PAN_LEFT(object sender, MouseButtonEventArgs e)
+        private void Button_MouseDown_PAN_LEFT(object sender, RoutedEventArgs e)
         {
 
             if (MainWindow.sbmc == "")
             {
-                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
-                return;
+
+
             }
-            //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
-            // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
-            real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
-            //StopYTAutoMove(false);
-            NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, PAN_LEFT, 0, 7);
+            else
+            {
+                //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
+                // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
+                real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
+                //StopYTAutoMove(false);
+                NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, PAN_LEFT, 0, 7);
+
+            }
+
+
+
+
         }
         // 当鼠标按下按钮时触发（可以看作是开始点击）  
         private void Button_MouseDown_PAN_RIGHT(object sender, MouseButtonEventArgs e)
         {
             if (MainWindow.sbmc == "")
             {
-                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
-                return;
+
             }
-            //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
-            // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
-            real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
-            //StopYTAutoMove(false);
-            NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, PAN_RIGHT, 0, 7);
+            else
+            {
+                //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
+                // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
+                real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
+                //StopYTAutoMove(false);
+                NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, PAN_RIGHT, 0, 7);
+            }
+
+
+
+
+
         }
         // 当鼠标按下按钮时触发（可以看作是开始点击）  
         private void Button_MouseDown_UP_LEFT(object sender, MouseButtonEventArgs e)
@@ -459,6 +501,9 @@ namespace WpfApp1
             real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
             //StopYTAutoMove(false);
             NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, UP_LEFT, 0, 7);
+
+
+
         }
         // 当鼠标按下按钮时触发（可以看作是开始点击）  
         private void Button_MouseDown_UP_RIGHT(object sender, MouseButtonEventArgs e)
@@ -477,6 +522,9 @@ namespace WpfApp1
             real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
             //StopYTAutoMove(false);
             NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, DOWN_LEFT, 0, 7);
+
+
+
         }
         // 当鼠标按下按钮时触发（可以看作是开始点击）  
         private void Button_MouseDown_DOWN_RIGHT(object sender, MouseButtonEventArgs e)
@@ -486,29 +534,43 @@ namespace WpfApp1
             real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
             //StopYTAutoMove(false);
             NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, DOWN_RIGHT, 0, 7);
+
+
         }
         // 当鼠标按下按钮时触发（可以看作是开始点击）  
         private void Button_MouseDown_TILT_DOWN(object sender, MouseButtonEventArgs e)
         {
             if (MainWindow.sbmc == "")
             {
-                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
-                return;
+
             }
-            //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
-            // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
-            real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
-            //StopYTAutoMove(false);
-            NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, TILT_DOWN, 0, 7);
+            else
+            {
+                //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
+                // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
+                real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
+                //StopYTAutoMove(false);
+                NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, TILT_DOWN, 0, 7);
+            }
+
+
+
         }
         // 当鼠标松开按钮时触发  
         private void Button_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            // System.Diagnostics.Debug.WriteLine("按钮松开");
-            // 注意：如果你的按钮在MouseDown时触发了某些操作，并希望在MouseUp时撤销或完成这些操作，请在这里处理  
-            real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
-            //In_Main_Form.StopYTAutoMove(false);
-            NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, TILT_UP, 1, 7);
+            if (MainWindow.sbmc == "")
+            {
+
+            }
+            else
+            {          // System.Diagnostics.Debug.WriteLine("按钮松开");
+                // 注意：如果你的按钮在MouseDown时触发了某些操作，并希望在MouseUp时撤销或完成这些操作，请在这里处理  
+                real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
+                //In_Main_Form.StopYTAutoMove(false);
+                NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, TILT_UP, 1, 7);
+            }
+
         }
         //绘制事件
         void picturebox_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
@@ -1198,7 +1260,7 @@ namespace WpfApp1
                 }
                 Status status20 = new Status();
                 status20.color = color2;
-                status20.index = 3;
+                status20.index = 2;
                 status20.hd = hd2;
                 map1.Remove("0");
                 map1.Add("0", status20);
@@ -1239,6 +1301,40 @@ namespace WpfApp1
                 m_pictureBoxTemp = m_pictureBox3;
                 Chosen_device_num = 3;
                 pictureBoxHost0.Child = m_pictureBox3;
+
+
+            }
+            if (name.Equals("m_pictureBox4") && real_PlayPOJOs.Count >= 5)
+            {
+                string color4 = "nomal";
+                bool hd4 = false;
+                Status value0 = map1["0"];
+                for (int i = 0; i < windowsFormsHosts.Count; i++)
+                {
+                    if (windowsFormsHosts[i] != null && windowsFormsHosts[i].Child == m_pictureBox4)
+                    {
+                        color4 = map1[i.ToString()].color;
+                        hd4 = map1[i.ToString()].hd;
+                        map1.Remove(i.ToString());
+                        map1.Add(i.ToString(), value0);
+                        windowsFormsHosts[i].Child = m_pictureBoxTemp;
+                        map1.Remove(i.ToString());
+                        Status status4 = new Status();
+                        status4.color = map1["0"].color;
+                        status4.hd = map1["0"].hd;
+                        status4.index = Chosen_device_num;
+                        map1.Add(i.ToString(), status4);
+                    }
+                }
+                map1.Remove("0");
+                Status status40 = new Status();
+                status40.color = color4;
+                status40.hd = hd4;
+                status40.index = 4;
+                map1.Add("0", status40);
+                m_pictureBoxTemp = m_pictureBox4;
+                Chosen_device_num = 4;
+                pictureBoxHost0.Child = m_pictureBox4;
 
 
             }
@@ -1345,6 +1441,48 @@ namespace WpfApp1
 
 
                     }
+                    else if (kvp.Key.Equals("3"))
+                    {
+                        Console.WriteLine("sddsfsd");
+                        Console.WriteLine("nomal:" + kvp.Value.color.Equals("nomal"));
+                        Console.WriteLine("red:" + kvp.Value.color.Equals("red"));
+                        Console.WriteLine("green:" + kvp.Value.color.Equals("green"));
+                        if (kvp.Value.color.Equals("nomal"))
+                        {
+                            concentrationText3.Background = Brushes.Transparent;
+                        }
+                        else if (kvp.Value.color.Equals("red"))
+                        {
+                            concentrationText3.Background = Brushes.Red;
+                        }
+                        else if (kvp.Value.color.Equals("green"))
+                        {
+                            concentrationText3.Background = Brushes.Green;
+                        }
+
+
+                    }
+                    else if (kvp.Key.Equals("4"))
+                    {
+                        Console.WriteLine("sddsfsd");
+                        Console.WriteLine("nomal:" + kvp.Value.color.Equals("nomal"));
+                        Console.WriteLine("red:" + kvp.Value.color.Equals("red"));
+                        Console.WriteLine("green:" + kvp.Value.color.Equals("green"));
+                        if (kvp.Value.color.Equals("nomal"))
+                        {
+                            concentrationText4.Background = Brushes.Transparent;
+                        }
+                        else if (kvp.Value.color.Equals("red"))
+                        {
+                            concentrationText4.Background = Brushes.Red;
+                        }
+                        else if (kvp.Value.color.Equals("green"))
+                        {
+                            concentrationText4.Background = Brushes.Green;
+                        }
+
+
+                    }
 
 
                 }
@@ -1369,6 +1507,40 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
+
+            /*         string path = Environment.CurrentDirectory;
+
+                     path = System.IO.Path.Combine(path, "prt0001.stl");
+                     Console.Write("path");
+                     Console.WriteLine(path);
+                     ModelImporter modelImporter = new ModelImporter();
+
+                     model3DGroup = modelImporter.Load(path);
+                     geometryModel3D = (GeometryModel3D)model3DGroup.Children[0];
+                     DiffuseMaterial material = new DiffuseMaterial(new SolidColorBrush(Colors.Yellow));
+                     geometryModel3D.Material = material;
+
+                     transform3DGroup = new Transform3DGroup();
+
+                     double scalex = 1;
+                     ScaleTransform3D scale = new ScaleTransform3D(scalex, scalex, scalex);
+                     transform3DGroup.Children.Add(scale);
+                     model3DGroup.Transform = transform3DGroup;
+         */
+
+            /*        TranslateTransform3D translateTransform = new TranslateTransform3D();
+                    translateTransform.OffsetZ = -50; // 沿Z轴移动10个单位
+                    model3DGroup.Transform = translateTransform;
+        */
+            /*
+                        modelVisual3D = new ModelVisual3D();
+                        modelVisual3D.Content = model3DGroup;
+                        viewport.Children.Add(modelVisual3D);
+            */
+
+
+
+
 
             initLoginInfoFile();
 
@@ -1432,16 +1604,22 @@ namespace WpfApp1
             map1.Add("1", status1);
             Status status2 = new Status();
             status2.color = "nomal";
-            status2.index = 0;
+            status2.index = 2;
             status2.online = false;
             status2.hd = false;
             map1.Add("2", status2);
             Status status3 = new Status();
             status3.color = "nomal";
-            status3.index = 0;
+            status3.index = 3;
             status3.online = false;
             status3.hd = false;
             map1.Add("3", status3);
+            Status status4 = new Status();
+            status4.color = "nomal";
+            status4.index = 4;
+            status4.online = false;
+            status4.hd = false;
+            map1.Add("4", status4);
             LoadHistoryMessageFile();
 
             AlarmHistoryDataGrid.ItemsSource = historyMessages;
@@ -1589,18 +1767,21 @@ namespace WpfApp1
             m_pictureBox3 = new System.Windows.Forms.PictureBox();
             m_pictureBox3.Name = "m_pictureBox3";
 
-
-            cameras = new List<PictureBox> { m_pictureBox0, m_pictureBox1, m_pictureBox2, m_pictureBox3 };
+            m_pictureBox4 = new System.Windows.Forms.PictureBox();
+            m_pictureBox4.Name = "m_pictureBox4";
+            cameras = new List<PictureBox> { m_pictureBox0, m_pictureBox1, m_pictureBox2, m_pictureBox3, m_pictureBox4 };
 
             pictureBoxHost0.Child = m_pictureBox0;
             pictureBoxHost1.Child = m_pictureBox1;
             pictureBoxHost2.Child = m_pictureBox2;
             pictureBoxHost3.Child = m_pictureBox3;
+            pictureBoxHost4.Child = m_pictureBox4;
             m_pictureBox0.Click += changeWindow;
             m_pictureBox1.Click += changeWindow;
             m_pictureBox2.Click += changeWindow;
             m_pictureBox3.Click += changeWindow;
-            windowsFormsHosts = new List<WindowsFormsHost> { pictureBoxHost0, pictureBoxHost1, pictureBoxHost2, pictureBoxHost3 };
+            m_pictureBox4.Click += changeWindow;
+            windowsFormsHosts = new List<WindowsFormsHost> { pictureBoxHost0, pictureBoxHost1, pictureBoxHost2, pictureBoxHost3, pictureBoxHost4 };
 
 
 
@@ -1609,13 +1790,13 @@ namespace WpfApp1
 
             #region 云服务
 
-            System.Timers.Timer t = new System.Timers.Timer(5 * 1000 * 2);//实例化Timer类，设置间隔时间为10000毫秒；
+          /*  System.Timers.Timer t = new System.Timers.Timer(5 * 1000 * 2);//实例化Timer类，设置间隔时间为10000毫秒；
 
             t.Elapsed += new System.Timers.ElapsedEventHandler(TCPTool.CreateClient);//到达时间的时候执行事件；
 
             t.AutoReset = true;//设置是执行一次（false）还是一直执行(true)；
 
-            t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件；
+            t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件；*/
 
             #endregion 云服务
 
@@ -1753,21 +1934,24 @@ namespace WpfApp1
         /// <returns></returns>
         private Socket Tcp_CreateSocket(string ip, string port)
         {
-            /*            try
-                        {
-                        }
-                        catch (System.Net.Sockets.SocketException)
-                        {
-                            throw;
-                        }
-            */
+            try
+            {
+                Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                IPAddress address = IPAddress.Parse(ip);
+                IPEndPoint endPoint = new IPEndPoint(address, int.Parse(port));
+                socket.Bind(endPoint);
+                socket.Listen(50);
+                return socket;
+            }
+            catch (System.Net.Sockets.SocketException e)
+            {
+                Console.WriteLine("socketException");
+                Console.WriteLine(e);
+                throw;
+            }
 
-            Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPAddress address = IPAddress.Parse(ip);
-            IPEndPoint endPoint = new IPEndPoint(address, int.Parse(port));
-            socket.Bind(endPoint);
-            socket.Listen(50);
-            return socket;
+
+
         }
 
         /// <summary>
@@ -1799,7 +1983,9 @@ namespace WpfApp1
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine("ddd");
                     Console.WriteLine(ex.ToString());
+                    Console.WriteLine("fff");
                     break;
                 }
                 ParameterizedThreadStart pts = new ParameterizedThreadStart(ClientReceiver);
@@ -1840,7 +2026,9 @@ namespace WpfApp1
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine("ex123");
                     Console.WriteLine(ex.ToString());
+                    Console.WriteLine("ex123");
                     break;
                 }
             }
@@ -2005,16 +2193,16 @@ namespace WpfApp1
                 strArray = nmwd.Split('M');
                 //平均值
                 string ndStr = strArray[0];
-
+                string maxValStr = "";
                 //最大值
                 //mnd = int.Parse(strArray[0]);
 
                 //如果勾选最大值
-                if (AlgorithmABool)
-                {
-                    ndStr = strArray[0];
+                //if (AlgorithmABool)
+                //{
 
-                }
+                maxValStr = strArray[1].Split('W')[0];
+                //}
 
 
 
@@ -2069,6 +2257,7 @@ namespace WpfApp1
                     real_PlayPOJOs[device_num].messageList[0] = ndStr;
                     real_PlayPOJOs[device_num].messageList[1] = wd + "℃";
                     real_PlayPOJOs[device_num].messageList[2] = deviceNum;
+                    real_PlayPOJOs[device_num].messageList[10] = maxValStr;
 
                     #endregion 给浓度赋值
 
@@ -2078,8 +2267,8 @@ namespace WpfApp1
 
                     //horizontalAngle.Status = spjd.ToString("0.00") + "°";
                     //  horizontalValue_label.Text = spjd + "";
-                    real_PlayPOJOs[device_num].messageList[3] = spjd + "°";
-
+                    //real_PlayPOJOs[device_num].messageList[3] = spjd + "°";
+                    real_PlayPOJOs[device_num].messageList[3] = spjd.ToString();
                     //垂直角度
                     strArray = strArray[1].Split('B');
                     if (strArray[0].Length > 1)
@@ -2106,7 +2295,8 @@ namespace WpfApp1
                         }
                     }
                     //verticalAngle.Status = czjd.ToString("0.00") + "°";
-                    real_PlayPOJOs[device_num].messageList[4] = czjd.ToString("0.00") + "°";
+                    //real_PlayPOJOs[device_num].messageList[4] = czjd.ToString("0.00") + "°";
+                    //real_PlayPOJOs[device_num].messageList[4] = czjd.ToString("0.00");
                     //光强
 
                     strArray = strArray[1].Split('C');
@@ -2124,8 +2314,9 @@ namespace WpfApp1
                                  real_PlayPOJOs[device_num].messageList[0] = nd + "";
                              }
                       }*/
-
-                    real_PlayPOJOs[device_num].messageList[4] = Math.Round(czjd, 2) + "°";
+                    Console.WriteLine("czjd");
+                    Console.WriteLine(czjd);
+                    real_PlayPOJOs[device_num].messageList[4] = Math.Round(czjd, 2).ToString();
                     //real_PlayPOJOs[device_num].I_nmwd_if = 0;
                     /*
                                         if (real_PlayPOJOs[device_num].messagePOJO.concentration < int.Parse(ndStr) && int.Parse(ndStr) < 100000)
@@ -2181,6 +2372,99 @@ namespace WpfApp1
             {
                 if (kvp.Value.index == device_num)
                 {
+                    if (kvp.Key.Equals("4"))
+                    {
+                        if (map1["4"].online == true)
+                        {
+                            /*          BitmapImage bitmapImage = new BitmapImage();
+                                      bitmapImage.BeginInit();
+                                      //bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/online_active_dot.png", UriKind.Relative);
+                                      bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/online_active.png", UriKind.Relative);
+                                      bitmapImage.EndInit();
+                                      onlineImage2.Source = bitmapImage;*/
+                            onlineLable4.Background = Brushes.Green;
+                        }
+                        concentrationText4.Text = real_PlayPOJOs[device_num].messageList[0];
+                        if (language == Language.Chinese)
+                        {
+                            hdLabel4.Content = "高清";
+                            onlineLable4.Content = "在线";
+                        }
+                        else
+                        {
+                            hdLabel4.Content = "hd";
+                            onlineLable4.Content = "online";
+                        }
+
+                        if (map1["4"].hd == true)
+                        {
+                            /*    BitmapImage bitmapImage = new BitmapImage();
+                                bitmapImage.BeginInit();
+                                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/hd_active.png", UriKind.Relative);
+                                bitmapImage.EndInit();
+                                hd_image2.Source = bitmapImage;*/
+                            hdLabel4.Background = Brushes.SkyBlue;
+                        }
+                        else
+                        {
+                            /*    BitmapImage bitmapImage = new BitmapImage();
+                                bitmapImage.BeginInit();
+                                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/hd.png", UriKind.Relative);
+                                bitmapImage.EndInit();
+                                hd_image2.Source = bitmapImage;*/
+                            hdLabel4.Background = Brushes.Black;
+                        }
+                        deviceName4.Text = real_PlayPOJOs[device_num].Device_name;
+                        break;
+                    }
+
+                    if (kvp.Key.Equals("3"))
+                    {
+                        if (map1["3"].online == true)
+                        {
+                            /*          BitmapImage bitmapImage = new BitmapImage();
+                                      bitmapImage.BeginInit();
+                                      //bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/online_active_dot.png", UriKind.Relative);
+                                      bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/online_active.png", UriKind.Relative);
+                                      bitmapImage.EndInit();
+                                      onlineImage2.Source = bitmapImage;*/
+                            onlineLable3.Background = Brushes.Green;
+
+                        }
+                        concentrationText3.Text = real_PlayPOJOs[device_num].messageList[0];
+                        if (language == Language.Chinese)
+                        {
+                            hdLabel3.Content = "高清";
+                            onlineLable3.Content = "在线";
+                        }
+                        else
+                        {
+                            hdLabel3.Content = "hd";
+                            onlineLable3.Content = "online";
+                        }
+
+                        if (map1["3"].hd == true)
+                        {
+                            /*    BitmapImage bitmapImage = new BitmapImage();
+                                bitmapImage.BeginInit();
+                                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/hd_active.png", UriKind.Relative);
+                                bitmapImage.EndInit();
+                                hd_image2.Source = bitmapImage;*/
+                            hdLabel3.Background = Brushes.SkyBlue;
+                        }
+                        else
+                        {
+                            /*    BitmapImage bitmapImage = new BitmapImage();
+                                bitmapImage.BeginInit();
+                                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/hd.png", UriKind.Relative);
+                                bitmapImage.EndInit();
+                                hd_image2.Source = bitmapImage;*/
+                            hdLabel3.Background = Brushes.Black;
+                        }
+                        deviceName3.Text = real_PlayPOJOs[device_num].Device_name;
+                        break;
+                    }
+
                     if (kvp.Key.Equals("2"))
                     {
                         if (map1["2"].online == true)
@@ -2386,8 +2670,90 @@ namespace WpfApp1
                         NDText.Text = real_PlayPOJOs[device_num].messageList[0];
                         temprature.Status = real_PlayPOJOs[device_num].messageList[1];
                         horizontalAngle.Status = real_PlayPOJOs[device_num].messageList[3];
-                        verticalAngle.Status = real_PlayPOJOs[device_num].messageList[4];
+                        verticalAngle.Status = real_PlayPOJOs[device_num].messageList[4] + "°";
                         speedText.Status = real_PlayPOJOs[device_num].messageList[5] + "°/s";
+
+                        /*              float anglex1 = float.Parse(real_PlayPOJOs[Chosen_device_num].messageList[3]);
+                                      float angley1 = float.Parse(real_PlayPOJOs[Chosen_device_num].messageList[4]);
+
+                                      if (anglexTemp != anglex1)
+                                      {
+                                          rotate = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), -(anglex1 - anglexTemp)));
+                                          transform3DGroup.Children.Add(rotate);
+                                          anglexTemp = anglex1;
+                                      }
+                                      if (angleyTemp != angley1)
+                                      {
+                                          Console.WriteLine("bbb");
+                                          Console.WriteLine(-(angley1 - angleyTemp));
+                                          rotate = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), anglexTempaaa));
+                                          transform3DGroup.Children.Add(rotate);
+                                          rotate2 = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), -(angley1 - angleyTemp)));
+                                          transform3DGroup.Children.Add(rotate2);
+                                          anglexTempaaa = angleyTemp;
+                                          angleyTemp = angley1;
+                                      }*/
+
+
+
+
+
+                        //transform3DGroup.Children.Clear();
+
+
+
+                        /*     model3DGroup.Transform = transform3DGroup;
+
+
+                             modelVisual3D.Content = model3DGroup;
+                             //viewport.Children.Clear();
+                             viewport.Children.Add(modelVisual3D);*/
+
+                        if (ndTimesShowLength % 2 == 0)
+                        {
+                            double anglex = double.Parse(real_PlayPOJOs[device_num].messageList[3]);
+
+                            double x2 = 90 + 60 * Math.Cos((anglex - 180) * 3.14 / 180);
+                            double y2 = 60 + 60 * Math.Sin((anglex - 180) * 3.14 / 180);
+
+                            // 创建Line对象
+                            Line line = new Line
+                            {
+                                X1 = 90, // 起点横坐标
+                                Y1 = 60, // 起点纵坐标
+                                X2 = x2, // 终点横坐标
+                                Y2 = y2, // 终点纵坐标
+                                Stroke = Brushes.Green, // 线条颜色
+                                StrokeThickness = 2 // 线条宽度
+                            };
+                            canvasx.Children.Clear();
+                            // 将线条添加到Canvas
+                            canvasx.Children.Add(line);
+
+
+                            double angley = double.Parse(real_PlayPOJOs[device_num].messageList[4]);
+
+                            double x3 = 268 + 60 * Math.Cos((angley - 180) * 3.14 / 180);
+                            double y3 = 60 + 60 * Math.Sin((angley - 180) * 3.14 / 180);
+
+                            // 创建Line对象
+                            Line line2 = new Line
+                            {
+                                X1 = 268, // 起点横坐标
+                                Y1 = 60, // 起点纵坐标
+                                X2 = x3, // 终点横坐标
+                                Y2 = y3, // 终点纵坐标
+                                Stroke = Brushes.Green, // 线条颜色
+                                StrokeThickness = 2 // 线条宽度
+                            };
+
+                            canvasy.Children.Clear();
+                            // 将线条添加到Canvas
+                            canvasy.Children.Add(line2);
+
+
+                        }
+
 
 
                         Console.WriteLine("浓度：{0}", real_PlayPOJOs[device_num].messageList[0]);
@@ -2488,7 +2854,7 @@ namespace WpfApp1
             HighAlarmNum.Text = HighAlarmDouble.ToString();
 
             double LowerAlarmDouble = double.Parse(real_PlayPOJOs[MainWindow.Chosen_device_num].I_dbyz.ToString());
-            double bottomDoubleLower = (176 - 24) / 6000.0 * LowerAlarmDouble;
+            double bottomDoubleLower = Math.Round((176 - 24) / 6000.0 * LowerAlarmDouble, 2);
             Console.WriteLine("bottomDoubleLower: " + (176 / 6000.0 * 24 + bottomDoubleLower));
             LowerAlarmStackPanel.Margin = new Thickness(20, 0, 0, (176 - 24) / 6000.0 * 24 + bottomDoubleLower + 24);
             LowerAlarmNum.Text = LowerAlarmDouble.ToString();
@@ -2735,10 +3101,11 @@ namespace WpfApp1
             string sVideoFileName;
             sVideoFileName = sVideoFilePath + DateTime.Now.ToString("HH-mm-ss");
 
-            
-              
+
+
             if (!isManul)
             {
+
                 SaveHistoryMessagesToFile(device_num, sVideoFileName, isManul);
 
                 //强制I帧 Make a I frame
@@ -2796,15 +3163,11 @@ namespace WpfApp1
             }
             else
             {
-                if (ndTimesShowLength % 100 == 0)
+                if (ndTimesShowLength % 1000 == 0)
                 {
                     SaveHistoryMessagesToFile(device_num, sVideoFileName, isManul);
                 }
-           
-             
             }
-
-
 
         }
 
@@ -2942,6 +3305,67 @@ namespace WpfApp1
           }*/
 
 
+        private void SaveHistoryMessagesToFile2(int device_num, string sVideoFileName, bool isManul)
+        {
+
+            HistoryMessage2 historyMessage = new HistoryMessage2
+            {
+                save_time = DateTime.Now/*.ToString("yyyy-MM-dd-HH-mm-ss")*/,
+                concentration = real_PlayPOJOs[device_num].messageList[0],
+                concentrationMax = real_PlayPOJOs[device_num].messageList[10]
+            };
+
+
+
+            string filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "\\History\\"
+                             + DateTime.Now.ToString("yyyy") + "\\"
+                             + DateTime.Now.ToString("MM") + "\\"
+                             + DateTime.Now.ToString("dd") + "\\";
+            Directory.CreateDirectory(filePath);
+            string sBmpPicFileName;
+            sBmpPicFileName = filePath + "device_" + device_num.ToString() + ".xls";
+
+
+            if (device_num == 0)
+            {
+                historyMessages0.Add(historyMessage);
+
+
+                Tool.saveExcel2(MainWindow.historyMessages0, sBmpPicFileName, false);
+
+            }
+            else if (device_num == 1)
+            {
+                historyMessages1.Add(historyMessage);
+
+                Tool.saveExcel2(MainWindow.historyMessages1, sBmpPicFileName, false);
+
+            }
+            else if (device_num == 2)
+            {
+                historyMessages2.Add(historyMessage);
+
+                Tool.saveExcel2(MainWindow.historyMessages2, sBmpPicFileName, false);
+
+            }
+            else if (device_num == 3)
+            {
+                historyMessages3.Add(historyMessage);
+
+                Tool.saveExcel2(MainWindow.historyMessages3, sBmpPicFileName, false);
+
+            }
+            else if (device_num == 4)
+            {
+                historyMessages4.Add(historyMessage);
+
+                Tool.saveExcel2(MainWindow.historyMessages4, sBmpPicFileName, false);
+
+            }
+
+
+
+        }
 
         private void SaveHistoryMessagesToFile(int device_num, string sVideoFileName, bool isManul)
         {
@@ -2954,11 +3378,12 @@ namespace WpfApp1
                 save_time = DateTime.Now/*.ToString("yyyy-MM-dd-HH-mm-ss")*/,
                 concentration = real_PlayPOJOs[device_num].messageList[0],
                 Horiz = real_PlayPOJOs[device_num].messageList[3],
-                Vert = real_PlayPOJOs[device_num].messageList[4],
+                Vert = real_PlayPOJOs[device_num].messageList[4] + "°",
                 Preset_num = presetInt,
                 Preset_notes = presetNotes,
                 video_path = sVideoFileName,
                 isManul = isManul,
+                concentrationMax = real_PlayPOJOs[device_num].messageList[10]
             };
 
             XmlDocument doc = new XmlDocument();
@@ -3044,7 +3469,7 @@ namespace WpfApp1
 
                 }
 
-               
+
                 root.AppendChild(xelMessage);
 
                 doc.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "HistoryMessages.xml");
@@ -3270,8 +3695,10 @@ namespace WpfApp1
                 if (confirmWindow.Result == 1)
                 {
                     Console.WriteLine("ok");
-                    MainWindow.In_Main_Form.Close();
-                    this.Close();
+                    //MainWindow.In_Main_Form.Close();
+                    //this.Close();
+                    Thread.CurrentThread.IsBackground = true;
+                    Environment.Exit(0);
                 }
                 else
                 {

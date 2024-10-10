@@ -365,8 +365,6 @@
                                         Background="Red"
                                         BorderThickness="0"
                                         Click="remove"
-                                        Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
-                                        CommandParameter="{Binding DeviceIP}"
                                         Content="删除"
                                         Foreground="White" />
                                 </StackPanel>

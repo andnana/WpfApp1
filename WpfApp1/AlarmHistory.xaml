@@ -343,19 +343,13 @@
                                         Margin="2"
                                         Background="#326cf3"
                                         BorderThickness="0"
-                                        Click="invokePreset"
-                                        Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
-                                        CommandParameter="{Binding DeviceIP}"
-                                        Content="{DynamicResource goto}"
+                                        Click="invokePreset"  
                                         Foreground="White" />
                                     <Button
                                         Margin="2"
                                         Background="#326cf3"
                                         BorderThickness="0"
                                         Click="seeVideo"
-                                        Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
-                                        CommandParameter="{Binding DeviceIP}"
-                                        Content="{DynamicResource play_vedio}"
                                         Foreground="White" />
 
                                     <Button
@@ -363,9 +357,6 @@
                                         Background="Red"
                                         BorderThickness="0"
                                         Click="remove"
-                                        Command="{Binding DataContext.ValueCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
-                                        CommandParameter="{Binding DeviceIP}"
-                                        Content="{DynamicResource delete}"
                                         Foreground="White" />
                                 </StackPanel>
 

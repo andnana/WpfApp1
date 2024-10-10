@@ -87,19 +87,34 @@ namespace WpfApp1
             {
                 using (socket)
                 {
-                    socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    socket.Connect(iPEndPoint);
-                    //发送
+              
 
-                    for (int i = 0; i < MainWindow.real_PlayPOJOs.Count; i++)
+                    try
                     {
-                        if (MainWindow.real_PlayPOJOs[i].messagePOJO != null)
+                        socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                        socket.Connect(iPEndPoint);
+                        //发送
+
+                        for (int i = 0; i < MainWindow.real_PlayPOJOs.Count; i++)
                         {
-                            MainWindow.real_PlayPOJOs[i].messagePOJO.deviceNum = MainWindow.real_PlayPOJOs[i].deviceNum;
-                            socket.Send(Encoding.Default.GetBytes(MainWindow.real_PlayPOJOs[i].messagePOJO.plus()));
-                            Thread.Sleep(200);
+                            if (MainWindow.real_PlayPOJOs[i].messagePOJO != null)
+                            {
+                                MainWindow.real_PlayPOJOs[i].messagePOJO.deviceNum = MainWindow.real_PlayPOJOs[i].deviceNum;
+                                socket.Send(Encoding.Default.GetBytes(MainWindow.real_PlayPOJOs[i].messagePOJO.plus()));
+                                Thread.Sleep(200);
+                            }
                         }
+
                     }
+                    catch (System.Net.Sockets.SocketException e2)
+                    {
+                        Console.WriteLine("socketException");
+                        Console.WriteLine(e2);
+                        Console.WriteLine("ErrorCode");
+                        Console.WriteLine(e2.ErrorCode);
+                        throw;
+                    }
+
 
                     //接取
                     //Console.WriteLine("服务器:" + Encoding.Default.GetString(mesbuffer, 0, socket.Receive(mesbuffer)));

@@ -16,7 +16,7 @@ using System.Windows.Threading;
 
 namespace WpfApp1
 {
-  
+
 
     /// <summary>
     /// TipsWindow.xaml 的交互逻辑
@@ -29,44 +29,52 @@ namespace WpfApp1
         public TipsWindow(string msg, int interval, TipsEnum icon)
         {
             InitializeComponent();
-         
-           this.msg = msg;
-            messageTextBlock.Text = msg;
-            if (icon == TipsEnum.OK)
+            try
             {
-                BitmapImage bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/ok_white.png", UriKind.Relative);
-                bitmapImage.EndInit();
-                TipsIcon.Source = bitmapImage;
+                this.msg = msg;
+                messageTextBlock.Text = msg;
+                if (icon == TipsEnum.OK)
+                {
+                    BitmapImage bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/ok_white.png", UriKind.Relative);
+                    bitmapImage.EndInit();
+                    TipsIcon.Source = bitmapImage;
+                }
+                else if (icon == TipsEnum.FAIL)
+                {
+                    BitmapImage bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/fail_white.png", UriKind.Relative);
+                    bitmapImage.EndInit();
+                    TipsIcon.Source = bitmapImage;
+                }
+                else if (icon == TipsEnum.INFO)
+                {
+                    BitmapImage bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/info.png", UriKind.Relative);
+                    bitmapImage.EndInit();
+                    TipsIcon.Source = bitmapImage;
+                }
+                timer = new DispatcherTimer();
+                timer.Tick += Timer_Tick;
+                timer.Interval = TimeSpan.FromSeconds(interval); // 设置时间为5秒
+                timer.Start();
             }
-            else if(icon == TipsEnum.FAIL)
+            catch (Exception ex)
             {
-                BitmapImage bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/fail_white.png", UriKind.Relative);
-                bitmapImage.EndInit();
-                TipsIcon.Source = bitmapImage;
+                Console.WriteLine("aaaaa");
+                Console.WriteLine(ex.Message);
             }
-            else if (icon == TipsEnum.INFO)
-            {
-                BitmapImage bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/info.png", UriKind.Relative);
-                bitmapImage.EndInit();
-                TipsIcon.Source = bitmapImage;
-            }
-            timer = new DispatcherTimer();
-            timer.Tick += Timer_Tick;
-            timer.Interval = TimeSpan.FromSeconds(interval); // 设置时间为5秒
-            timer.Start();
+    
         }
         private void Timer_Tick(object sender, EventArgs e)
         {
             timer.Stop();
             this.Close(); // 关闭窗口
         }
-    
-    
+
+
     }
 }
