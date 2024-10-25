@@ -74,4 +74,5 @@
     <s:String x:Key="export">导出</s:String>
     <s:String x:Key="add_all_preset">添加所有预置点</s:String>
     <s:String x:Key="is_manul">手动</s:String>
+    <s:String x:Key="red_point">中心点</s:String>
 </ResourceDictionary>

@@ -257,7 +257,7 @@
                 BorderThickness="0"
                 Foreground="White"
                 HeadersVisibility="Column"
-                RowHeight="30"
+                RowHeight="40"
                 RowStyle="{StaticResource DataGridTextCenterColumnStyle}">
                 <DataGrid.Columns>
                     <DataGridTextColumn
@@ -340,23 +340,32 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <Button
+                                        Width="44"
+                                        Height="24"
                                         Margin="2"
                                         Background="#326cf3"
                                         BorderThickness="0"
-                                        Click="invokePreset"  
+                                        Click="invokePreset"
+                                        Content="前往"
                                         Foreground="White" />
                                     <Button
+                                        Width="44"
+                                        Height="24"
                                         Margin="2"
                                         Background="#326cf3"
                                         BorderThickness="0"
                                         Click="seeVideo"
+                                        Content="视频"
                                         Foreground="White" />
 
                                     <Button
+                                        Width="44"
+                                        Height="24"
                                         Margin="2"
                                         Background="Red"
                                         BorderThickness="0"
                                         Click="remove"
+                                        Content="删除"
                                         Foreground="White" />
                                 </StackPanel>
 

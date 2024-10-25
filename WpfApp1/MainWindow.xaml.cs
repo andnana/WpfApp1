@@ -71,6 +71,7 @@ namespace WpfApp1
          ModelVisual3D modelVisual3D;*/
         bool IndicatingLaserBool = true;
         bool AlgorithmABool = false;
+        bool redPointBool = false;
         DispatcherTimer disapearSuccessTipsTimer;
         DispatcherTimer disapearTipsTimer;
         DeviceSetup deviceSetup = null;
@@ -111,7 +112,7 @@ namespace WpfApp1
         /// </summary>
         public SoundPlayer sp1;
 
-        public static bool stopCruiseWhenWarningIsChecked = false;
+        public static bool stopCruiseBool = false;
         int ndTimesShowLength = 0;
 
         System.Windows.Forms.PictureBox m_pictureBoxTemp;
@@ -185,7 +186,7 @@ namespace WpfApp1
         /// </summary>
         public static string sbmc = "";
 
-        public SeriesCollection SeriesCollection2 { get; set; }
+        //public SeriesCollection SeriesCollection2 { get; set; }
         public SeriesCollection SeriesCollection { get; set; }
 
 
@@ -1643,9 +1644,7 @@ namespace WpfApp1
 
             string namespaceName = Assembly.GetExecutingAssembly().GetName().Name.ToString();
             Assembly assembly = Assembly.GetExecutingAssembly();
-            string szPath = Application.StartupPath + "\\SoundFile\\alarm.wav";
             sp = new SoundPlayer(assembly.GetManifestResourceStream(namespaceName + ".Resources" + ".alarm.wav"));
-            //sp = new SoundPlayer(@"C:\Users\Administrator\source\repos\WpfApp1\WpfApp1\Resources\alarm.wav");
             sp1 = new SoundPlayer(assembly.GetManifestResourceStream(namespaceName + ".Resources" + ".alarm1.wav"));
 
             NET_DVR_Init();
@@ -1719,24 +1718,24 @@ namespace WpfApp1
             SeriesCollection.Add(lineseries);
 
 
-            SeriesCollection2 = new SeriesCollection
+      /*      SeriesCollection2 = new SeriesCollection
             {
-                /*           new ColumnSeries
+                          new ColumnSeries
                            {
                                Title = "光强",
                                Values = new ChartValues<double> { 0, 0, 700, 0, 0 },
                                Fill =Brushes.LightSkyBlue,
                                Foreground=Brushes.White
-                           }*/
-                /*      ,
+                           }
+                      ,
                       new ColumnSeries
                       {
                           Title = "Series 2",
                           Values = new ChartValues<double> { 900, 600, 400, 900 }
-                      }*/
-            };
+                      }
+            };*/
 
-            ValueList2 = new ChartValues<double>();
+      /*      ValueList2 = new ChartValues<double>();
 
             ColumnSeries columnSeries2 = new ColumnSeries
             {
@@ -1746,7 +1745,7 @@ namespace WpfApp1
             };
             //lineseries.DataLabels = true;
             columnSeries2.Values = ValueList2;
-            SeriesCollection2.Add(columnSeries2);
+            SeriesCollection2.Add(columnSeries2);*/
 
             this.DataContext = this;
 
@@ -1790,13 +1789,13 @@ namespace WpfApp1
 
             #region 云服务
 
-          /*  System.Timers.Timer t = new System.Timers.Timer(5 * 1000 * 2);//实例化Timer类，设置间隔时间为10000毫秒；
+            /*  System.Timers.Timer t = new System.Timers.Timer(5 * 1000 * 2);//实例化Timer类，设置间隔时间为10000毫秒；
 
-            t.Elapsed += new System.Timers.ElapsedEventHandler(TCPTool.CreateClient);//到达时间的时候执行事件；
+              t.Elapsed += new System.Timers.ElapsedEventHandler(TCPTool.CreateClient);//到达时间的时候执行事件；
 
-            t.AutoReset = true;//设置是执行一次（false）还是一直执行(true)；
+              t.AutoReset = true;//设置是执行一次（false）还是一直执行(true)；
 
-            t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件；*/
+              t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件；*/
 
             #endregion 云服务
 
@@ -2060,6 +2059,60 @@ namespace WpfApp1
         private string[] strArray;
         private string[] exStrArray = { "start", "stop", "beginjz", "wait", "failure", "okay", };
         private string strstart = "@start@";
+
+        private void redPointSetup(object sender, RoutedEventArgs e)
+        {
+            redPointBool = !redPointBool;
+            if (redPointBool)
+            {
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/on.png", UriKind.Relative);
+                bitmapImage.EndInit();
+                redPointImage.Source = bitmapImage;
+                redPointBlock.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/off.png", UriKind.Relative);
+                bitmapImage.EndInit();
+                redPointImage.Source = bitmapImage;
+                redPointBlock.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void stopCruiseSetup(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.sbmc == "")
+            {
+                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
+                return;
+            }
+            stopCruiseBool = !stopCruiseBool;
+            if (stopCruiseBool)
+            {
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/on.png", UriKind.Relative);
+                bitmapImage.EndInit();
+                stopCruiseImg.Source = bitmapImage;
+            }
+            else
+            {
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.UriSource = new Uri("/WpfApp1;component/Resources/off.png", UriKind.Relative);
+                bitmapImage.EndInit();
+                stopCruiseImg.Source = bitmapImage;
+            }
+
+
+
+
+        }
+
         private void algorithmaSetup(object sender, RoutedEventArgs e)
         {
             if (MainWindow.sbmc == "")
@@ -2200,7 +2253,6 @@ namespace WpfApp1
                 //如果勾选最大值
                 //if (AlgorithmABool)
                 //{
-
                 maxValStr = strArray[1].Split('W')[0];
                 //}
 
@@ -2240,8 +2292,16 @@ namespace WpfApp1
                     {
                         return;
                     }
+                    double doubleND = 0;
+                    if (AlgorithmABool)
+                    {
+                        doubleND = double.Parse(maxValStr);
+                    }
+                    else
+                    {
+                        doubleND = double.Parse(ndStr);
+                    }
 
-                    double doubleND = double.Parse(ndStr);
 
 
 
@@ -2667,7 +2727,14 @@ namespace WpfApp1
 
                         }
                         MaxNDText.Text = real_PlayPOJOs[device_num].messageList[9];
-                        NDText.Text = real_PlayPOJOs[device_num].messageList[0];
+                        if (AlgorithmABool)
+                        {
+                            NDText.Text = real_PlayPOJOs[device_num].messageList[10];
+                        }
+                        else
+                        {
+                            NDText.Text = real_PlayPOJOs[device_num].messageList[0];
+                        }
                         temprature.Status = real_PlayPOJOs[device_num].messageList[1];
                         horizontalAngle.Status = real_PlayPOJOs[device_num].messageList[3];
                         verticalAngle.Status = real_PlayPOJOs[device_num].messageList[4] + "°";
@@ -2769,7 +2836,7 @@ namespace WpfApp1
 
                         Console.WriteLine("添加了一个浓度值 ");
 
-                        if (ValueList2.Count == 0)
+                    /*    if (ValueList2.Count == 0)
                         {
                             ValueList2.Add(0);
                             ValueList2.Add(0);
@@ -2788,7 +2855,7 @@ namespace WpfApp1
                             ValueList2.Add(0);
                             ValueList2.Add(0);
 
-                        }
+                        }*/
 
 
                         break;
@@ -2937,7 +3004,7 @@ namespace WpfApp1
 
                 if (real_PlayPOJOs[device_num].B_isAuto)
                 {
-                    if (stopCruiseWhenWarningIsChecked)
+                    if (stopCruiseBool)
                     {
                         StopYTAutoMove(true, device_num);
                     }
@@ -3073,7 +3140,7 @@ namespace WpfApp1
 
         /*        private void stopCruiseWhenWarningFun(object sender, RoutedEventArgs e)
                 {
-                    stopCruiseWhenWarningIsChecked = stopCruiseWhenWarning.IsChecked.Value;
+                    stopCruiseBool = stopCruiseWhenWarning.IsChecked.Value;
                 }*/
         /// <summary>
         /// 自动录像
@@ -3358,12 +3425,8 @@ namespace WpfApp1
             else if (device_num == 4)
             {
                 historyMessages4.Add(historyMessage);
-
                 Tool.saveExcel2(MainWindow.historyMessages4, sBmpPicFileName, false);
-
             }
-
-
 
         }
 

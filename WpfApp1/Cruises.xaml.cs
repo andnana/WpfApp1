@@ -199,44 +199,65 @@ namespace WpfApp1
 
         public void LoadPresetsFile()
         {
+            try {
+                // 创建XmlDDocument对象，并装入xml文件
+                XmlDocument xmlDoc = new XmlDocument();
 
-            // 创建XmlDDocument对象，并装入xml文件
-            XmlDocument xmlDoc = new XmlDocument();
+                XmlReaderSettings settings = new XmlReaderSettings();
+                settings.IgnoreComments = true;//忽略文档里面的注释
+                XmlReader reader = XmlReader.Create(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + MainWindow.deviceInfoList[MainWindow.Chosen_device_num].ip + "_presets.xml", settings);
+                xmlDoc.Load(reader);
 
-            XmlReaderSettings settings = new XmlReaderSettings();
-            settings.IgnoreComments = true;//忽略文档里面的注释
-            XmlReader reader = XmlReader.Create(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + MainWindow.deviceInfoList[MainWindow.Chosen_device_num].ip + "_presets.xml", settings);
-            xmlDoc.Load(reader);
+                //xn 代表一个结点
+                //xn.Name;//这个结点的名称
+                //xn.Value;//这个结点的值
+                //xn.ChildNodes;//这个结点的所有子结点
+                //xn.ParentNode;//这个结点的父结点
 
-            //xn 代表一个结点
-            //xn.Name;//这个结点的名称
-            //xn.Value;//这个结点的值
-            //xn.ChildNodes;//这个结点的所有子结点
-            //xn.ParentNode;//这个结点的父结点
-
-            // 得到根节点bookstore
-            XmlNode xn = xmlDoc.SelectSingleNode("presets");
+                // 得到根节点bookstore
+                XmlNode xn = xmlDoc.SelectSingleNode("presets");
 
 
-            // 得到根节点的所有子节点
-            XmlNodeList xnl = xn.ChildNodes;
+                // 得到根节点的所有子节点
+                XmlNodeList xnl = xn.ChildNodes;
 
-            foreach (XmlNode xn1 in xnl)
+                foreach (XmlNode xn1 in xnl)
+                {
+                    Preset preset = new Preset();
+                    // 将节点转换为元素，便于得到节点的属性值
+                    XmlElement xe = (XmlElement)xn1;
+                    // 得到Type和ISBN两个属性的属性值
+                    //bookModel.BookISBN = xe.GetAttribute("ISBN").ToString();
+                    //bookModel.BookType = xe.GetAttribute("Type").ToString();
+                    // 得到LoginInfo节点的所有子节点
+                    XmlNodeList xnl0 = xe.ChildNodes;
+                    preset.preset_num = int.Parse(xnl0.Item(0).InnerText);
+                    preset.notes = xnl0.Item(1).InnerText;
+                    presets.Add(preset);
+                }
+
+                reader.Close();
+            }catch (Exception e)
             {
-                Preset preset = new Preset();
-                // 将节点转换为元素，便于得到节点的属性值
-                XmlElement xe = (XmlElement)xn1;
-                // 得到Type和ISBN两个属性的属性值
-                //bookModel.BookISBN = xe.GetAttribute("ISBN").ToString();
-                //bookModel.BookType = xe.GetAttribute("Type").ToString();
-                // 得到LoginInfo节点的所有子节点
-                XmlNodeList xnl0 = xe.ChildNodes;
-                preset.preset_num = int.Parse(xnl0.Item(0).InnerText);
-                preset.notes = xnl0.Item(1).InnerText;
-                presets.Add(preset);
+                //创建一个空的XML
+                XmlDocument document = new XmlDocument();
+                //声明头部
+                XmlDeclaration dec = document.CreateXmlDeclaration("1.0", "utf-8", "yes");
+                document.AppendChild(dec);
+
+                //创建根节点
+                XmlElement root = document.CreateElement("presets");
+                document.AppendChild(root);
+
+
+                //保存文档
+                document.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + MainWindow.deviceInfoList[MainWindow.Chosen_device_num].ip + "_presets.xml");
+
+
+                Console.WriteLine(e.Message);
             }
 
-            reader.Close();
+
         }
     }
 }

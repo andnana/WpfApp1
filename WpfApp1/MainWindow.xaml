@@ -266,7 +266,7 @@
                                     Margin="4"
                                     Source="/WpfApp1;component/Resources/test.png" />
                                 <TextBlock
-                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
                                     FontSize="10"
                                     Text="{DynamicResource test}" />
                             </StackPanel>
@@ -291,7 +291,7 @@
                                     Margin="4"
                                     Source="/WpfApp1;component/Resources/device_setup.png" />
                                 <TextBlock
-                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
                                     FontSize="10"
                                     Text="{DynamicResource device}" />
                             </StackPanel>
@@ -339,7 +339,7 @@
                                     Margin="4"
                                     Source="/WpfApp1;component/Resources/alarm_history.png" />
                                 <TextBlock
-                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
                                     FontSize="10"
                                     Text="{DynamicResource alarm}" />
                             </StackPanel>
@@ -363,7 +363,7 @@
                                     Margin="4"
                                     Source="/WpfApp1;component/Resources/login.png" />
                                 <TextBlock
-                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
                                     FontSize="10"
                                     Text="{DynamicResource login}" />
                             </StackPanel>
@@ -388,7 +388,7 @@
                                     Margin="4"
                                     Source="/WpfApp1;component/Resources/logout.png" />
                                 <TextBlock
-                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
                                     FontSize="10"
                                     Text="{DynamicResource logout}" />
                             </StackPanel>
@@ -413,7 +413,7 @@
                                     Margin="4"
                                     Source="/WpfApp1;component/Resources/import_export.png" />
                                 <TextBlock
-                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
                                     FontSize="10"
                                     Text="{DynamicResource backup}" />
                             </StackPanel>
@@ -437,7 +437,7 @@
                                     Margin="4"
                                     Source="/WpfApp1;component/Resources/about_software.png" />
                                 <TextBlock
-                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
                                     FontSize="10"
                                     Text="{DynamicResource about}" />
                             </StackPanel>
@@ -491,7 +491,19 @@
                 ToolTip="">
                 <winForms:PictureBox x:Name="pictureBoxMain" />
             </wfi:WindowsFormsHost>
+            <wfi:WindowsFormsHost
+                Name="redPointBlock"
+                Width="10"
+                Height="10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="Red"
+                Visibility="Hidden">
+                <ElementHost>
+                    <Grid />
 
+                </ElementHost>
+            </wfi:WindowsFormsHost>
         </Grid>
 
         <Grid
@@ -1582,6 +1594,8 @@
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
             <Grid Background="White">
 
@@ -1607,6 +1621,37 @@
                     Background="Transparent"
                     BorderThickness="0"
                     Click="algorithmaSetup">
+
+                    <Button.Content>
+                        <TextBlock Text="" />
+                    </Button.Content>
+
+                </Button>
+            </Grid>
+            <Grid Background="White">
+
+                <Image
+                    Name="stopCruiseImg"
+                    Width="74"
+                    Height="32"
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Source="/WpfApp1;component/Resources/off.png" />
+                <TextBlock
+                    Margin="10"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Text="{DynamicResource algorithma}" />
+                <Button
+                    Height="80"
+                    Margin="0,0,0,0"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="stopCruiseSetup">
 
                     <Button.Content>
                         <TextBlock Text="" />
@@ -1802,6 +1847,40 @@
                     Background="Transparent"
                     BorderThickness="0"
                     Click="closeWindowWiper">
+
+                    <Button.Content>
+                        <TextBlock Text="" />
+                    </Button.Content>
+
+                </Button>
+            </Grid>
+            <Grid
+                Grid.Column="5"
+                Margin="1,0,0,0"
+                Background="White">
+
+                <Image
+                    Name="redPointImage"
+                    Width="74"
+                    Height="32"
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Source="/WpfApp1;component/Resources/off.png" />
+                <TextBlock
+                    Margin="10"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Text="{DynamicResource red_point}" />
+                <Button
+                    Height="80"
+                    Margin="0,0,0,0"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="redPointSetup">
 
                     <Button.Content>
                         <TextBlock Text="" />

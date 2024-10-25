@@ -30,23 +30,38 @@ namespace WpfApp1
         public Presets()
         {
             InitializeComponent();
-            presetIntList.Add(2);
-            presetIntList.Add(3);
-            presetIntList.Add(4);
-            presetIntList.Add(6);
-            presetIntList.Add(7);
-            presetIntList.Add(8);
-            presetIntList.Add(9);
-            presetIntList.Add(11);
-            presetIntList.Add(12);
-            presetIntList.Add(13);
-            presetIntList.Add(14);
-            presetIntList.Add(16);
-            presetIntList.Add(17);
-            presetIntList.Add(18);
-            presetIntList.Add(19);
-            presetIntList.Add(21);
-            presetIntList.Add(22);
+            for (int i = 1; i <= 255; i++) {
+                if(i != 5 &&
+                   i != 10 &&
+                   i != 15 &&
+                   i != 20 &&
+                   i != 25 &&
+                   i != 30 &&
+                   i != 35 &&
+                   i != 40 &&
+                   i != 45 &&
+                   i != 50 &&
+                   i != 55 &&
+                   i != 60 &&
+                   i != 65 &&
+                   i != 70 &&
+                   i != 72 &&
+                   i != 73 &&
+                   i != 87 &&
+                   i != 88 &&
+                   i != 90 &&
+                   i != 92 &&
+                   i != 104 &&
+                   i != 121 &&
+                   i != 122)
+                {
+                    presetIntList.Add(i);
+                }
+                
+
+            }
+            
+           
             TitleBar.MouseMove += (s, e) =>
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
@@ -246,9 +261,31 @@ namespace WpfApp1
                     presetMax = presets.Max(p => p.preset_num);
 
                 }
-                if (presetMax == 4 || presetMax == 9 || presetMax == 14 || presetMax == 19)
+                if (presetMax == 4 || 
+                    presetMax == 9 || 
+                    presetMax == 14 || 
+                    presetMax == 19 || 
+                    presetMax == 24 || 
+                    presetMax == 29 || 
+                    presetMax == 34 || 
+                    presetMax == 39 || 
+                    presetMax == 44 || 
+                    presetMax == 49 || 
+                    presetMax == 54 || 
+                    presetMax == 59 || 
+                    presetMax == 64 || 
+                    presetMax == 89 || 
+                    presetMax == 91 || 
+                    presetMax == 103)
                 {
                     preset = presetMax + 2;
+                }
+                else if(presetMax == 66) {
+                    preset = presetMax + 5;
+                }
+                else if (presetMax == 71 || presetMax == 86 || presetMax == 120)
+                {
+                    preset = presetMax + 3;
                 }
                 else
                 {
