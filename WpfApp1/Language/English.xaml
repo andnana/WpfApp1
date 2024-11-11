@@ -26,7 +26,7 @@
     <s:String x:Key="device_name">device name</s:String>
     <s:String x:Key="concentration">concentration</s:String>
     <s:String x:Key="operation">operation</s:String>
-    <s:String x:Key="software_name">Laser methane gas telemetry gimbal</s:String>
+    <s:String x:Key="software_name">Cloud desktop laser methane detection system</s:String>
     <s:String x:Key="high_difinition">hd</s:String>
     <s:String x:Key="online">online</s:String>
     <s:String x:Key="high_alarm">high alarm</s:String>
@@ -75,4 +75,5 @@
     <s:String x:Key="add_all_preset">add all preset points</s:String>
     <s:String x:Key="is_manul">manul</s:String>
     <s:String x:Key="red_point">center point</s:String>
+    <s:String x:Key="stop_cruse_if_alarm">stop cruising</s:String>
 </ResourceDictionary>

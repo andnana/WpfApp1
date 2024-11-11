@@ -107,7 +107,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>ch4test.ico</ApplicationIcon>
+    <ApplicationIcon>sn.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
@@ -284,6 +284,8 @@
     <Compile Include="Video.xaml.cs">
       <DependentUpon>Video.xaml</DependentUpon>
     </Compile>
+    <Resource Include="Resources\sn.png" />
+    <Resource Include="sn.ico" />
     <Resource Include="Resources\angle.png" />
     <Resource Include="Resources\info.png" />
     <Resource Include="Resources\add_all.png" />
@@ -468,9 +470,6 @@
     <Resource Include="Resources\logout.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ch4test.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\save.png" />
   </ItemGroup>
   <ItemGroup>
@@ -488,9 +487,6 @@
   <ItemGroup>
     <Resource Include="Resources\Close.png" />
     <Resource Include="Resources\Minimize.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\ch4test.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\zoom_in.png" />

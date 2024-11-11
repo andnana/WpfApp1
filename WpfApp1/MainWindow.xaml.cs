@@ -58,6 +58,7 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : System.Windows.Window
     {
+        bool tcp_connected = false;
         /* float anglexTemp = 0;
          float anglexTempaaa = 0;
          float angleyTemp = 0;
@@ -415,18 +416,6 @@ namespace WpfApp1
 
         }
 
-
-        /// <summary>
-        /// 按下方向控制按钮
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void up(object sender, RoutedEventArgs e)
-        {
-            real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
-            //StopYTAutoMove(false);
-            NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, TILT_UP, 0, 7);
-        }
         // 当鼠标按下按钮时触发（可以看作是开始点击）  
         private void Button_MouseDown_TILT_UP(object sender, MouseButtonEventArgs e)
         {
@@ -442,11 +431,6 @@ namespace WpfApp1
                 //StopYTAutoMove(false);
                 NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, TILT_UP, 0, 7);
             }
-
-
-
-
-
 
 
         }
@@ -494,50 +478,7 @@ namespace WpfApp1
 
 
         }
-        // 当鼠标按下按钮时触发（可以看作是开始点击）  
-        private void Button_MouseDown_UP_LEFT(object sender, MouseButtonEventArgs e)
-        {
-            //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
-            // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
-            real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
-            //StopYTAutoMove(false);
-            NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, UP_LEFT, 0, 7);
 
-
-
-        }
-        // 当鼠标按下按钮时触发（可以看作是开始点击）  
-        private void Button_MouseDown_UP_RIGHT(object sender, MouseButtonEventArgs e)
-        {
-            //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
-            // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
-            real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
-            //StopYTAutoMove(false);
-            NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, UP_RIGHT, 0, 7);
-        }
-        // 当鼠标按下按钮时触发（可以看作是开始点击）  
-        private void Button_MouseDown_DOWN_LEFT(object sender, MouseButtonEventArgs e)
-        {
-            //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
-            // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
-            real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
-            //StopYTAutoMove(false);
-            NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, DOWN_LEFT, 0, 7);
-
-
-
-        }
-        // 当鼠标按下按钮时触发（可以看作是开始点击）  
-        private void Button_MouseDown_DOWN_RIGHT(object sender, MouseButtonEventArgs e)
-        {
-            //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
-            // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
-            real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
-            //StopYTAutoMove(false);
-            NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, DOWN_RIGHT, 0, 7);
-
-
-        }
         // 当鼠标按下按钮时触发（可以看作是开始点击）  
         private void Button_MouseDown_TILT_DOWN(object sender, MouseButtonEventArgs e)
         {
@@ -557,6 +498,84 @@ namespace WpfApp1
 
 
         }
+
+        // 当鼠标按下按钮时触发（可以看作是开始点击）  
+        private void Button_MouseDown_UP_LEFT(object sender, MouseButtonEventArgs e)
+        {
+
+            if (MainWindow.sbmc == "")
+            {
+
+            }
+            else
+            {
+                //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
+                // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
+                real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
+                //StopYTAutoMove(false);
+                NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, UP_LEFT, 0, 7);
+            }
+
+
+
+
+        }
+        // 当鼠标按下按钮时触发（可以看作是开始点击）  
+        private void Button_MouseDown_UP_RIGHT(object sender, MouseButtonEventArgs e)
+        {
+
+            if (MainWindow.sbmc == "")
+            {
+
+            }
+            else
+            {
+                //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
+                // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
+                real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
+                //StopYTAutoMove(false);
+                NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, UP_RIGHT, 0, 7);
+            }
+
+        }
+        // 当鼠标按下按钮时触发（可以看作是开始点击）  
+        private void Button_MouseDown_DOWN_LEFT(object sender, MouseButtonEventArgs e)
+        {
+            if (MainWindow.sbmc == "")
+            {
+
+            }
+            else
+            {
+                //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
+                // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
+                real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
+                //StopYTAutoMove(false);
+                NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, DOWN_LEFT, 0, 7);
+            }
+
+
+
+
+        }
+        // 当鼠标按下按钮时触发（可以看作是开始点击）  
+        private void Button_MouseDown_DOWN_RIGHT(object sender, MouseButtonEventArgs e)
+        {
+            if (MainWindow.sbmc == "")
+            {
+
+            }
+            else
+            {
+                //System.Diagnostics.Debug.WriteLine("按钮点击（鼠标按下）");
+                // 注意：这里不是严格意义上的“按钮点击”，而是鼠标按下的动作  
+                real_PlayPOJOs[Chosen_device_num].B_isAuto = false;
+                //StopYTAutoMove(false);
+                NET_DVR_PTZControlWithSpeed(real_PlayPOJOs[Chosen_device_num].I_lRealHandle, DOWN_RIGHT, 0, 7);
+            }
+
+        }
+
         // 当鼠标松开按钮时触发  
         private void Button_MouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -1718,34 +1737,34 @@ namespace WpfApp1
             SeriesCollection.Add(lineseries);
 
 
-      /*      SeriesCollection2 = new SeriesCollection
-            {
-                          new ColumnSeries
-                           {
-                               Title = "光强",
-                               Values = new ChartValues<double> { 0, 0, 700, 0, 0 },
-                               Fill =Brushes.LightSkyBlue,
-                               Foreground=Brushes.White
-                           }
-                      ,
-                      new ColumnSeries
-                      {
-                          Title = "Series 2",
-                          Values = new ChartValues<double> { 900, 600, 400, 900 }
-                      }
-            };*/
+            /*      SeriesCollection2 = new SeriesCollection
+                  {
+                                new ColumnSeries
+                                 {
+                                     Title = "光强",
+                                     Values = new ChartValues<double> { 0, 0, 700, 0, 0 },
+                                     Fill =Brushes.LightSkyBlue,
+                                     Foreground=Brushes.White
+                                 }
+                            ,
+                            new ColumnSeries
+                            {
+                                Title = "Series 2",
+                                Values = new ChartValues<double> { 900, 600, 400, 900 }
+                            }
+                  };*/
 
-      /*      ValueList2 = new ChartValues<double>();
+            /*      ValueList2 = new ChartValues<double>();
 
-            ColumnSeries columnSeries2 = new ColumnSeries
-            {
-                Title = "光强",
-                Fill = Brushes.LightSkyBlue,
-                Foreground = Brushes.White
-            };
-            //lineseries.DataLabels = true;
-            columnSeries2.Values = ValueList2;
-            SeriesCollection2.Add(columnSeries2);*/
+                  ColumnSeries columnSeries2 = new ColumnSeries
+                  {
+                      Title = "光强",
+                      Fill = Brushes.LightSkyBlue,
+                      Foreground = Brushes.White
+                  };
+                  //lineseries.DataLabels = true;
+                  columnSeries2.Values = ValueList2;
+                  SeriesCollection2.Add(columnSeries2);*/
 
             this.DataContext = this;
 
@@ -1948,9 +1967,6 @@ namespace WpfApp1
                 Console.WriteLine(e);
                 throw;
             }
-
-
-
         }
 
         /// <summary>
@@ -2115,11 +2131,11 @@ namespace WpfApp1
 
         private void algorithmaSetup(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.sbmc == "")
+       /*     if (MainWindow.sbmc == "")
             {
                 new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
                 return;
-            }
+            }*/
             AlgorithmABool = !AlgorithmABool;
             if (AlgorithmABool)
             {
@@ -2292,6 +2308,7 @@ namespace WpfApp1
                     {
                         return;
                     }
+
                     double doubleND = 0;
                     if (AlgorithmABool)
                     {
@@ -2836,26 +2853,26 @@ namespace WpfApp1
 
                         Console.WriteLine("添加了一个浓度值 ");
 
-                    /*    if (ValueList2.Count == 0)
-                        {
-                            ValueList2.Add(0);
-                            ValueList2.Add(0);
-                            ValueList2.Add(double.Parse(real_PlayPOJOs[device_num].messageList[8]));
-                            ValueList2.Add(0);
-                            ValueList2.Add(0);
-                            ValueList2.Add(0);
-                        }
-                        else
-                        {
-                            ValueList2.Clear();
-                            ValueList2.Add(0);
-                            ValueList2.Add(0);
-                            ValueList2.Add(double.Parse(real_PlayPOJOs[device_num].messageList[8]));
-                            ValueList2.Add(0);
-                            ValueList2.Add(0);
-                            ValueList2.Add(0);
+                        /*    if (ValueList2.Count == 0)
+                            {
+                                ValueList2.Add(0);
+                                ValueList2.Add(0);
+                                ValueList2.Add(double.Parse(real_PlayPOJOs[device_num].messageList[8]));
+                                ValueList2.Add(0);
+                                ValueList2.Add(0);
+                                ValueList2.Add(0);
+                            }
+                            else
+                            {
+                                ValueList2.Clear();
+                                ValueList2.Add(0);
+                                ValueList2.Add(0);
+                                ValueList2.Add(double.Parse(real_PlayPOJOs[device_num].messageList[8]));
+                                ValueList2.Add(0);
+                                ValueList2.Add(0);
+                                ValueList2.Add(0);
 
-                        }*/
+                            }*/
 
 
                         break;
@@ -2939,13 +2956,13 @@ namespace WpfApp1
                     this.Dispatcher.BeginInvoke(new VideoSave(AutoSaveAlarmInfo), true, device_num, !real_PlayPOJOs[MainWindow.Chosen_device_num].B_isAuto);
                 }
 
-                /*      if (real_PlayPOJOs[device_num].B_isAuto)
-                      {
-                          if (stopCruiseWhenWarning.IsChecked.GetValueOrDefault())
-                          {
-                              StopYTAutoMove(true, device_num);
-                          }
-                      }*/
+                if (real_PlayPOJOs[device_num].B_isAuto)
+                {
+                    if (stopCruiseBool)
+                    {
+                        StopYTAutoMove(true, device_num);
+                    }
+                }
 
                 // this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
                 //sp1.Stop();
@@ -3687,9 +3704,9 @@ namespace WpfApp1
         }
         private void DeviceSetup(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.sbmc == "")
+            if (!map1[choose_device_num.ToString()].online)
             {
-                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
+                new TipsWindow("还没在线", 3, TipsEnum.FAIL).Show();
                 return;
             }
             deviceSetup = new DeviceSetup();
@@ -3815,9 +3832,9 @@ namespace WpfApp1
 
         private void SetupIndicatingLaser(object sender, EventArgs e)
         {
-            if (MainWindow.sbmc == "")
+            if (!map1[choose_device_num.ToString()].online)
             {
-                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
+                //new TipsWindow("还没在线", 3, TipsEnum.FAIL).Show();
                 return;
             }
             IndicatingLaserBool = !IndicatingLaserBool;

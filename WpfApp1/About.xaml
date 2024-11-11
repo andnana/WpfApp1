@@ -99,7 +99,7 @@
                     Margin="10,10"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Source="/WpfApp1;component/Resources/ch4test.png" />
+                    Source="/WpfApp1;component/Resources/sn.png" />
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="0"

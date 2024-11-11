@@ -26,7 +26,7 @@
     <s:String x:Key="device_name">设备名称</s:String>
     <s:String x:Key="concentration">浓度</s:String>
     <s:String x:Key="operation">操作</s:String>
-    <s:String x:Key="software_name">激光甲烷气体遥测云台</s:String>
+    <s:String x:Key="software_name">云台式激光甲烷探测系统</s:String>
     <s:String x:Key="high_difinition">高清</s:String>
     <s:String x:Key="online">在线</s:String>
     <s:String x:Key="high_alarm">高报阈值</s:String>
@@ -75,4 +75,5 @@
     <s:String x:Key="add_all_preset">添加所有预置点</s:String>
     <s:String x:Key="is_manul">手动</s:String>
     <s:String x:Key="red_point">中心点</s:String>
+    <s:String x:Key="stop_cruse_if_alarm">报警时停止巡航</s:String>
 </ResourceDictionary>

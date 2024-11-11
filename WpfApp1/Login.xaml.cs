@@ -510,18 +510,45 @@ namespace WpfApp1
         private void delete_login_info(object sender, RoutedEventArgs e)
         {
 
+            try
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "LoginInfo.xml");
+                XmlElement xe = xmlDoc.DocumentElement; // DocumentElement 获取xml文档对象的根XmlElement.
+                string strPath = string.Format("/logininfo/info[@ip=\"{0}\"]", loginInfoList[deviceNameComboBox.SelectedIndex].Ip);
+                XmlElement selectXe = (XmlElement)xe.SelectSingleNode(strPath);  //selectSingleNode 根据XPath表达式,获得符合条件的第一个节点.
+                selectXe.ParentNode.RemoveChild(selectXe);
+                xmlDoc.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "LoginInfo.xml");
+                if (device_name_str_list.Count == 1)
+                {
+                    device_name_str_list[0] = "";
+                    deviceNameComboBox.Items.Refresh();
+                    device_ip_str_list[0] = "";
+                    ipComboBox.Items.Refresh();
+                }
+                else
+                {
+                    int removeIndex = deviceNameComboBox.SelectedIndex;
+                    device_ip_str_list.RemoveAt(removeIndex);
+                    device_name_str_list.RemoveAt(removeIndex);
 
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "LoginInfo.xml");
-            XmlElement xe = xmlDoc.DocumentElement; // DocumentElement 获取xml文档对象的根XmlElement.
-            string strPath = string.Format("/logininfo/info[@ip=\"{0}\"]", loginInfoList[deviceNameComboBox.SelectedIndex].Ip);
-            XmlElement selectXe = (XmlElement)xe.SelectSingleNode(strPath);  //selectSingleNode 根据XPath表达式,获得符合条件的第一个节点.
-            selectXe.ParentNode.RemoveChild(selectXe);
-            xmlDoc.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "LoginInfo.xml");
+                    ipComboBox.Items.Refresh();
+                    deviceNameComboBox.Items.Refresh();
+                }
 
-            device_name_str_list.RemoveAt(deviceNameComboBox.SelectedIndex);
-            deviceNameComboBox.SelectedIndex = 0;
-            new TipsWindow("删除成功", 3, TipsEnum.FAIL).Show();
+                if (device_name_str_list.Count != 0)
+                {
+                    deviceNameComboBox.SelectedIndex = 0;
+                    ipComboBox.SelectedIndex = 0;
+                }
+
+                new TipsWindow("删除成功", 3, TipsEnum.FAIL).Show();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
         }
     }
 }
