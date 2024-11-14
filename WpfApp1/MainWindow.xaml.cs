@@ -1073,7 +1073,7 @@ namespace WpfApp1
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            Time.Text = DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss");
+            Time.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
         public static string GetResourcePath(string resourceName)
@@ -1150,7 +1150,7 @@ namespace WpfApp1
                     historyMessage.pid = int.Parse(xnl0.Item(0).InnerText);
                     historyMessage.device_IP = xnl0.Item(1).InnerText;
                     historyMessage.device_name = xnl0.Item(2).InnerText;
-                    historyMessage.save_time = DateTime.Parse(xnl0.Item(3).InnerText);
+                    historyMessage.save_time = xnl0.Item(3).InnerText;
                     historyMessage.Horiz = xnl0.Item(4).InnerText;
                     historyMessage.Vert = xnl0.Item(5).InnerText;
                     historyMessage.concentration = xnl0.Item(6).InnerText;
@@ -1519,7 +1519,7 @@ namespace WpfApp1
         private void AlarmHistoryDetailWindow(object sender, RoutedEventArgs e)
         {
             History_Message rowView = (History_Message)((Button)e.Source).DataContext;
-            int index = MainWindow.historyMessages.FindIndex(item => item.save_time.ToString("yyyy-MM-dd HH:mm:ss").Equals(rowView.save_time.ToString("yyyy-MM-dd HH:mm:ss")));
+            int index = MainWindow.historyMessages.FindIndex(item => item.save_time.Equals(rowView.save_time));
             new AlarmHistoryDetail(index).Show();
         }
 
@@ -3394,7 +3394,7 @@ namespace WpfApp1
 
             HistoryMessage2 historyMessage = new HistoryMessage2
             {
-                save_time = DateTime.Now/*.ToString("yyyy-MM-dd-HH-mm-ss")*/,
+                save_time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 concentration = real_PlayPOJOs[device_num].messageList[0],
                 concentrationMax = real_PlayPOJOs[device_num].messageList[10]
             };
@@ -3455,7 +3455,7 @@ namespace WpfApp1
                 pid = maxPid,
                 device_IP = real_PlayPOJOs[device_num].IP,
                 device_name = real_PlayPOJOs[device_num].Device_name,
-                save_time = DateTime.Now/*.ToString("yyyy-MM-dd-HH-mm-ss")*/,
+                save_time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 concentration = real_PlayPOJOs[device_num].messageList[0],
                 Horiz = real_PlayPOJOs[device_num].messageList[3],
                 Vert = real_PlayPOJOs[device_num].messageList[4] + "°",

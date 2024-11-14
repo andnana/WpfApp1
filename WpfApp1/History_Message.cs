@@ -37,7 +37,7 @@ namespace WpfApp1
         /// 保存时间
         /// </summary>
         [ExcelColumn("保存时间")]
-        public DateTime save_time { get; set; }
+        public string save_time { get; set; }
 
         /// <summary>
         /// 浓度
@@ -84,6 +84,8 @@ namespace WpfApp1
         public bool isManul {  get; set; }
 
         public string isManulStr { get; set; }
+
+        public bool IsSelected { get; set; }
 
     }
 }

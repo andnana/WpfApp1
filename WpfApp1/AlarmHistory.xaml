@@ -211,7 +211,30 @@
                             </DataTemplate>
                         </Button.ContentTemplate>
                     </Button>
-
+                    <Button
+                        Width="60"
+                        Height="60"
+                        Background="#5a5a58"
+                        BorderThickness="0"
+                        Click="removeSelected"
+                        Content="删除"
+                        Foreground="White">
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <Image
+                                        Width="20"
+                                        Height="20"
+                                        Margin="4"
+                                        Source="/WpfApp1;component/Resources/delete.png" />
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        FontSize="10"
+                                        Text="删除" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </Button.ContentTemplate>
+                    </Button>
                 </ToolBar>
                 <Grid
                     Grid.Row="0"
@@ -260,6 +283,13 @@
                 RowHeight="40"
                 RowStyle="{StaticResource DataGridTextCenterColumnStyle}">
                 <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="选择">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding device_IP}"

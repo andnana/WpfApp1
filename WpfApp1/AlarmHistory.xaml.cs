@@ -6,6 +6,7 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -28,13 +29,33 @@ namespace WpfApp1
     /// </summary>
     public partial class AlarmHistory : System.Windows.Window
     {
+        public static List<History_Message> historyMessagesTemp = new List<History_Message>();
         public static string videoPath = "";
-        
+
         public AlarmHistory()
         {
             InitializeComponent();
+
+            DatePicker1.SelectedDate = DateTime.Now.Date;
+            DatePicker2.SelectedDate = DateTime.Now.AddDays(1).Date; ;
+            historyMessagesTemp.Clear();
+            for (int i = 0; i < MainWindow.historyMessages.Count; i++)
+            {
+                string dateTimeStr = MainWindow.historyMessages[i].save_time;
+                string format = "yyyy-MM-dd HH:mm:ss";
+                DateTime dateTime = DateTime.ParseExact(dateTimeStr, format, CultureInfo.CurrentCulture);
+
+                Console.WriteLine("dataTime:" + dateTime.ToString());
+                if (DateTime.Now.Date < dateTime && DateTime.Now.AddDays(1).Date > dateTime)
+                {
+                    historyMessagesTemp.Add(MainWindow.historyMessages[i]);
+                }
+
+            }
+
             //DataContext = new AlarmHistoryModelView();
-            AlarmHistoryDataGrid.ItemsSource = MainWindow.historyMessages;
+            AlarmHistoryDataGrid.ItemsSource = historyMessagesTemp;
+
             TitleBar.MouseMove += (s, e) =>
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
@@ -93,7 +114,7 @@ namespace WpfApp1
                 videoPath = rowView.video_path + ".wmv";
                 new Video(videoPath).Show();
             }
-            
+
         }
 
         /// <summary>
@@ -105,7 +126,7 @@ namespace WpfApp1
         {
             if (MainWindow.sbmc == "")
             {
-                new TipsWindow("请先登录", 3,  TipsEnum.FAIL).Show();
+                new TipsWindow("请先登录", 3, TipsEnum.FAIL).Show();
                 return;
             }
             History_Message rowView = (History_Message)((Button)e.Source).DataContext;
@@ -122,13 +143,16 @@ namespace WpfApp1
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "HistoryMessages.xml");
                 XmlElement xe = xmlDoc.DocumentElement; // DocumentElement 获取xml文档对象的根XmlElement.
-                string strPath = string.Format("/historymessages/message[@save_time=\"{0}\"]", rowView.save_time.ToString("yyyy-MM-dd HH:mm:ss"));
+                string strPath = string.Format("/historymessages/message[@save_time=\"{0}\"]", rowView.save_time);
                 XmlElement selectXe = (XmlElement)xe.SelectSingleNode(strPath);  //selectSingleNode 根据XPath表达式,获得符合条件的第一个节点.
                 selectXe.ParentNode.RemoveChild(selectXe);
                 xmlDoc.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "HistoryMessages.xml");
 
-                int removeIndex = MainWindow.historyMessages.FindIndex(item => item.save_time.ToString("yyyy-MM-dd HH:mm:ss").Equals(rowView.save_time.ToString("yyyy-MM-dd HH:mm:ss")));
+                int removeIndex = MainWindow.historyMessages.FindIndex(item => item.save_time.Equals(rowView.save_time));
                 MainWindow.historyMessages.RemoveAt(removeIndex);
+                int removeIndex2 = historyMessagesTemp.FindIndex(item => item.save_time.Equals(rowView.save_time));
+                historyMessagesTemp.RemoveAt(removeIndex2);
+                AlarmHistoryDataGrid.ItemsSource = historyMessagesTemp;
                 AlarmHistoryDataGrid.Items.Refresh();
                 new TipsWindow("删除成功", 3, TipsEnum.OK).Show();
             }
@@ -162,14 +186,13 @@ namespace WpfApp1
 
         private void refreshData(object sender, RoutedEventArgs e)
         {
-            List<History_Message> historyMessagesTemp = new List<History_Message>();
+            historyMessagesTemp.Clear();
             for (int i = 0; i < MainWindow.historyMessages.Count; i++)
             {
-                string dateTimeStr = MainWindow.historyMessages[i].save_time.ToString("yyyy-MM-dd HH:mm:ss");
+                string dateTimeStr = MainWindow.historyMessages[i].save_time;
                 string format = "yyyy-MM-dd HH:mm:ss";
                 DateTime dateTime = DateTime.ParseExact(dateTimeStr, format, CultureInfo.CurrentCulture);
-                //if (historyMessages[i].SaveTime)
-                Console.WriteLine("dataTime:" + dateTime.ToString());
+
                 if (DatePicker1.SelectedDate < dateTime && DatePicker2.SelectedDate > dateTime)
                 {
                     historyMessagesTemp.Add(MainWindow.historyMessages[i]);
@@ -194,6 +217,42 @@ namespace WpfApp1
                 }
             }
             return null;
+        }
+
+        private void removeSelected(object sender, RoutedEventArgs e)
+        {
+                    var selectedItems = ((List<History_Message>)AlarmHistoryDataGrid.ItemsSource)
+                           .Where(item => item.IsSelected)
+                           .ToList();
+
+                    MessageBoxResult result = System.Windows.MessageBox.Show("确认删除？", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+
+                    if (result == MessageBoxResult.OK)
+                    {
+                        History_Message rowView = (History_Message)((System.Windows.Controls.Button)e.Source).DataContext;
+                        XmlDocument xmlDoc = new XmlDocument();
+                        xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "HistoryMessages.xml");
+                        XmlElement xe = xmlDoc.DocumentElement; // DocumentElement 获取xml文档对象的根XmlElement.
+
+                        for (int i = 0; i < selectedItems.Count; i++)
+                        {
+                            string strPath = string.Format("/historymessages/message[@save_time=\"{0}\"]", selectedItems[i].save_time);
+                            XmlElement selectXe = (XmlElement)xe.SelectSingleNode(strPath);  //selectSingleNode 根据XPath表达式,获得符合条件的第一个节点.
+                            selectXe.ParentNode.RemoveChild(selectXe);
+
+                            int removeIndex = MainWindow.historyMessages.FindIndex(item => item.save_time.Equals(selectedItems[i].save_time));
+                            MainWindow.historyMessages.RemoveAt(removeIndex);
+                            int removeIndex2 = historyMessagesTemp.FindIndex(item => item.save_time.Equals(selectedItems[i].save_time));
+                            historyMessagesTemp.RemoveAt(removeIndex2);
+                        }
+
+                        xmlDoc.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "HistoryMessages.xml");
+
+                        AlarmHistoryDataGrid.ItemsSource = historyMessagesTemp;
+
+                        AlarmHistoryDataGrid.Items.Refresh();
+                        // new TipsWindow("删除成功", 3, TipsEnum.OK).Show();
+                    }
         }
 
     }
